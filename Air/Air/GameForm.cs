@@ -14,7 +14,7 @@ namespace Air
 {
     public partial class GameForm : Form
     {
-        public static Player player = new Player();
+        Player player = new Player();
 
         // GameObject
         Background title = new Background();
@@ -36,8 +36,6 @@ namespace Air
         Button boardButton = new Button();
 
         #region
-        PictureBox kpu = new PictureBox();
-
         // time variables
         private DateTime updateFlag;
         private DateTime timeFlag;
@@ -45,21 +43,18 @@ namespace Air
         float waitForSeconds = 1.5f;
 
         // framework variables
-        private string sceneName = "InGame";
+        private string sceneName = "Title";
         private string logoName = "daydream";
 
         // update variables
         bool gameUpdate = false;
         bool canPickUp = false;
+        bool playing = false;
 
         // opacity variables
-        private float fadingSpeed = 0.02f;
+        private float fadingSpeed = 0.1f;
         private float fadeDir = 1;
         private float opacity = 0;
-
-        // developermode variables
-        bool developerMode = false;      // change it to false when playing
-        bool playing = false;
 
         // etc
         bool firstChanged = true;
@@ -68,10 +63,9 @@ namespace Air
         bool pressToStart = false;
         bool firstTime = true;                 // shit value
 
-
-        // score
+        // static variables
         public static double score;
-
+        public static bool developerMode = false;      // change it to false when playing
         #endregion
 
         // recent added variables
@@ -80,7 +74,14 @@ namespace Air
         Bitmap gameName;
 
         Point gameNameOffset = new Point(3, 0);
-        Point location = new Point(150, 200);
+        Point playerLocation = new Point(150, 200);
+        Point animationIndex = new Point();
+
+        bool drawGameName = false;
+        bool gameMode = true;
+        bool settingMode = false;
+
+        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
 
         public GameForm()
         {
@@ -114,11 +115,9 @@ namespace Air
             gameName = Air.Properties.Resources.gameName;
 
             // bgm play
-            //SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
-            //bgm.Play();
+            if (firstTime)
+                bgm.Play();
         }
-
-        bool drawGameName = false;
 
         private void timerFunction_Tick(object sender, EventArgs e)
         {
@@ -136,7 +135,6 @@ namespace Air
                             logoName = null;
 
                             canvas.Image = Air.Properties.Resources.logo_kpu;
-                            //canvas.SizeMode = PictureBoxSizeMode.StretchImage;
 
                             if (checkTime)
                             {
@@ -236,7 +234,7 @@ namespace Air
                             checkTime = true;
 
                             // background setting
-                            title.init(0, 720, 0, 0, 10, Air.Properties.Resources.title);           // set speed parameter
+                            title.init(0, 720, 0, 0, 2, Air.Properties.Resources.title);           // set speed parameter
 
                             // UI location settings
                             clickToStart.Location = new Point((canvas.Width / 2 - clickToStart.Size.Width / 2), clickToStart.Location.Y);
@@ -280,7 +278,6 @@ namespace Air
                                 if (currentTime.TotalSeconds > waitForSeconds - 1)
                                 {
                                     drawGameName = true;
-                                    kpu.Visible = true;
                                 }
 
                                 if (currentTime.TotalSeconds > waitForSeconds)
@@ -292,7 +289,6 @@ namespace Air
 
                             else
                             {
-                                kpu.Visible = true;
                                 playgameButton.visible(true);
                                 shopButton.visible(true);
                                 boardButton.visible(true);
@@ -340,21 +336,15 @@ namespace Air
                             playgameButton.visible(false);
                             shopButton.visible(false);
                             boardButton.visible(false);
-                            kpu.Visible = false;                    // temporary settings
 
                             // time settings
                             checkTime = true;
                             waitForSeconds = 0;
 
-                            player.init(location, generateRandomNumber("double", 1.0, 2.0));
-
-                            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
-                            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
-                            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
-                            
-
+                            // object settings
                             airtank.init(290, 640, artk, canvas);
-                            star.init("Star", canvas);
+                            //star.init("Star", canvas);
+
                             airtank.draw();
 
                             // text init
@@ -363,7 +353,6 @@ namespace Air
                             airPercentageText.init(935, 590, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style), canvas);       // set this value
 
                             // visible game objects
-                            player.visible(true);
                             distanceText.visible(true);
                             velocityText.visible(true);
                             airPercentageText.visible(true);
@@ -386,7 +375,7 @@ namespace Air
 
                         else
                         {
-                            player.update(frames, location, player.speed, player.fly, airtank.value, airtank.minimum, (int)player.gravity);
+                            player.update(frames, playerLocation, player.speed, player.fly, airtank.value, airtank.minimum, (int)player.gravity);
 
                             if (playing)
                             {
@@ -395,7 +384,7 @@ namespace Air
                                 {
                                     // draw
                                     airtank.draw();
-                                    star.draw();
+                                    //star.draw();
 
                                     sky.update(this);
                                     rock.update(this);
@@ -420,20 +409,36 @@ namespace Air
                             else
                             {
                                 // "pick it up and throw" code
-                                if (!player.getGrounded())
-                                    location.Y += ((int)player.gravity + 10);        // set this value please :(
+                                if (!player.grounded)
+                                    playerLocation.Y += ((int)player.gravity + 10);        // set this value please :(
 
-                                if (location.Y > this.Height - 180)            // this is onGround value
+                                if (playerLocation.Y > this.Height - 180)            // this is onGround value
                                 {
-                                    player.setGrounded(true);
-                                    canPickUp = player.getGrounded() ? true : false;
+                                    player.grounded = true;
+                                    canPickUp = player.grounded ? true : false;
                                 }
 
                                 if (canPickUp)
                                 {
-                                    if (player.getPicked())
-                                        location = new Point(PointToClient(MousePosition).X - (player.getOffset('x') / 2), PointToClient(MousePosition).Y - (player.getOffset('y') / 2));
+                                    if (player.picked)
+                                        playerLocation = new Point(PointToClient(MousePosition).X - (player.offset.X / 2), PointToClient(MousePosition).Y - (player.offset.Y / 2));
                                 }
+                            }
+
+                            // setting update
+                            if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
+                            {
+                                gameMode = false;
+                                settingMode = true;
+                                animationIndex.X = (animationIndex.X + 1) % 4;
+                                if (animationIndex.X % 4 == 0)
+                                    animationIndex.Y = (animationIndex.Y + 1) % 3;
+                            }
+
+                            else
+                            {
+                                settingMode = false;
+                                gameMode = true;
                             }
                         }
                     }
@@ -450,20 +455,20 @@ namespace Air
         #region
         private void gameOver()
         {
+            player.grounded = player.location.Y > this.Height - 180 ? true : false;
 
-            player.setGrounded(player.location.Y > this.Height - 180 ? true : false);
-
-            if (player.getGrounded())
+            if (player.grounded)
             {
+                score = player.flightDistance;
+
                 gameUpdate = false;
-                location = player.location;
+                playerLocation = player.location;
                 player.gameStart = false;
 
                 if (player.speed > 0)
                 {
-                    
                     player.speed -= (int)((player.airResistance) / player.slidingValue);
-                    location.X += player.speed;
+                    playerLocation.X += player.speed;
                 }
 
                 else
@@ -508,15 +513,30 @@ namespace Air
         #region
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (!playing && canPickUp)
+            if (gameMode)
             {
-                player.startPosition = new Point(location.X, location.Y);
-                player.setPicked(true);
+                if (!playing && canPickUp)
+                {
+                    player.startPosition = new Point(playerLocation.X, playerLocation.Y);
+                    player.picked = true;
+                }
+
+                else
+                {
+                    player.fly = true;
+                }
             }
 
-            else
+            else if (settingMode)
             {
-                player.fly = true;
+                {
+                    developerMode = true;
+                    settingForm settingForm = new settingForm();
+
+                    settingForm.StartPosition = FormStartPosition.Manual;
+                    settingForm.Location = new Point(this.Width / 2 - (settingForm.Size.Width / 10), ((this.Height / 2) - settingForm.Size.Height / 3));
+                    settingForm.ShowDialog();    // this is modeless
+                }
             }
         }
 
@@ -524,9 +544,9 @@ namespace Air
         {
             if (!playing && canPickUp)
             {
-                player.endPositoin = new Point(location.X, location.Y);
-                player.setPicked(false);
-                player.setGrounded(false);
+                player.endPositoin = new Point(playerLocation.X, playerLocation.Y);
+                player.picked = false;
+                player.grounded = false;
                 player.speed = player.startVelocity();
                 player.gameStart = true;
                 gameUpdate = playing = true;
@@ -552,6 +572,10 @@ namespace Air
         private void playButton_Click(object sender, EventArgs e)
         {
             sceneName = "InGame";
+            player.init(playerLocation, generateRandomNumber("double", 1.0, 2.0));
+            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
+            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
+            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
             initialization = true;
             opacity = 0;
         }
@@ -595,7 +619,6 @@ namespace Air
                 opacity = 0.9f;
                 firstTime = false;
                 distance.Visible = false;
-                player.visible(false);
                 distanceText.visible(false);
                 velocityText.visible(false);
                 airPercentageText.visible(false);
@@ -607,6 +630,35 @@ namespace Air
 
         // drawing methods
         #region
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+            if (sceneName == "Title")
+            {
+                title.draw(sender, e);
+
+                if (drawGameName)
+                {
+                    e.Graphics.DrawImage(gameName, ((canvas.Width / 2) - (gameName.Size.Width / 2) - gameNameOffset.X), 170 + gameNameOffset.Y, 128, 128);
+
+                    if (gameNameOffset.Y + 170 > 110 && clickToStart.IsDisposed)
+                        gameNameOffset.Y -= 5;
+                }
+            }
+
+            else if (sceneName == "InGame")
+            {
+                sky.draw(sender, e);
+                rock.draw(sender, e);
+                field.draw(sender, e);
+                player.draw(sender, e);
+
+                e.Graphics.DrawImage(bar, artk.Location.X - 2, artk.Location.Y - 2, 705, 25);
+
+                Rectangle dest = new Rectangle(1200, 20, 54, 54);
+                e.Graphics.DrawImage(Air.Properties.Resources.setting, dest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
+            }
+        }
+
         public Bitmap ChangeOpacity(Image img, float opacityvalue)
         {
             Bitmap bmp = new Bitmap(img.Width, img.Height);
@@ -620,54 +672,23 @@ namespace Air
             return bmp;
         }
         #endregion
-
-        private void canvas_Paint(object sender, PaintEventArgs e)
-        {
-            if (sceneName == "Title")
-            {
-                title.draw(sender, e);
-
-                if (drawGameName)
-                {
-                    e.Graphics.DrawImage(gameName, ((canvas.Width / 2) - (gameName.Size.Width / 2) - gameNameOffset.X), 170 + gameNameOffset.Y, 128, 128);
-
-                    if(gameNameOffset.Y + 170 > 110 && clickToStart.IsDisposed)
-                        gameNameOffset.Y -= 5;
-                }
-            }
-
-            else if (sceneName == "InGame")
-            {
-                sky.draw(sender, e);
-                rock.draw(sender, e);
-                field.draw(sender, e);
-
-                player.draw(sender, e);
-
-                e.Graphics.DrawImage(bar, artk.Location.X - 2, artk.Location.Y - 2, 705, 25);
-
-            }
-        }
     }
 }
 
 public class Player
 {
     // member variables
-    private Panel plane = new Panel();
-    private Point offset = new Point(90, 50);
-
-    private bool grounded, picked;
-
+    public Point offset = new Point(100, 50);
     public Point startPosition = new Point();
     public Point endPositoin = new Point();
+
     public int speed = 40;              // max speed is 30
     public int maxSpeed = 40;          // temp value
     public double gravity = 1;          // please calculate this value
     public double airResistance = 2;    // bigger is slower
     public double slidingValue = 0;
     public double flightDistance;       // records variables
-    public bool fly = false;
+    public bool fly, grounded, picked;
 
 
     public bool gameStart = false;
@@ -724,52 +745,14 @@ public class Player
 
         return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / 10;
     }
-
-    public void visible(bool isVisible)
-    {
-        if (isVisible)
-            plane.Visible = true;
-
-        else
-            plane.Visible = false;
-    }
-
-    public void setGrounded(bool grounded)
-    {
-        this.grounded = grounded;
-    }
-
-    public void setPicked(bool picked)
-    {
-        this.picked = picked;
-    }
-
-    public int getOffset(char value)
-    {
-        if (value == 'x')
-            return offset.X;
-        else
-            return offset.Y;
-    }
-
-    public bool getGrounded()
-    {
-        return grounded;
-    }
-
-    public bool getPicked()
-    {
-        return picked;
-    }
 }
 
 public class Background
 {
     // member variables
-    private PictureBox canvas = new PictureBox();
     Point bgOffset = new Point();
     Point Location = new Point();
-    Bitmap image = null;
+    Bitmap image;
     private int speed = 0;
     
     // methods
@@ -905,8 +888,8 @@ public class Item
             }
 
             // star : collision with player
-            else if (item.Location.X > plane.Location.X - player.getOffset('x') && item.Location.X < plane.Location.X + player.getOffset('x') &&
-                item.Location.Y > plane.Location.Y - player.getOffset('y') && item.Location.Y < plane.Location.Y + player.getOffset('y'))
+            else if (item.Location.X > plane.Location.X - player.offset.X&& item.Location.X < plane.Location.X + player.offset.X &&
+                item.Location.Y > plane.Location.Y - player.offset.Y && item.Location.Y < plane.Location.Y + player.offset.Y)
                 collideTagName = itemName;
         }
 

@@ -18,8 +18,6 @@ namespace Air
         double scoreValue = 0;         // start score
         double playerScore;
 
-        Player p = GameForm.player;
-
         public scoreForm()
         {
             InitializeComponent();
@@ -27,7 +25,7 @@ namespace Air
 
         private void scoreForm_Load(object sender, EventArgs e)
         {
-            playerScore = p.flightDistance;
+            playerScore = GameForm.score;
 
             flyText.init((this.Width / 2) - (youflight.Size.Width / 2), -15, youflight, new Font("Agency FB", 25, youflight.Font.Style), canvas); // 5
             scoreText.init((this.Width / 2) - (distance.Size.Width / 2), 70, distance, new Font("Agency FB", 20, distance.Font.Style), canvas);  // 70
