@@ -43,7 +43,7 @@ namespace Air
             scoreText.visible(false);
             commentText.visible(false);
 
-            canvas.Image = Image.FromFile("./resource/scoreboard.png");
+            canvas.Image = Air.Properties.Resources.scoreboard;
             canvas.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 

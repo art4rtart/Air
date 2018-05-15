@@ -80,7 +80,7 @@ namespace Air
         Bitmap gameName;
 
         Point gameNameOffset = new Point(3, 0);
-
+        Point location = new Point(150, 200);
 
         public GameForm()
         {
@@ -96,7 +96,7 @@ namespace Air
             // game time setting
             updateFlag = DateTime.Now;
             timerFunction_Tick(sender, e);
-            timerFunction.Interval = 30;
+            timerFunction.Interval = 1;
             timerFunction.Start();
 
             // start position setting
@@ -236,7 +236,7 @@ namespace Air
                             checkTime = true;
 
                             // background setting
-                            title.init(0, 720, 0, 0, Air.Properties.Resources.title);
+                            title.init(0, 720, 0, 0, 10, Air.Properties.Resources.title);           // set speed parameter
 
                             // UI location settings
                             clickToStart.Location = new Point((canvas.Width / 2 - clickToStart.Size.Width / 2), clickToStart.Location.Y);
@@ -344,13 +344,13 @@ namespace Air
 
                             // time settings
                             checkTime = true;
-                            waitForSeconds = 0.5f;
+                            waitForSeconds = 0;
 
-                            player.init(100, 200, generateRandomNumber("double", 1.0, 2.0), plane, canvas);
+                            player.init(location, generateRandomNumber("double", 1.0, 2.0));
 
-                            sky.init(0, 720, 0, 0, Air.Properties.Resources.sky);
-                            rock.init(0, 200, 0, 390, Air.Properties.Resources.rock);
-                            field.init(0, 200, 0, 520, Air.Properties.Resources.field);
+                            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
+                            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
+                            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
                             
 
                             airtank.init(290, 640, artk, canvas);
@@ -386,25 +386,23 @@ namespace Air
 
                         else
                         {
+                            player.update(frames, location, player.speed, player.fly, airtank.value, airtank.minimum, (int)player.gravity);
+
                             if (playing)
                             {
                                 // "after throwing" code
                                 if (gameUpdate)
                                 {
                                     // draw
-                                    player.draw();
                                     airtank.draw();
                                     star.draw();
-
-                                    // update
-                                    player.update(frames, player.speed, player.fly, airtank.value, airtank.minimum, (int)player.gravity);
 
                                     sky.update(this);
                                     rock.update(this);
                                     field.update(this);
 
                                     airtank.update(frames, player.fly);
-                                    star.update(frames, player.speed, plane, player);
+                                    //star.update(frames, player.speed, plane, player);
 
                                     distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
                                     velocityText.update(player.speed.ToString() + " M/S");
@@ -423,9 +421,9 @@ namespace Air
                             {
                                 // "pick it up and throw" code
                                 if (!player.getGrounded())
-                                    plane.Top += ((int)player.gravity + 3);        // set this value please :(
+                                    location.Y += ((int)player.gravity + 10);        // set this value please :(
 
-                                if (plane.Location.Y > this.Height - 180)            // this is onGround value
+                                if (location.Y > this.Height - 180)            // this is onGround value
                                 {
                                     player.setGrounded(true);
                                     canPickUp = player.getGrounded() ? true : false;
@@ -434,7 +432,7 @@ namespace Air
                                 if (canPickUp)
                                 {
                                     if (player.getPicked())
-                                        plane.Location = new Point(PointToClient(MousePosition).X - (player.getOffset('x') / 2), PointToClient(MousePosition).Y - (player.getOffset('y') / 2));
+                                        location = new Point(PointToClient(MousePosition).X - (player.getOffset('x') / 2), PointToClient(MousePosition).Y - (player.getOffset('y') / 2));
                                 }
                             }
                         }
@@ -452,16 +450,20 @@ namespace Air
         #region
         private void gameOver()
         {
-            player.setGrounded(plane.Location.Y > this.Height - 180 ? true : false);
+
+            player.setGrounded(player.location.Y > this.Height - 180 ? true : false);
 
             if (player.getGrounded())
             {
                 gameUpdate = false;
+                location = player.location;
+                player.gameStart = false;
 
                 if (player.speed > 0)
                 {
-                    player.speed -= (int)((player.airResistance + 1) / player.slidingValue);
-                    plane.Left += player.speed;
+                    
+                    player.speed -= (int)((player.airResistance) / player.slidingValue);
+                    location.X += player.speed;
                 }
 
                 else
@@ -504,37 +506,37 @@ namespace Air
 
         // control methods
         #region
-        private void player_MouseDown(object sender, MouseEventArgs e)
+        private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (!playing)
+            if (!playing && canPickUp)
             {
-                player.startPosition = new Point(plane.Location.X, plane.Location.Y);
+                player.startPosition = new Point(location.X, location.Y);
                 player.setPicked(true);
+            }
+
+            else
+            {
+                player.fly = true;
             }
         }
 
-        private void player_MouseUp(object sender, MouseEventArgs e)
+        private void canvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!playing)
+            if (!playing && canPickUp)
             {
-                player.endPositoin = new Point(plane.Location.X, plane.Location.Y);
+                player.endPositoin = new Point(location.X, location.Y);
                 player.setPicked(false);
                 player.setGrounded(false);
                 player.speed = player.startVelocity();
+                player.gameStart = true;
                 gameUpdate = playing = true;
             }
-        }
 
-        private void pictureBox_MouseDown(object sender, MouseEventArgs e)
-        {
-            player.fly = true;
+            else
+            {
+                player.fly = false;
+            }
         }
-
-        private void pictureBox_MouseUp(object sender, MouseEventArgs e)
-        {
-            player.fly = false;
-        }
-
         #endregion
 
         // menu change methods
@@ -577,7 +579,7 @@ namespace Air
                 player.speed += 5;
 
             if (e.KeyCode == Keys.D && sceneName == "InGame")
-                gameOver();
+                //gameOver();
 
             if (e.KeyCode == Keys.P && sceneName == "InGame")
                 timerFunction.Start();
@@ -640,6 +642,8 @@ namespace Air
                 rock.draw(sender, e);
                 field.draw(sender, e);
 
+                player.draw(sender, e);
+
                 e.Graphics.DrawImage(bar, artk.Location.X - 2, artk.Location.Y - 2, 705, 25);
 
             }
@@ -652,7 +656,7 @@ public class Player
     // member variables
     private Panel plane = new Panel();
     private Point offset = new Point(90, 50);
-    private int x, y;
+
     private bool grounded, picked;
 
     public Point startPosition = new Point();
@@ -665,35 +669,50 @@ public class Player
     public double flightDistance;       // records variables
     public bool fly = false;
 
+
+    public bool gameStart = false;
+    Bitmap image = Air.Properties.Resources.plane;
+
+
+    public Point location = new Point();
+
+
     // methods
-    public void init(int x, int y, double slidingValue, Panel panel, PictureBox canvas)
+    public void init(Point location, double slidingValue)
     {
-        this.x = x; this.y = y;
+        this.location.X = location.X;
+        this.location.Y = location.Y;
         this.slidingValue = slidingValue;
-        plane = panel;
-
-        plane.Parent = canvas;
     }
 
-    public void draw()
+    public void draw(object sender, PaintEventArgs e)
     {
-        this.x = plane.Location.X; this.y = plane.Location.Y;
-        plane.Location = new Point(x, y);
+        e.Graphics.DrawImage(image, location.X, location.Y, image.Size.Width, image.Size.Height);
     }
 
-    public void update(int frames, int speed, bool fly, double airValue, double airMin, int gravity)
+    public void update(int frames, Point location, int speed, bool fly, double airValue, double airMin, int gravity)
     {
-        if (x > 150)
-            this.plane.Location = new Point(x - (speed / 2), y);
-        else if (x < 150)
-            this.plane.Location = new Point(150, y);
+        // update player location
+        if (gameStart)
+        {
+            if (this.location.X > 150)            // dont use magic number
+                this.location = new Point(this.location.X - (speed / 2), location.Y);
 
-        if (fly && airValue > airMin)
-            this.plane.Top -= (gravity + 2) * frames;
+            else if (this.location.X < 150)       // dont use magic number
+                this.location = new Point(150, this.location.Y);
+
+
+            if (fly && airValue > airMin)
+                this.location.Y -= (gravity + 2) * frames;
+
+            else
+                this.location.Y += (gravity) * frames;
+
+            flightDistance += 0.01;     // calculate this value please
+        }
+
         else
-            this.plane.Top += (gravity) * frames;
-
-        flightDistance += 0.01;     // calculate this value please
+            this.location = location;
     }
 
     public int startVelocity()
@@ -751,9 +770,10 @@ public class Background
     Point bgOffset = new Point();
     Point Location = new Point();
     Bitmap image = null;
+    private int speed = 0;
     
     // methods
-    public void init(int bgoffsetX, int bgoffsetY, int locationX, int locationY, Bitmap image)
+    public void init(int bgoffsetX, int bgoffsetY, int locationX, int locationY, int speed, Bitmap image)
     {
         this.image = image;
 
@@ -762,22 +782,24 @@ public class Background
 
         this.Location.X = bgoffsetX;
         this.Location.Y = locationY;
+
+        this.speed = speed;
     }
 
     public void draw(object sender, PaintEventArgs e)
     {
-        for (int x = bgOffset.X; x < 2560; x += 2560)
+        for (int x = bgOffset.X; x < image.Size.Width; x += image.Size.Width)
         {
-            e.Graphics.DrawImage(image, x, Location.Y, 2560, bgOffset.Y);
+            e.Graphics.DrawImage(image, x, Location.Y, image.Size.Width, bgOffset.Y);
         }
     }
 
     public void update(Form form)
     {
-        bgOffset.X -= 10;
+        bgOffset.X -= speed;       // dont use magic number
 
-        if (bgOffset.X < -2560)
-            bgOffset.X += 2560;
+        if (bgOffset.X < -image.Size.Width)
+            bgOffset.X += image.Size.Width;
     }
 }
 

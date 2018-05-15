@@ -39,8 +39,8 @@
             this.shop = new System.Windows.Forms.Label();
             this.board = new System.Windows.Forms.Label();
             this.artk = new System.Windows.Forms.PictureBox();
-            this.plane = new System.Windows.Forms.Panel();
             this.canvas = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.artk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
@@ -119,6 +119,7 @@
             this.play.Size = new System.Drawing.Size(38, 12);
             this.play.TabIndex = 20;
             this.play.Text = "label1";
+            this.play.Visible = false;
             this.play.Click += new System.EventHandler(this.playButton_Click);
             // 
             // shop
@@ -129,6 +130,7 @@
             this.shop.Size = new System.Drawing.Size(38, 12);
             this.shop.TabIndex = 21;
             this.shop.Text = "label2";
+            this.shop.Visible = false;
             this.shop.Click += new System.EventHandler(this.shopButton_Click);
             // 
             // board
@@ -139,6 +141,7 @@
             this.board.Size = new System.Drawing.Size(38, 12);
             this.board.TabIndex = 22;
             this.board.Text = "label3";
+            this.board.Visible = false;
             this.board.Click += new System.EventHandler(this.boardButton_Click);
             // 
             // artk
@@ -152,18 +155,6 @@
             this.artk.TabStop = false;
             this.artk.Visible = false;
             // 
-            // plane
-            // 
-            this.plane.BackColor = System.Drawing.Color.Transparent;
-            this.plane.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.plane.Location = new System.Drawing.Point(100, 200);
-            this.plane.Name = "plane";
-            this.plane.Size = new System.Drawing.Size(100, 50);
-            this.plane.TabIndex = 5;
-            this.plane.Visible = false;
-            this.plane.MouseDown += new System.Windows.Forms.MouseEventHandler(this.player_MouseDown);
-            this.plane.MouseUp += new System.Windows.Forms.MouseEventHandler(this.player_MouseUp);
-            // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.Transparent;
@@ -175,6 +166,17 @@
             this.canvas.TabStop = false;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
+            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
+            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(234, 351);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 12);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "label1";
             // 
             // GameForm
             // 
@@ -183,17 +185,17 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.canvas);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.artk);
             this.Controls.Add(this.velocity);
             this.Controls.Add(this.airTankPercent);
-            this.Controls.Add(this.plane);
             this.Controls.Add(this.distanceValue);
             this.Controls.Add(this.distance);
             this.Controls.Add(this.clickToStart);
             this.Controls.Add(this.play);
             this.Controls.Add(this.board);
             this.Controls.Add(this.shop);
+            this.Controls.Add(this.canvas);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
@@ -210,7 +212,6 @@
 
         #endregion
         private System.Windows.Forms.Timer timerFunction;
-        private System.Windows.Forms.Panel plane;
         private System.Windows.Forms.Label distance;
         private System.Windows.Forms.Label distanceValue;
         private System.Windows.Forms.Label clickToStart;
@@ -221,6 +222,7 @@
         private System.Windows.Forms.Label board;
         private System.Windows.Forms.PictureBox artk;
         private System.Windows.Forms.PictureBox canvas;
+        private System.Windows.Forms.Label label1;
     }
 }
 
