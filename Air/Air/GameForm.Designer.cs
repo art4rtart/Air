@@ -42,6 +42,7 @@
             this.artk = new System.Windows.Forms.PictureBox();
             this.canvas = new System.Windows.Forms.PictureBox();
             this.settingImageList = new System.Windows.Forms.ImageList(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.artk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
@@ -187,6 +188,15 @@
             this.settingImageList.Images.SetKeyName(10, "11.png");
             this.settingImageList.Images.SetKeyName(11, "12.png");
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(345, 375);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 12);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "label1";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -194,6 +204,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.artk);
             this.Controls.Add(this.velocity);
             this.Controls.Add(this.airTankPercent);
@@ -231,6 +242,7 @@
         private System.Windows.Forms.PictureBox artk;
         private System.Windows.Forms.PictureBox canvas;
         private System.Windows.Forms.ImageList settingImageList;
+        private System.Windows.Forms.Label label1;
     }
 }
 

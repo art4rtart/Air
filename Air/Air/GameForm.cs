@@ -115,8 +115,8 @@ namespace Air
             gameName = Air.Properties.Resources.gameName;
 
             // bgm play
-            if (firstTime)
-                bgm.Play();
+            //if (firstTime)
+             //   bgm.Play();
         }
 
         private void timerFunction_Tick(object sender, EventArgs e)
@@ -332,6 +332,10 @@ namespace Air
                         // initialization
                         if (initialization)
                         {
+                            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
+                            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
+                            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
+
                             // unvisible
                             playgameButton.visible(false);
                             shopButton.visible(false);
@@ -461,7 +465,6 @@ namespace Air
             {
                 score = player.flightDistance;
 
-                gameUpdate = false;
                 playerLocation = player.location;
                 player.gameStart = false;
 
@@ -483,7 +486,8 @@ namespace Air
 
                     if (currentTime.TotalSeconds > waitForSeconds)
                     {
-                        timerFunction.Stop();
+                        playing = false;
+
                         scoreForm scoreForm = new scoreForm();
 
                         scoreForm.StartPosition = FormStartPosition.Manual;
@@ -517,8 +521,14 @@ namespace Air
             {
                 if (!playing && canPickUp)
                 {
+                    if (PointToClient(MousePosition).X > playerLocation.X && PointToClient(MousePosition).X < playerLocation.X + 100
+                        && PointToClient(MousePosition).Y > playerLocation.Y && PointToClient(MousePosition).Y < playerLocation.Y + 50)
+                        player.picked = true;
+                    else
+                        player.picked = false;
+
                     player.startPosition = new Point(playerLocation.X, playerLocation.Y);
-                    player.picked = true;
+                    player.startTime = DateTime.Now;
                 }
 
                 else
@@ -542,9 +552,10 @@ namespace Air
 
         private void canvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!playing && canPickUp)
+            if (!playing && canPickUp && player.picked)
             {
                 player.endPositoin = new Point(playerLocation.X, playerLocation.Y);
+                player.endTime = DateTime.Now;
                 player.picked = false;
                 player.grounded = false;
                 player.speed = player.startVelocity();
@@ -682,6 +693,9 @@ public class Player
     public Point startPosition = new Point();
     public Point endPositoin = new Point();
 
+    public DateTime startTime;
+    public DateTime endTime;
+
     public int speed = 40;              // max speed is 30
     public int maxSpeed = 40;          // temp value
     public double gravity = 1;          // please calculate this value
@@ -690,10 +704,8 @@ public class Player
     public double flightDistance;       // records variables
     public bool fly, grounded, picked;
 
-
     public bool gameStart = false;
     Bitmap image = Air.Properties.Resources.plane;
-
 
     public Point location = new Point();
 
@@ -743,7 +755,7 @@ public class Player
         velocity.X = endPositoin.X - startPosition.X;
         velocity.Y = endPositoin.Y - startPosition.Y;
 
-        return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / 10;
+        return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / (int)((endTime - startTime).TotalMilliseconds / 10);
     }
 }
 
