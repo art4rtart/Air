@@ -1,6 +1,6 @@
 ﻿namespace Air
 {
-    partial class settingForm
+    partial class SettingForm
     {
         /// <summary>
         /// Required designer variable.

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Air
 {
-    public partial class scoreForm : Form
+    public partial class ScoreForm : Form
     {
         Text flyText = new Text();
         Text scoreText = new Text();
@@ -18,7 +18,7 @@ namespace Air
         double scoreValue = 0;         // start score
         double playerScore;
 
-        public scoreForm()
+        public ScoreForm()
         {
             InitializeComponent();
         }

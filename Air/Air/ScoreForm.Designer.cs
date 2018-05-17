@@ -1,6 +1,6 @@
 ﻿namespace Air
 {
-    partial class scoreForm
+    partial class ScoreForm
     {
         /// <summary>
         /// Required designer variable.

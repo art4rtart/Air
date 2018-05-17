@@ -488,7 +488,7 @@ namespace Air
                     {
                         playing = false;
 
-                        scoreForm scoreForm = new scoreForm();
+                        ScoreForm scoreForm = new ScoreForm();
 
                         scoreForm.StartPosition = FormStartPosition.Manual;
                         scoreForm.Location = new Point(this.Width / 2 - (scoreForm.Size.Width / 10), ((this.Height / 2) - scoreForm.Size.Height / 3));
@@ -541,7 +541,7 @@ namespace Air
             {
                 {
                     developerMode = true;
-                    settingForm settingForm = new settingForm();
+                    SettingForm settingForm = new SettingForm();
 
                     settingForm.StartPosition = FormStartPosition.Manual;
                     settingForm.Location = new Point(this.Width / 2 - (settingForm.Size.Width / 10), ((this.Height / 2) - settingForm.Size.Height / 3));

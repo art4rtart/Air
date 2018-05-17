@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Air
 {
-    public partial class settingForm : Form
+    public partial class SettingForm : Form
     {
-        public settingForm()
+        public SettingForm()
         {
             InitializeComponent();
         }
