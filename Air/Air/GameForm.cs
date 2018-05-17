@@ -14,15 +14,16 @@ namespace Air
 {
     public partial class GameForm : Form
     {
-        Player player = new Player();
-
         // GameObject
-        Background title = new Background();
-        Background sky = new Background();
-        Background rock = new Background();
-        Background field = new Background();
+        Player player = new Player(Air.Properties.Resources.plane, playerLocation);
+
+        Background title = new Background(Air.Properties.Resources.title, titleLocation);
+        Background sky = new Background(Air.Properties.Resources.sky, skyLocation);
+        Background rock = new Background(Air.Properties.Resources.rock, rockLocation);
+        Background field = new Background(Air.Properties.Resources.field, fieldLocation);
+
         Airtank airtank = new Airtank();
-        Item star = new Item();
+        //Item star = new Item();
 
         // Text
         Text distanceText = new Text();
@@ -43,12 +44,11 @@ namespace Air
         float waitForSeconds = 1.5f;
 
         // framework variables
-        private string sceneName = "Title";
+        private string sceneName = "InGame";
         private string logoName = "daydream";
 
         // update variables
         bool gameUpdate = false;
-        bool canPickUp = false;
         bool playing = false;
 
         // opacity variables
@@ -74,7 +74,14 @@ namespace Air
         Bitmap gameName;
 
         Point gameNameOffset = new Point(3, 0);
-        Point playerLocation = new Point(150, 200);
+
+        static Point playerLocation = new Point(150, 200);
+        static Point titleLocation = new Point(0, 0);
+        static Point skyLocation = new Point(0, 0);
+        static Point rockLocation = new Point(150, 390);
+        static Point fieldLocation = new Point(150, 520);
+
+
         Point animationIndex = new Point();
 
         bool drawGameName = false;
@@ -122,7 +129,7 @@ namespace Air
         private void timerFunction_Tick(object sender, EventArgs e)
         {
             TimeSpan deltaTime = DateTime.Now - updateFlag;
-            int frames = (int)(deltaTime.Milliseconds / 10);
+            int msec = (int)(deltaTime.Milliseconds / 10);
 
             switch (sceneName)
             {
@@ -155,7 +162,7 @@ namespace Air
 
                         else
                         {
-                            opacity += (fadingSpeed * frames) * fadeDir;
+                            opacity += (fadingSpeed * msec) * fadeDir;
 
                             if (opacity > 1)
                             {
@@ -233,9 +240,6 @@ namespace Air
                             waitForSeconds = 2.3f;
                             checkTime = true;
 
-                            // background setting
-                            title.init(0, 720, 0, 0, 2, Air.Properties.Resources.title);           // set speed parameter
-
                             // UI location settings
                             clickToStart.Location = new Point((canvas.Width / 2 - clickToStart.Size.Width / 2), clickToStart.Location.Y);
                             play.Location = new Point((canvas.Width / 2 - play.Size.Width / 2), play.Location.Y);
@@ -258,7 +262,7 @@ namespace Air
 
                         if (opacity < 1)
                         {
-                            opacity += fadingSpeed * frames * fadeDir;
+                            opacity += fadingSpeed * msec * fadeDir;
                         }
 
                         else
@@ -321,7 +325,7 @@ namespace Air
                         shopButton.draw();
                         boardButton.draw();
 
-                        title.update(this);
+                        title.update(10, msec);
                     }
                     break;
                     #endregion
@@ -332,9 +336,7 @@ namespace Air
                         // initialization
                         if (initialization)
                         {
-                            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
-                            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
-                            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
+                            player.slidingVelocity = generateRandomNumber("double", 1.0, 2.0);
 
                             // unvisible
                             playgameButton.visible(false);
@@ -379,7 +381,9 @@ namespace Air
 
                         else
                         {
-                            player.update(frames, playerLocation, player.speed, player.fly, airtank.value, airtank.minimum, (int)player.gravity);
+                            player.update(playerLocation, msec);
+                            player.airtankValue = airtank.value;
+                            player.airtankMin = airtank.minimum;
 
                             if (playing)
                             {
@@ -387,14 +391,14 @@ namespace Air
                                 if (gameUpdate)
                                 {
                                     // draw
-                                    airtank.draw();
+                                    //airtank.draw();
                                     //star.draw();
 
-                                    sky.update(this);
-                                    rock.update(this);
-                                    field.update(this);
+                                    sky.update(player.speed / 10, msec);
+                                    rock.update(player.speed / 5, msec);
+                                    field.update(player.speed / 2, msec);
 
-                                    airtank.update(frames, player.fly);
+                                    //airtank.update(msec, player.fly);
                                     //star.update(frames, player.speed, plane, player);
 
                                     distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
@@ -405,28 +409,14 @@ namespace Air
                                     if (player.speed > player.maxSpeed)
                                         player.speed -= 1;
                                 }
-
-                                // gameover update
+                                
                                 gameOver();
                             }
 
                             else
                             {
                                 // "pick it up and throw" code
-                                if (!player.grounded)
-                                    playerLocation.Y += ((int)player.gravity + 10);        // set this value please :(
-
-                                if (playerLocation.Y > this.Height - 180)            // this is onGround value
-                                {
-                                    player.grounded = true;
-                                    canPickUp = player.grounded ? true : false;
-                                }
-
-                                if (canPickUp)
-                                {
-                                    if (player.picked)
-                                        playerLocation = new Point(PointToClient(MousePosition).X - (player.offset.X / 2), PointToClient(MousePosition).Y - (player.offset.Y / 2));
-                                }
+                                player.pickUp(PointToClient(MousePosition));
                             }
 
                             // setting update
@@ -459,19 +449,17 @@ namespace Air
         #region
         private void gameOver()
         {
-            player.grounded = player.location.Y > this.Height - 180 ? true : false;
+            player.isGrounded = player.location.Y > this.Height - 180 ? true : false;
 
-            if (player.grounded)
+            if (player.isGrounded)
             {
                 score = player.flightDistance;
-
-                playerLocation = player.location;
                 player.gameStart = false;
 
                 if (player.speed > 0)
                 {
                     player.speed -= (int)((player.airResistance) / player.slidingValue);
-                    playerLocation.X += player.speed;
+                    player.location.X += player.speed;
                 }
 
                 else
@@ -488,7 +476,7 @@ namespace Air
                     {
                         playing = false;
 
-                        ScoreForm scoreForm = new ScoreForm();
+                        scoreForm scoreForm = new scoreForm();
 
                         scoreForm.StartPosition = FormStartPosition.Manual;
                         scoreForm.Location = new Point(this.Width / 2 - (scoreForm.Size.Width / 10), ((this.Height / 2) - scoreForm.Size.Height / 3));
@@ -519,21 +507,21 @@ namespace Air
         {
             if (gameMode)
             {
-                if (!playing && canPickUp)
+                if (!playing && player.canPickUp)
                 {
-                    if (PointToClient(MousePosition).X > playerLocation.X && PointToClient(MousePosition).X < playerLocation.X + 100
-                        && PointToClient(MousePosition).Y > playerLocation.Y && PointToClient(MousePosition).Y < playerLocation.Y + 50)
-                        player.picked = true;
+                    if (PointToClient(MousePosition).X > player.location.X && PointToClient(MousePosition).X < player.location.X + 100
+                        && PointToClient(MousePosition).Y > player.location.Y && PointToClient(MousePosition).Y < player.location.Y + 50)
+                        player.isPicked = true;
                     else
-                        player.picked = false;
+                        player.isPicked = false;
 
-                    player.startPosition = new Point(playerLocation.X, playerLocation.Y);
+                    player.startPosition = new Point(player.location.X, player.location.Y);
                     player.startTime = DateTime.Now;
                 }
 
                 else
                 {
-                    player.fly = true;
+                    player.isFlying = true;
                 }
             }
 
@@ -552,20 +540,20 @@ namespace Air
 
         private void canvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!playing && canPickUp && player.picked)
+            if (!playing && player.canPickUp && player.isPicked)
             {
-                player.endPositoin = new Point(playerLocation.X, playerLocation.Y);
+                player.endPosition = new Point(player.location.X, player.location.Y);
                 player.endTime = DateTime.Now;
-                player.picked = false;
-                player.grounded = false;
-                player.speed = player.startVelocity();
+                player.isPicked = false;
+                player.isGrounded = false;
+                player.speed = player.velocity();
                 player.gameStart = true;
                 gameUpdate = playing = true;
             }
 
             else
             {
-                player.fly = false;
+                player.isFlying = false;
             }
         }
         #endregion
@@ -583,10 +571,6 @@ namespace Air
         private void playButton_Click(object sender, EventArgs e)
         {
             sceneName = "InGame";
-            player.init(playerLocation, generateRandomNumber("double", 1.0, 2.0));
-            sky.init(0, 720, 0, 0, player.speed / 4, Air.Properties.Resources.sky);
-            rock.init(0, 200, 0, 390, player.speed / 2, Air.Properties.Resources.rock);
-            field.init(0, 200, 0, 520, player.speed, Air.Properties.Resources.field);
             initialization = true;
             opacity = 0;
         }
@@ -645,7 +629,7 @@ namespace Air
         {
             if (sceneName == "Title")
             {
-                title.draw(sender, e);
+                title.draw(e.Graphics);
 
                 if (drawGameName)
                 {
@@ -658,13 +642,12 @@ namespace Air
 
             else if (sceneName == "InGame")
             {
-                sky.draw(sender, e);
-                rock.draw(sender, e);
-                field.draw(sender, e);
-                player.draw(sender, e);
+                sky.draw(e.Graphics);
+                rock.draw(e.Graphics);
+                field.draw(e.Graphics);
+                player.draw(e.Graphics);
 
                 e.Graphics.DrawImage(bar, artk.Location.X - 2, artk.Location.Y - 2, 705, 25);
-
                 Rectangle dest = new Rectangle(1200, 20, 54, 54);
                 e.Graphics.DrawImage(Air.Properties.Resources.setting, dest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
             }
@@ -683,118 +666,6 @@ namespace Air
             return bmp;
         }
         #endregion
-    }
-}
-
-public class Player
-{
-    // member variables
-    public Point offset = new Point(100, 50);
-    public Point startPosition = new Point();
-    public Point endPositoin = new Point();
-
-    public DateTime startTime;
-    public DateTime endTime;
-
-    public int speed = 40;              // max speed is 30
-    public int maxSpeed = 40;          // temp value
-    public double gravity = 1;          // please calculate this value
-    public double airResistance = 2;    // bigger is slower
-    public double slidingValue = 0;
-    public double flightDistance;       // records variables
-    public bool fly, grounded, picked;
-
-    public bool gameStart = false;
-    Bitmap image = Air.Properties.Resources.plane;
-
-    public Point location = new Point();
-
-
-    // methods
-    public void init(Point location, double slidingValue)
-    {
-        this.location.X = location.X;
-        this.location.Y = location.Y;
-        this.slidingValue = slidingValue;
-    }
-
-    public void draw(object sender, PaintEventArgs e)
-    {
-        e.Graphics.DrawImage(image, location.X, location.Y, image.Size.Width, image.Size.Height);
-    }
-
-    public void update(int frames, Point location, int speed, bool fly, double airValue, double airMin, int gravity)
-    {
-        // update player location
-        if (gameStart)
-        {
-            if (this.location.X > 150)            // dont use magic number
-                this.location = new Point(this.location.X - (speed / 2), location.Y);
-
-            else if (this.location.X < 150)       // dont use magic number
-                this.location = new Point(150, this.location.Y);
-
-
-            if (fly && airValue > airMin)
-                this.location.Y -= (gravity + 2) * frames;
-
-            else
-                this.location.Y += (gravity) * frames;
-
-            flightDistance += 0.01;     // calculate this value please
-        }
-
-        else
-            this.location = location;
-    }
-
-    public int startVelocity()
-    {
-        // need to add time duration
-        Point velocity = new Point();
-        velocity.X = endPositoin.X - startPosition.X;
-        velocity.Y = endPositoin.Y - startPosition.Y;
-
-        return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / (int)((endTime - startTime).TotalMilliseconds / 10);
-    }
-}
-
-public class Background
-{
-    // member variables
-    Point bgOffset = new Point();
-    Point Location = new Point();
-    Bitmap image;
-    private int speed = 0;
-    
-    // methods
-    public void init(int bgoffsetX, int bgoffsetY, int locationX, int locationY, int speed, Bitmap image)
-    {
-        this.image = image;
-
-        this.bgOffset.X = bgoffsetX;
-        this.bgOffset.Y = bgoffsetY;
-
-        this.Location.X = bgoffsetX;
-        this.Location.Y = locationY;
-
-        this.speed = speed;
-    }
-
-    public void draw(object sender, PaintEventArgs e)
-    {
-        for (int x = bgOffset.X; x < image.Size.Width; x += image.Size.Width)
-        {
-            e.Graphics.DrawImage(image, x, Location.Y, image.Size.Width, bgOffset.Y);
-        }
-    }
-
-    public void update(Form form)
-    {
-        bgOffset.X -= speed;       // dont use magic number
-
-        if (bgOffset.X < -image.Size.Width)
-            bgOffset.X += image.Size.Width;
     }
 }
 
@@ -850,105 +721,6 @@ public class Airtank
 
         else
             airtank.Visible = false;
-    }
-}
-
-public class Item
-{
-    // member variables
-    private PictureBox item;
-    private PictureBox canvas;
-    private Random random = new Random();
-    private int generatePeriod = 3;
-    private int itemCount = 0;
-    private bool generate = false;
-    private string collideTagName;
-    private string itemName;
-
-    // methods
-    public void init(string itemName, PictureBox canvas)
-    {
-        this.itemName = itemName;
-        this.canvas = canvas;
-    }
-
-    public void draw()
-    {
-        if (item != null)
-            item.Location = new Point(item.Location.X, item.Location.Y);
-    }
-
-    public void update(int frames, int speed, Panel plane, Player player)
-    {
-        generate = (DateTime.Now.Second % generatePeriod == 0 && item == null) ? true : false;
-
-        if (generate && item == null)
-        {
-            generateItem(1120, random.Next(100, 500));          // item generate position
-            generate = false;
-        }
-
-        else if (item != null)
-        {
-            item.Left -= speed * frames;
-
-            if (item.Location.X < -50)
-            {
-                item.Dispose();
-                item = null;
-                collideTagName = null;
-            }
-
-            // star : collision with player
-            else if (item.Location.X > plane.Location.X - player.offset.X&& item.Location.X < plane.Location.X + player.offset.X &&
-                item.Location.Y > plane.Location.Y - player.offset.Y && item.Location.Y < plane.Location.Y + player.offset.Y)
-                collideTagName = itemName;
-        }
-
-        collisionUpdate();
-    }
-
-    public void generateItem(int x, int y)
-    {
-        item = new PictureBox();
-        item.Image = Air.Properties.Resources.star;
-        item.SizeMode = PictureBoxSizeMode.StretchImage;
-        item.BackColor = Color.Transparent;
-        item.Parent = canvas;
-        item.Size = new Size(50, 50);
-        item.Location = new Point(x, y);
-    }
-
-    private void collisionUpdate()
-    {
-        if (collideTagName == "Star")
-        {
-            itemCount++;
-
-            item.Dispose();
-            item = null;
-            collideTagName = null;
-        }
-
-        else if (collideTagName == "Air")
-        {
-            // Airtank Gage ++
-        }
-
-        else if (collideTagName == "AirResistanceUP")
-        {
-            // Air Resistance ++
-        }
-
-        else if (collideTagName == "AirResistanceDown")
-        {
-            // Air Resistance --
-        }
-
-        else if (collideTagName == "Wall")
-        {
-            // destroy player
-        }
     }
 }
 
