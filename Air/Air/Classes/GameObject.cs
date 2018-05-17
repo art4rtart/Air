@@ -19,15 +19,21 @@ namespace Air
             rect = new RectangleF(0, 0, size.Width, size.Height);
         }
 
+        public void draw(Graphics g)
+        {
+            g.DrawImage(image, rect);
+        }
+
         public virtual void update(Point location, int msec)
         {
             rect.X = location.X;
             rect.Y = location.Y;
         }
 
-        public void draw(Graphics g)
+        public void setPosition(float x, float y)
         {
-            g.DrawImage(image, rect);
+            rect.X = x;
+            rect.Y = y;
         }
     }
 }

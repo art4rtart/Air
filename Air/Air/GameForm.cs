@@ -16,13 +16,14 @@ namespace Air
     {
         // GameObject
         Player player = new Player(Air.Properties.Resources.plane, playerLocation);
-
+        
         Background title = new Background(Air.Properties.Resources.title, titleLocation);
         Background sky = new Background(Air.Properties.Resources.sky, skyLocation);
         Background rock = new Background(Air.Properties.Resources.rock, rockLocation);
         Background field = new Background(Air.Properties.Resources.field, fieldLocation);
 
-        Airtank airtank = new Airtank();
+        Airtank airtank = new Airtank(Air.Properties.Resources.airgage, airtankLocation);
+
         //Item star = new Item();
 
         // Text
@@ -80,7 +81,7 @@ namespace Air
         static Point skyLocation = new Point(0, 0);
         static Point rockLocation = new Point(150, 390);
         static Point fieldLocation = new Point(150, 520);
-
+        static Point airtankLocation = new Point(270, 675);
 
         Point animationIndex = new Point();
 
@@ -337,6 +338,7 @@ namespace Air
                         if (initialization)
                         {
                             player.slidingVelocity = generateRandomNumber("double", 1.0, 2.0);
+                            
 
                             // unvisible
                             playgameButton.visible(false);
@@ -348,24 +350,23 @@ namespace Air
                             waitForSeconds = 0;
 
                             // object settings
-                            airtank.init(290, 640, artk, canvas);
+                            //airtank.init((this.Width / 2) - (artk.Width / 2) + 50, 670, artk, canvas);
                             //star.init("Star", canvas);
 
-                            airtank.draw();
-
+                            
                             // text init
-                            distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2), 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style), canvas);                // set this value
-                            velocityText.init(610, 593, velocity, new Font("Agency FB", 18, velocity.Font.Style), canvas);                   // set this value
-                            airPercentageText.init(935, 590, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style), canvas);       // set this value
+                            distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style), canvas);                // set this value
+                            velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style), canvas);                   // set this value
+                            airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style), canvas);       // set this value
 
                             // visible game objects
                             distanceText.visible(true);
                             velocityText.visible(true);
                             airPercentageText.visible(true);
-                            airtank.visible(true);
+                            //airtank.visible(true);
 
                             // visible static text UI
-                            distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2), distance.Location.Y);
+                            distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2) + 10, distance.Location.Y);
                             distance.Font = new Font("Agency FB", 17, distance.Font.Style);
                             distance.Parent = canvas;
                             distance.Visible = true;
@@ -382,23 +383,23 @@ namespace Air
                         else
                         {
                             player.update(playerLocation, msec);
+
                             player.airtankValue = airtank.value;
                             player.airtankMin = airtank.minimum;
+                            airtank.isFlying = player.isFlying;
 
                             if (playing)
                             {
                                 // "after throwing" code
                                 if (gameUpdate)
                                 {
-                                    // draw
-                                    //airtank.draw();
-                                    //star.draw();
-
                                     sky.update(player.speed / 10, msec);
                                     rock.update(player.speed / 5, msec);
                                     field.update(player.speed / 2, msec);
+                                    airtank.update(msec);
 
-                                    //airtank.update(msec, player.fly);
+                                    // draw
+                                    //star.draw();
                                     //star.update(frames, player.speed, plane, player);
 
                                     distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
@@ -409,7 +410,6 @@ namespace Air
                                     if (player.speed > player.maxSpeed)
                                         player.speed -= 1;
                                 }
-                                
                                 gameOver();
                             }
 
@@ -598,7 +598,7 @@ namespace Air
                 player.speed += 5;
 
             if (e.KeyCode == Keys.D && sceneName == "InGame")
-                //gameOver();
+                gameOver();
 
             if (e.KeyCode == Keys.P && sceneName == "InGame")
                 timerFunction.Start();
@@ -617,7 +617,6 @@ namespace Air
                 distanceText.visible(false);
                 velocityText.visible(false);
                 airPercentageText.visible(false);
-                airtank.visible(false);
                 initialization = true;
             }
         }
@@ -646,8 +645,10 @@ namespace Air
                 rock.draw(e.Graphics);
                 field.draw(e.Graphics);
                 player.draw(e.Graphics);
+                airtank.draw(e.Graphics);
 
-                e.Graphics.DrawImage(bar, artk.Location.X - 2, artk.Location.Y - 2, 705, 25);
+                e.Graphics.DrawImage(bar, 270, 675, 750, 20);
+
                 Rectangle dest = new Rectangle(1200, 20, 54, 54);
                 e.Graphics.DrawImage(Air.Properties.Resources.setting, dest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
             }
@@ -666,61 +667,6 @@ namespace Air
             return bmp;
         }
         #endregion
-    }
-}
-
-public class Airtank
-{
-    // member variables
-    private PictureBox airtank = new PictureBox();
-    private int x, y;
-
-    public double maximum = 700;
-    public double minimum = 0;
-    public double value = 700;
-
-    // methods
-    public void init(int x, int y, PictureBox picturebox, PictureBox canvas)
-    {
-        this.x = x; this.y = y;
-        this.airtank = picturebox;
-        this.airtank.Parent = canvas;
-    }
-
-    public void draw()
-    {
-        airtank.Location = new Point(x, y);
-        airtank.Size = new Size((int)value, airtank.Height);
-    }
-
-    public void update(int frames, bool fly)
-    {
-        if (fly)
-        {
-            if (value > minimum)
-                value -= 2 * frames;
-
-            else if (value < minimum)
-                value = minimum;
-        }
-
-        else
-        {
-            if (value < maximum)
-                value += 1 * frames;
-
-            else if (value > maximum)
-                value = maximum;
-        }
-    }
-
-    public void visible(bool isVisible)
-    {
-        if (isVisible)
-            airtank.Visible = true;
-
-        else
-            airtank.Visible = false;
     }
 }
 

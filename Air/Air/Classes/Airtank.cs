@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Air
+{
+    class Airtank
+    {
+        Bitmap image;
+        RectangleF rect;
+        Size size;
+
+        public double maximum;
+        public double minimum;
+        public double value;
+
+        bool fly;
+
+        public bool isFlying { set { fly = value; } }
+
+        public Airtank(Bitmap bitmap, Point location)
+        {
+            this.image = bitmap;
+            size = bitmap.Size;
+            maximum = size.Width;
+            value = maximum;
+            minimum = 0;
+            rect = new RectangleF(location.X, location.Y, size.Width, size.Height);
+        }
+
+        public void draw(Graphics g)
+        {
+            g.DrawImage(image, rect);
+        }
+
+        public void update(int msec)
+        {
+            rect.Size = new Size((int)value, size.Height);
+
+            if (fly)
+            {
+                if (value > minimum)
+                {
+                    value -= 2 * msec;
+                }
+
+                else if (value < minimum)
+                {
+                    value = (int)minimum;
+                }
+            }
+
+            else
+            {
+                if (value < maximum)
+                {
+                    value += 1 * msec;
+                }
+
+                else if (value > maximum)
+                {
+                    value = (int)maximum;
+                }
+            }
+        }
+    }
+}

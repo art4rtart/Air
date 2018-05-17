@@ -43,11 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Airtank.cs" />
     <Compile Include="Classes\Background.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="scoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,14 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="scoreForm.resx">
       <DependentUpon>scoreForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -165,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\airgage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

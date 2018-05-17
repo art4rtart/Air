@@ -39,11 +39,9 @@
             this.play = new System.Windows.Forms.Label();
             this.shop = new System.Windows.Forms.Label();
             this.board = new System.Windows.Forms.Label();
-            this.artk = new System.Windows.Forms.PictureBox();
             this.canvas = new System.Windows.Forms.PictureBox();
             this.settingImageList = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.artk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -146,17 +144,6 @@
             this.board.Visible = false;
             this.board.Click += new System.EventHandler(this.boardButton_Click);
             // 
-            // artk
-            // 
-            this.artk.BackColor = System.Drawing.Color.SkyBlue;
-            this.artk.Location = new System.Drawing.Point(267, 613);
-            this.artk.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.artk.Name = "artk";
-            this.artk.Size = new System.Drawing.Size(813, 21);
-            this.artk.TabIndex = 23;
-            this.artk.TabStop = false;
-            this.artk.Visible = false;
-            // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.Transparent;
@@ -191,6 +178,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.label1.ForeColor = System.Drawing.Color.LightSkyBlue;
             this.label1.Location = new System.Drawing.Point(345, 375);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 12);
@@ -205,7 +194,6 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.artk);
             this.Controls.Add(this.velocity);
             this.Controls.Add(this.airTankPercent);
             this.Controls.Add(this.distanceValue);
@@ -222,7 +210,6 @@
             this.TransparencyKey = System.Drawing.Color.Sienna;
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.artk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -239,7 +226,6 @@
         private System.Windows.Forms.Label play;
         private System.Windows.Forms.Label shop;
         private System.Windows.Forms.Label board;
-        private System.Windows.Forms.PictureBox artk;
         private System.Windows.Forms.PictureBox canvas;
         private System.Windows.Forms.ImageList settingImageList;
         private System.Windows.Forms.Label label1;
