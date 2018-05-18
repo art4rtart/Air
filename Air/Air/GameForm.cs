@@ -24,7 +24,8 @@ namespace Air
 
         Airtank airtank = new Airtank(Air.Properties.Resources.airgage, airtankLocation);
 
-        //Item star = new Item();
+        Item star = new Item(Air.Properties.Resources.star);
+        List<Item> stars = new List<Item>();
 
         // Text
         Text distanceText = new Text();
@@ -70,25 +71,20 @@ namespace Air
         #endregion
 
         // recent added variables
-        Bitmap bar;
         Bitmap titleImage;
         Bitmap gameName;
-
         Point gameNameOffset = new Point(3, 0);
-
         static Point playerLocation = new Point(150, 200);
         static Point titleLocation = new Point(0, 0);
         static Point skyLocation = new Point(0, 0);
         static Point rockLocation = new Point(150, 390);
         static Point fieldLocation = new Point(150, 520);
         static Point airtankLocation = new Point(270, 675);
-
         Point animationIndex = new Point();
-
         bool drawGameName = false;
         bool gameMode = true;
         bool settingMode = false;
-
+        float generateTime;
         SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
 
         public GameForm()
@@ -118,7 +114,6 @@ namespace Air
             this.SetStyle(ControlStyles.UserPaint, true);
 
             // resource load
-            bar = Air.Properties.Resources.bar;
             titleImage = Air.Properties.Resources.title;
             gameName = Air.Properties.Resources.gameName;
 
@@ -338,7 +333,6 @@ namespace Air
                         if (initialization)
                         {
                             player.slidingVelocity = generateRandomNumber("double", 1.0, 2.0);
-                            
 
                             // unvisible
                             playgameButton.visible(false);
@@ -348,12 +342,8 @@ namespace Air
                             // time settings
                             checkTime = true;
                             waitForSeconds = 0;
+                            generateTime = 1f;
 
-                            // object settings
-                            //airtank.init((this.Width / 2) - (artk.Width / 2) + 50, 670, artk, canvas);
-                            //star.init("Star", canvas);
-
-                            
                             // text init
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style), canvas);                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style), canvas);                   // set this value
@@ -363,7 +353,6 @@ namespace Air
                             distanceText.visible(true);
                             velocityText.visible(true);
                             airPercentageText.visible(true);
-                            //airtank.visible(true);
 
                             // visible static text UI
                             distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2) + 10, distance.Location.Y);
@@ -398,9 +387,27 @@ namespace Air
                                     field.update(player.speed / 2, msec);
                                     airtank.update(msec);
 
-                                    // draw
-                                    //star.draw();
-                                    //star.update(frames, player.speed, plane, player);
+
+                                    //generate items
+                                    if (checkTime)
+                                    {
+                                        timeFlag = DateTime.Now;
+                                        checkTime = false;
+                                    }
+
+                                    TimeSpan currentTime = DateTime.Now - timeFlag;
+
+                                    if (currentTime.TotalSeconds > generateTime)
+                                    {
+                                        generateItem(star);
+                                        timeFlag = DateTime.Now;
+                                    }
+
+                                    // update items
+                                    foreach (Item star in stars)
+                                    {
+                                        star.update(player.speed, msec);
+                                    }
 
                                     distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
                                     velocityText.update(player.speed.ToString() + " M/S");
@@ -499,6 +506,14 @@ namespace Air
             else
                 return random.Next((int)minimum, (int)maximum);
         }
+
+        void generateItem(Item item)
+        {
+            item = new Item(Air.Properties.Resources.star);
+            item.position(1120, (int)generateRandomNumber("int", 100, 500));
+            stars.Add(item);
+        }
+
         #endregion
 
         // control methods
@@ -644,11 +659,14 @@ namespace Air
                 sky.draw(e.Graphics);
                 rock.draw(e.Graphics);
                 field.draw(e.Graphics);
-                player.draw(e.Graphics);
                 airtank.draw(e.Graphics);
 
-                e.Graphics.DrawImage(bar, 270, 675, 750, 20);
+                foreach (Item star in stars)
+                    star.draw(e.Graphics);
 
+                player.draw(e.Graphics);
+
+                // setting
                 Rectangle dest = new Rectangle(1200, 20, 54, 54);
                 e.Graphics.DrawImage(Air.Properties.Resources.setting, dest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
             }

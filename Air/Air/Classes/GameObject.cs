@@ -30,10 +30,16 @@ namespace Air
             rect.Y = location.Y;
         }
 
-        public void setPosition(float x, float y)
+        public void position(float x, float y)
         {
             rect.X = x;
             rect.Y = y;
+        }
+
+        public void move(int dx, int dy)
+        {
+            rect.X += dx;
+            rect.Y += dy;
         }
     }
 }

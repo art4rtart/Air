@@ -10,6 +10,7 @@ namespace Air
     class Airtank
     {
         Bitmap image;
+        Bitmap bar = Air.Properties.Resources.bar;
         RectangleF rect;
         Size size;
 
@@ -18,7 +19,7 @@ namespace Air
         public double value;
 
         bool fly;
-
+        
         public bool isFlying { set { fly = value; } }
 
         public Airtank(Bitmap bitmap, Point location)
@@ -34,6 +35,7 @@ namespace Air
         public void draw(Graphics g)
         {
             g.DrawImage(image, rect);
+            g.DrawImage(bar, 270, 675, 750, 20);
         }
 
         public void update(int msec)
