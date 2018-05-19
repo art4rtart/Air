@@ -667,8 +667,12 @@ namespace Air
                 player.draw(e.Graphics);
 
                 // setting
-                Rectangle dest = new Rectangle(1200, 20, 54, 54);
-                e.Graphics.DrawImage(Air.Properties.Resources.setting, dest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
+                Rectangle SettingDest = new Rectangle(1200, 20, 54, 54);
+                e.Graphics.DrawImage(Air.Properties.Resources.setting, SettingDest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
+
+                // pinewheel
+                Rectangle pineWheelDest = new Rectangle(1100, 500, 70, 100);
+                e.Graphics.DrawImage(Air.Properties.Resources.pinewheel, pineWheelDest, ((animationIndex.X) * 350), animationIndex.Y * 500, 350, 500, GraphicsUnit.Pixel);
             }
         }
 
