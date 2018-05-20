@@ -10,15 +10,18 @@ namespace Air
     class Item : GameObject
     {
         public bool col;
+        public float generateTime;
+        public float timer;
 
-        public Item(Bitmap bitmap) : base(bitmap)
+        public Item(Bitmap bitmap, float generateTime) : base(bitmap)
         {
             generateItem();
+            this.generateTime = generateTime;
         }
 
         public void update(int speed, int msec)
         {
-            rect.X -= (speed / 3) * msec;
+            rect.X -= speed * msec;
         }
 
         public void generateItem()

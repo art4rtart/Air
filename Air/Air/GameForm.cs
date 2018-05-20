@@ -24,8 +24,17 @@ namespace Air
 
         Airtank airtank = new Airtank(Air.Properties.Resources.airgage, airtankLocation);
 
-        Item star = new Item(Air.Properties.Resources.star);
+        Item star = new Item(Air.Properties.Resources.star, 1.0f);
         List<Item> stars = new List<Item>();
+
+        static Rectangle pineWheelDest = new Rectangle(1280, 500, 70, 100);
+        static RectangleF pineWheelSrcRect = new RectangleF(0, 0, 350, 505);
+        AnimItem pineWheel = new AnimItem(Air.Properties.Resources.pinewheel, 3.0f, 3, 1.0f, pineWheelDest, pineWheelSrcRect);
+        List<AnimItem> pineWheels = new List<AnimItem>();
+
+        static Rectangle settingDest = new Rectangle(1200, 20, 54, 54);
+        static RectangleF settingSrcDest = new RectangleF(0, 0, 132, 132);
+        AnimUI setting = new AnimUI(Air.Properties.Resources.setting, 4, 1.0f, settingDest, settingSrcDest);
 
         // Text
         Text distanceText = new Text();
@@ -46,7 +55,7 @@ namespace Air
         float waitForSeconds = 1.5f;
 
         // framework variables
-        private string sceneName = "InGame";
+        private string sceneName = "Title";
         private string logoName = "daydream";
 
         // update variables
@@ -80,11 +89,9 @@ namespace Air
         static Point rockLocation = new Point(150, 390);
         static Point fieldLocation = new Point(150, 520);
         static Point airtankLocation = new Point(270, 675);
-        Point animationIndex = new Point();
         bool drawGameName = false;
         bool gameMode = true;
         bool settingMode = false;
-        float generateTime;
         SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
 
         public GameForm()
@@ -119,7 +126,7 @@ namespace Air
 
             // bgm play
             //if (firstTime)
-             //   bgm.Play();
+            //    bgm.Play();
         }
 
         private void timerFunction_Tick(object sender, EventArgs e)
@@ -342,7 +349,6 @@ namespace Air
                             // time settings
                             checkTime = true;
                             waitForSeconds = 0;
-                            generateTime = 1f;
 
                             // text init
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style), canvas);                // set this value
@@ -373,45 +379,45 @@ namespace Air
                         {
                             player.update(playerLocation, msec);
 
-                            player.airtankValue = airtank.value;
-                            player.airtankMin = airtank.minimum;
-                            airtank.isFlying = player.isFlying;
-
-                            if (playing)
+                            if (playing)                                    // "after throwing" code
                             {
-                                // "after throwing" code
-                                if (gameUpdate)
+                                if (gameUpdate)                             
                                 {
-                                    sky.update(player.speed / 10, msec);
-                                    rock.update(player.speed / 5, msec);
-                                    field.update(player.speed / 2, msec);
+                                    // gameobject
+                                    sky.update(player.speed / 16, msec);
+                                    rock.update(player.speed / 8, msec);
+                                    field.update(player.speed / 4, msec);
+                                    pineWheel.update(player.speed / 4, msec);
                                     airtank.update(msec);
 
+                                    // animation
+                                    pineWheel.updateFrame(msec);
 
-                                    //generate items
-                                    if (checkTime)
+                                    // properties
+                                    player.airtankValue = airtank.value;
+                                    player.airtankMin = airtank.minimum;
+                                    airtank.isFlying = player.isFlying;
+
+                                    //generate star
+                                    if(generateTimer(star.generateTime))
+                                        generateItem(star, new Point(1280, (int)generateRandomNumber("int", 100, 500)));
+
+                                    // gnerate pinewheel
+                                    if (pineWheel.rect.X < 0)
                                     {
-                                        timeFlag = DateTime.Now;
-                                        checkTime = false;
-                                    }
-
-                                    TimeSpan currentTime = DateTime.Now - timeFlag;
-
-                                    if (currentTime.TotalSeconds > generateTime)
-                                    {
-                                        generateItem(star);
-                                        timeFlag = DateTime.Now;
+                                        pineWheel.timer += msec;
+                                        if (pineWheel.timer > (pineWheel.generateTime * 100))
+                                        {
+                                            pineWheel.position(pineWheelDest.X, pineWheelDest.Y);
+                                            pineWheel.timer = 0;
+                                        }
                                     }
 
                                     // update items
                                     foreach (Item star in stars)
                                     {
-                                        star.update(player.speed, msec);
+                                        star.update(player.speed / 4, msec);
                                     }
-
-                                    distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
-                                    velocityText.update(player.speed.ToString() + " M/S");
-                                    airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
 
                                     // speed update : UI
                                     if (player.speed > player.maxSpeed)
@@ -422,24 +428,25 @@ namespace Air
 
                             else
                             {
-                                // "pick it up and throw" code
-                                player.pickUp(PointToClient(MousePosition));
+                                player.pickUp(PointToClient(MousePosition));                                // "pick it up and throw"
                             }
 
-                            // setting update
+                            // UI update
+                            distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
+                            velocityText.update(player.speed.ToString() + " M/S");
+                            airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
+
                             if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
                             {
+                                setting.updateFrame(msec);
                                 gameMode = false;
                                 settingMode = true;
-                                animationIndex.X = (animationIndex.X + 1) % 4;
-                                if (animationIndex.X % 4 == 0)
-                                    animationIndex.Y = (animationIndex.Y + 1) % 3;
                             }
 
                             else
                             {
-                                settingMode = false;
                                 gameMode = true;
+                                settingMode = false;
                             }
                         }
                     }
@@ -507,11 +514,32 @@ namespace Air
                 return random.Next((int)minimum, (int)maximum);
         }
 
-        void generateItem(Item item)
+        void generateItem(Item item, Point location)
         {
-            item = new Item(Air.Properties.Resources.star);
-            item.position(1120, (int)generateRandomNumber("int", 100, 500));
+            item = new Item(Air.Properties.Resources.star, 1.0f);           // fix this
+            item.position(location.X, location.Y);
             stars.Add(item);
+        }
+
+        bool generateTimer(float generateTime)
+        {
+            bool generate = false;
+
+            if (checkTime)
+            {
+                timeFlag = DateTime.Now;
+                checkTime = false;
+            }
+
+            TimeSpan currentTime = DateTime.Now - timeFlag;
+
+            if (currentTime.TotalSeconds > generateTime)
+            {
+                generate = true;
+                timeFlag = DateTime.Now;
+            }
+
+            return generate;
         }
 
         #endregion
@@ -660,19 +688,14 @@ namespace Air
                 rock.draw(e.Graphics);
                 field.draw(e.Graphics);
                 airtank.draw(e.Graphics);
+                pineWheel.draw(e.Graphics);
 
                 foreach (Item star in stars)
                     star.draw(e.Graphics);
 
                 player.draw(e.Graphics);
 
-                // setting
-                Rectangle SettingDest = new Rectangle(1200, 20, 54, 54);
-                e.Graphics.DrawImage(Air.Properties.Resources.setting, SettingDest, ((animationIndex.X / 4) * 132), animationIndex.Y * 132, 132, 132, GraphicsUnit.Pixel);
-
-                // pinewheel
-                Rectangle pineWheelDest = new Rectangle(1100, 500, 70, 100);
-                e.Graphics.DrawImage(Air.Properties.Resources.pinewheel, pineWheelDest, ((animationIndex.X) * 350), animationIndex.Y * 500, 350, 500, GraphicsUnit.Pixel);
+                setting.draw(e.Graphics);
             }
         }
 

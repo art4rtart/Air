@@ -10,7 +10,7 @@ namespace Air
     class GameObject
     {
         protected Bitmap image;
-        protected RectangleF rect;
+        public RectangleF rect;
 
         public GameObject(Bitmap bitmap)
         {
@@ -19,7 +19,7 @@ namespace Air
             rect = new RectangleF(0, 0, size.Width, size.Height);
         }
 
-        public void draw(Graphics g)
+        public virtual void draw(Graphics g)
         {
             g.DrawImage(image, rect);
         }
