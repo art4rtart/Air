@@ -33,14 +33,26 @@ namespace Air
 
         public double airtankMin { set { min = value; } }
 
+        public override RectangleF collisionBounds
+        {
+            get
+            {
+                RectangleF rect = this.rect;
+                rect.Inflate(0, 0);
+                return rect;
+            }
+        }
+
         public Player(Bitmap bitmap, Point location) : base(bitmap)
         {
             this.image = bitmap;
             this.location = location;
         }
 
-        public override void update(Point location, int msec)
+        public void update(Point location, int msec)
         {
+            rect.X = this.location.X;
+            rect.Y = this.location.Y;
             this.msec = msec;
 
             if (gameStart)
@@ -60,8 +72,6 @@ namespace Air
 
                 flightDistance += 0.01;     // calculate this value please
             }
-
-            base.update(this.location, this.msec);
         }
 
         public void pickUp(Point mouseLocation)

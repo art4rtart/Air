@@ -7,36 +7,15 @@ using System.Threading.Tasks;
 
 namespace Air
 {
-    class Item : GameObject
+    class Item : AnimObject
     {
-        public bool col;
-        public float generateTime;
-        public float timer;
+        public string tagName;
 
-        public Item(Bitmap bitmap, float generateTime) : base(bitmap)
+        public Item(Bitmap bitmap, int frameCount, float framesPerSecond, RectangleF rect, RectangleF srcDest) 
+            : base(bitmap, frameCount, framesPerSecond)
         {
-            generateItem();
-            this.generateTime = generateTime;
-        }
-
-        public void update(int speed, int msec)
-        {
-            rect.X -= speed * msec;
-        }
-
-        public void generateItem()
-        {
-            Random random = new Random();
-
-            rect = new RectangleF(rect.X, rect.Y, image.Width, image.Height);
-        }
-
-        public void collide(int x, int y)
-        {
-            if (rect.X > x && rect.X < x + 50 && rect.Y < y && rect.Y > y - 25)
-            {
-                col = true;
-            }
+            this.rect = rect;
+            this.srcRect = srcDest;
         }
     }
 }

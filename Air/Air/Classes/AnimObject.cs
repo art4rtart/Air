@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace Air
 {
-    class AnimUI : UI
+    class AnimObject : GameObject
     {
         private int frameCount;
         private int frameIndex;
         private float framesPerSecond;
         private int millisecondsElapsed;
-        private RectangleF srcRect;
 
         public int index
         {
@@ -21,19 +20,14 @@ namespace Air
             set
             {
                 frameIndex = value % frameCount;
-
                 srcRect.X = frameIndex * srcRect.Width;
             }
         }
 
-        public AnimUI(Bitmap bitmap, int frameCount, float framesPerSecond, Rectangle rect, RectangleF srcRect) : base(bitmap)
+        public AnimObject(Bitmap bitmap, int frameCount, float framesPerSecond) : base(bitmap)
         {
             this.frameCount = frameCount;
             this.rect.Width = this.rect.Width / frameCount;
-
-            this.rect = rect;
-            this.srcRect = srcRect;
-
             this.frameIndex = 0;
             this.framesPerSecond = framesPerSecond;
             this.millisecondsElapsed = 0;
