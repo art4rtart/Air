@@ -38,7 +38,7 @@ namespace Air
             get
             {
                 RectangleF rect = this.rect;
-                rect.Inflate(0, 0);
+                rect.Inflate(0, 10);
                 return rect;
             }
         }
@@ -49,7 +49,7 @@ namespace Air
             this.location = location;
         }
 
-        public void update(Point location, int msec)
+        public void update(int msec)
         {
             rect.X = this.location.X;
             rect.Y = this.location.Y;
@@ -78,7 +78,7 @@ namespace Air
         {
             if (!isGrounded)
             {
-                this.location.Y += (int)((gravity) * msec);        // set this value please :(
+                this.location.Y += (int)((gravity + 5) * msec);        // set this value please :(
             }
 
             if (this.location.Y > 720 - 150)            // this is onGround value
@@ -100,6 +100,33 @@ namespace Air
         {
             Point velocity = new Point(endPosition.X - startPosition.X, endPosition.Y - startPosition.Y);
             return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / (int)((endTime - startTime).TotalMilliseconds / 10);
+        }
+
+        public void checkCollision(List<AnimObject> objects, Item item)
+        {
+            foreach (AnimObject obj in objects)
+            {
+                if (obj.tagName == "PineWheel")
+                {
+                    if (obj.collides(this))
+                    {
+                        item.effect = true;
+                    }
+                }
+
+                else if (obj.tagName == "Star")
+                {
+                    if (obj.collides(this))
+                    {
+                        item.count++;
+                        item.playSound();
+                        item.startTimer = true;
+                        
+                        objects.Remove(obj);
+                        return;
+                    }
+                }
+            }
         }
     }
 }

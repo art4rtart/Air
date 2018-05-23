@@ -9,10 +9,13 @@ namespace Air
 {
     class AnimObject : GameObject
     {
-        private int frameCount;
+        protected float framesPerSecond;
+        protected int frameCount;
         private int frameIndex;
-        private float framesPerSecond;
         private int millisecondsElapsed;
+
+        float generateTime = 0;
+        public string tagName;
 
         public int index
         {
@@ -24,13 +27,18 @@ namespace Air
             }
         }
 
-        public AnimObject(Bitmap bitmap, int frameCount, float framesPerSecond) : base(bitmap)
+        public AnimObject(Bitmap bitmap, int frameCount, float framesPerSecond, RectangleF rect, RectangleF srcRect, string tagName, float generateTime) : base(bitmap)
         {
             this.frameCount = frameCount;
             this.rect.Width = this.rect.Width / frameCount;
             this.frameIndex = 0;
             this.framesPerSecond = framesPerSecond;
             this.millisecondsElapsed = 0;
+
+            this.rect = rect;
+            this.srcRect = srcRect;
+            this.tagName = tagName;
+            this.generateTime = generateTime;
         }
 
         public override void updateFrame(int msec)

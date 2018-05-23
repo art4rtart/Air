@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Classes\Airtank.cs" />
     <Compile Include="Classes\AnimObject.cs" />
-    <Compile Include="Classes\Item\PineWheel.cs" />
     <Compile Include="Classes\UI\AnimUI.cs" />
     <Compile Include="Classes\Background.cs" />
     <Compile Include="Classes\Enemy.cs" />
@@ -176,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pinewheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound_item.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

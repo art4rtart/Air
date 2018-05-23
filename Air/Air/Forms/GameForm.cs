@@ -15,16 +15,14 @@ namespace Air
     public partial class GameForm : Form
     {
         // GameObject
-        Player player = new Player(Air.Properties.Resources.plane, playerLocation);
-        Background title = new Background(Air.Properties.Resources.title, titleLocation);
-        Background sky = new Background(Air.Properties.Resources.sky, skyLocation);
-        Background rock = new Background(Air.Properties.Resources.rock, rockLocation);
-        Background field = new Background(Air.Properties.Resources.field, fieldLocation);
-        Airtank airtank = new Airtank(Air.Properties.Resources.airgage, airtankLocation);
-
-        PineWheel pineWheel = new PineWheel(new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), 1.0f);
-
-        //Item star = new Item(Air.Properties.Resources.star, 0, 0.0f, pineWheelDest, pineWheelSrcRect, 1.0f);
+        Player player = new Player(Air.Properties.Resources.plane, new Point(150, 200));
+        Background title = new Background(Air.Properties.Resources.title, new Point(0, 0));
+        Background sky = new Background(Air.Properties.Resources.sky, new Point(0, 0));
+        Background rock = new Background(Air.Properties.Resources.rock, new Point(150, 390));
+        Background field = new Background(Air.Properties.Resources.field, new Point(150, 520));
+        Airtank airtank = new Airtank(Air.Properties.Resources.airgage, new Point(270, 675));
+        Item pineWheel = new Item(Air.Properties.Resources.pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
+        Item star = new Item(Air.Properties.Resources.star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
 
         static Rectangle settingDest = new Rectangle(1200, 20, 54, 54);
         static RectangleF settingSrcDest = new RectangleF(0, 0, 132, 132);
@@ -49,7 +47,7 @@ namespace Air
         float waitForSeconds = 1.5f;
 
         // framework variables
-        private string sceneName = "InGame";
+        private string sceneName = "Title";
         private string logoName = "daydream";
 
         // update variables
@@ -77,16 +75,11 @@ namespace Air
         Bitmap titleImage;
         Bitmap gameName;
         Point gameNameOffset = new Point(3, 0);
-        static Point playerLocation = new Point(150, 200);
-        static Point titleLocation = new Point(0, 0);
-        static Point skyLocation = new Point(0, 0);
-        static Point rockLocation = new Point(150, 390);
-        static Point fieldLocation = new Point(150, 520);
-        static Point airtankLocation = new Point(270, 675);
         bool drawGameName = false;
         bool gameMode = true;
         bool settingMode = false;
         SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
+        int goupspeed = 25;
 
         public GameForm()
         {
@@ -102,7 +95,7 @@ namespace Air
             // game time setting
             updateFlag = DateTime.Now;
             timerFunction_Tick(sender, e);
-            timerFunction.Interval = 1;
+            timerFunction.Interval = 10;
             timerFunction.Start();
 
             // start position setting
@@ -119,12 +112,10 @@ namespace Air
             gameName = Air.Properties.Resources.gameName;
 
             // bgm play
-            //if (firstTime)
-            //    bgm.Play();
+            if (firstTime)
+                bgm.Play();
         }
 
-        bool effect = false;
-        int goupspeed = 25;
         private void timerFunction_Tick(object sender, EventArgs e)
         {
             TimeSpan deltaTime = DateTime.Now - updateFlag;
@@ -324,7 +315,7 @@ namespace Air
                         shopButton.draw();
                         boardButton.draw();
 
-                        title.update(5, msec);
+                        title.update(1, msec);
                     }
                     break;
                     #endregion
@@ -335,7 +326,7 @@ namespace Air
                         // initialization
                         if (initialization)
                         {
-                            player.slidingVelocity = generateRandomNumber("double", 1.0, 2.0);
+                            player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
 
                             // unvisible
                             playgameButton.visible(false);
@@ -373,62 +364,57 @@ namespace Air
 
                         else
                         {
-                            player.update(playerLocation, msec);
+                            label1.Text = star.count.ToString();
+
+                            player.update(msec);
 
                             if (playing)                                    // "after throwing" code
                             {
                                 if (gameUpdate)                             
                                 {
+                                    // properties
+                                    player.airtankValue = airtank.value;
+                                    player.airtankMin = airtank.minimum;
+                                    airtank.isFlying = player.isFlying;
+
                                     // gameobject
-                                    sky.update(player.speed / 20, msec);
-                                    rock.update(player.speed / 15, msec);
+                                    sky.update(player.speed / 15, msec);
+                                    rock.update(player.speed / 10, msec);
                                     field.update(player.speed / 5, msec);
+
                                     pineWheel.update(player.speed / 5, msec);
+                                    star.update(player.speed / 5, msec);
+
                                     airtank.update(msec);
 
-                                    // animation
+                                    player.checkCollision(pineWheel.obj, pineWheel);
+                                    player.checkCollision(star.obj, star);
 
-                                    string tag = pineWheel.checkCollision(player);
-                                    label1.Text = tag;
-                                    if (tag == "PineWheel")
-                                    {
-                                        tag = "Nothing";
-                                        effect = true;
-                                    }
+                                    // speed update : UI
+                                    if (player.speed > player.maxSpeed)
+                                        player.speed -= 1;
 
-                                    if(effect)
+                                    // item effects
+                                    if (pineWheel.effect)
                                     {
                                         if (goupspeed > 0)
                                             player.location.Y -= goupspeed * msec;
 
                                         else
                                         {
-                                            effect = false;
+                                            pineWheel.effect = false;
                                             goupspeed = 25;
                                         }
 
                                         goupspeed -= 1;
                                     }
-
-                                    // properties
-                                    player.airtankValue = airtank.value;
-                                    player.airtankMin = airtank.minimum;
-                                    airtank.isFlying = player.isFlying;
-
-                                    // generate stars
-                                    //generateItem(star);
-
-
-                                    // speed update : UI
-                                    if (player.speed > player.maxSpeed)
-                                        player.speed -= 1;
                                 }
                                 gameOver();
                             }
 
                             else
                             {
-                                player.pickUp(PointToClient(MousePosition));                                // "pick it up and throw"
+                                player.pickUp(PointToClient(MousePosition));
                             }
 
                             // UI update
@@ -499,47 +485,6 @@ namespace Air
                 }
             }
         }
-        #endregion
-
-        // generate methods
-        #region
-        private double generateRandomNumber(string type, double minimum, double maximum)
-        {
-            Random random = new Random();
-
-            if (type == "double")
-                return Math.Round((double)(random.NextDouble() * (maximum - minimum) + minimum), 1);
-
-            else
-                return random.Next((int)minimum, (int)maximum);
-        }
-
-        void generateItem(Item item)
-        {
-            
-        }
-
-        bool generateTimer(float generateTime)
-        {
-            bool generate = false;
-
-            if (checkTime)
-            {
-                timeFlag = DateTime.Now;
-                checkTime = false;
-            }
-
-            TimeSpan currentTime = DateTime.Now - timeFlag;
-
-            if (currentTime.TotalSeconds > generateTime)
-            {
-                generate = true;
-                timeFlag = DateTime.Now;
-            }
-
-            return generate;
-        }
-
         #endregion
 
         // control methods
@@ -691,9 +636,7 @@ namespace Air
                 airtank.draw(e.Graphics);
 
                 pineWheel.draw(e.Graphics);
-
-                //foreach (Item star in stars)
-                //    star.draw(e.Graphics);
+                star.draw(e.Graphics);
 
                 player.draw(e.Graphics);
 
