@@ -220,6 +220,7 @@ namespace Air
                 case "Title":
                     #region
                     {
+
                         if (initialization)
                         {
                             // parent settings
@@ -232,15 +233,12 @@ namespace Air
 
                             // UI location settings
                             clickToStart.Location = new Point((canvas.Width / 2 - clickToStart.Size.Width / 2), clickToStart.Location.Y);
-                            play.Location = new Point((canvas.Width / 2 - play.Size.Width / 2), play.Location.Y);
-                            shop.Location = new Point((canvas.Width / 2 - shop.Size.Width / 2), shop.Location.Y);
-                            board.Location = new Point((canvas.Width / 2 - board.Size.Width / 2), board.Location.Y);
 
                             // UI font settings
-                            playgameButton.init(570, 280, 150, 70, "play game", play, new Font("Agency FB", 20, distance.Font.Style), canvas);
-                            shopButton.init(570, 370, 150, 70, "shop", shop, new Font("Agency FB", 20, distance.Font.Style), canvas);
-                            boardButton.init(570, 460, 150, 70, "board", board, new Font("Agency FB", 20, distance.Font.Style), canvas);
-                            clickToStart.Font = new Font("Agency FB", 15, distanceValue.Font.Style);
+                            playgameButton.init(play, new Font("Agency FB", 20, playgameButton.Font.Style), canvas);
+                            shopButton.init(shop, new Font("Agency FB", 20, shopButton.Font.Style), canvas);
+                            boardButton.init(board, new Font("Agency FB", 20, boardButton.Font.Style), canvas);
+                            clickToStart.Font = new Font("Agency FB", 15, clickToStart.Font.Style);
 
                             // UI visible settings
                             playgameButton.visible(false);
@@ -287,16 +285,6 @@ namespace Air
                                 shopButton.visible(true);
                                 boardButton.visible(true);
                             }
-
-                            // button settings
-                            play.Location = new Point(playgameButton.x, playgameButton.y);
-                            play.Size = new Size(shopButton.sizeX, shopButton.sizeY);
-
-                            shop.Location = new Point(shopButton.x, shopButton.y);
-                            shop.Size = new Size(shopButton.sizeX, shopButton.sizeY);
-
-                            board.Location = new Point(boardButton.x, boardButton.y);
-                            board.Size = new Size(boardButton.sizeX, boardButton.sizeY);
                         }
 
                         if (pressToStart && firstTime)
@@ -311,10 +299,9 @@ namespace Air
                             }
                         }
 
-                        playgameButton.draw();
-                        shopButton.draw();
-                        boardButton.draw();
-
+                        playgameButton.update(PointToClient(MousePosition));
+                        shopButton.update(PointToClient(MousePosition));
+                        boardButton.update(PointToClient(MousePosition));
                         title.update(1, msec);
                     }
                     break;
@@ -364,8 +351,6 @@ namespace Air
 
                         else
                         {
-                            label1.Text = star.count.ToString();
-
                             player.update(msec);
 
                             if (playing)                                    // "after throwing" code
@@ -697,59 +682,25 @@ public class Button : Form
     // member variables
     private Label button = new Label();
 
-    public int x, y, sizeX, sizeY;
-
     // methods
-    public void init(int x, int y, int sizeX, int sizeY, string buttonText, Label button, Font font, PictureBox canvas)
+    public void init(Label button, Font font, PictureBox canvas)
     {
         this.button = button;
-        this.x = x; this.y = y;
-        this.sizeX = sizeX; this.sizeY = sizeY;
-        button.Location = new Point(x, y);
-        button.Size = new Size(sizeX, sizeY);
-        button.ForeColor = Color.DimGray;
-        button.BackColor = Color.Transparent;
-        button.TextAlign = ContentAlignment.MiddleCenter;
-        button.Text = buttonText;
         button.Font = font;
         button.Parent = canvas;
     }
 
-    public void draw()
+    public void update(Point MousePosition)
     {
-        if (MousePosition.X > button.Location.X + 250 && MousePosition.X < button.Location.X + 350)
+        if (MousePosition.X > button.Location.X && MousePosition.X < button.Location.X + button.Size.Width)
         {
-            if (button.Text == "play game")
-            {
-                if (MousePosition.Y > 405 && MousePosition.Y < 435)
-                    button.ForeColor = Color.WhiteSmoke;
-                else
-                    button.ForeColor = Color.DimGray;
-            }
-
-            else if (button.Text == "shop")
-            {
-                if (MousePosition.Y > 490 && MousePosition.Y < 520)
-                    button.ForeColor = Color.WhiteSmoke;
-                else
-                    button.ForeColor = Color.DimGray;
-            }
-
-            else if (button.Text == "board")
-            {
-                if (MousePosition.Y > 580 && MousePosition.Y < 610)
-                    button.ForeColor = Color.WhiteSmoke;
-                else
-                    button.ForeColor = Color.DimGray;
-            }
+            if (MousePosition.Y > button.Location.Y && MousePosition.Y < button.Location.Y + button.Size.Height)
+                button.ForeColor = Color.WhiteSmoke;
+            else
+                button.ForeColor = Color.DimGray;
         }
         else
             button.ForeColor = Color.DimGray;
-    }
-
-    public void update()
-    {
-
     }
 
     public void visible(bool isVisible)

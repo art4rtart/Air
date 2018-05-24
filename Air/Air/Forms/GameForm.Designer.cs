@@ -42,6 +42,7 @@
             this.canvas = new System.Windows.Forms.PictureBox();
             this.settingImageList = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,9 +55,9 @@
             // 
             this.distance.BackColor = System.Drawing.Color.Transparent;
             this.distance.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.distance.Location = new System.Drawing.Point(570, 20);
+            this.distance.Location = new System.Drawing.Point(651, 25);
             this.distance.Name = "distance";
-            this.distance.Size = new System.Drawing.Size(140, 40);
+            this.distance.Size = new System.Drawing.Size(160, 50);
             this.distance.TabIndex = 6;
             this.distance.Text = "flight distance";
             this.distance.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -66,9 +67,9 @@
             // 
             this.distanceValue.BackColor = System.Drawing.Color.Transparent;
             this.distanceValue.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.distanceValue.Location = new System.Drawing.Point(600, 48);
+            this.distanceValue.Location = new System.Drawing.Point(686, 60);
             this.distanceValue.Name = "distanceValue";
-            this.distanceValue.Size = new System.Drawing.Size(100, 39);
+            this.distanceValue.Size = new System.Drawing.Size(114, 49);
             this.distanceValue.TabIndex = 7;
             this.distanceValue.Text = "0 M";
             this.distanceValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -79,9 +80,9 @@
             this.clickToStart.BackColor = System.Drawing.Color.Transparent;
             this.clickToStart.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.clickToStart.ForeColor = System.Drawing.Color.DimGray;
-            this.clickToStart.Location = new System.Drawing.Point(423, 375);
+            this.clickToStart.Location = new System.Drawing.Point(483, 469);
             this.clickToStart.Name = "clickToStart";
-            this.clickToStart.Size = new System.Drawing.Size(445, 70);
+            this.clickToStart.Size = new System.Drawing.Size(509, 88);
             this.clickToStart.TabIndex = 12;
             this.clickToStart.Text = "only mouse click :)";
             this.clickToStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -92,9 +93,9 @@
             // 
             this.airTankPercent.AutoSize = true;
             this.airTankPercent.BackColor = System.Drawing.Color.Transparent;
-            this.airTankPercent.Location = new System.Drawing.Point(889, 574);
+            this.airTankPercent.Location = new System.Drawing.Point(1016, 718);
             this.airTankPercent.Name = "airTankPercent";
-            this.airTankPercent.Size = new System.Drawing.Size(37, 12);
+            this.airTankPercent.Size = new System.Drawing.Size(47, 15);
             this.airTankPercent.TabIndex = 16;
             this.airTankPercent.Text = "100 %";
             this.airTankPercent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -104,9 +105,9 @@
             // 
             this.velocity.AutoSize = true;
             this.velocity.BackColor = System.Drawing.Color.Transparent;
-            this.velocity.Location = new System.Drawing.Point(642, 574);
+            this.velocity.Location = new System.Drawing.Point(734, 718);
             this.velocity.Name = "velocity";
-            this.velocity.Size = new System.Drawing.Size(39, 12);
+            this.velocity.Size = new System.Drawing.Size(45, 15);
             this.velocity.TabIndex = 18;
             this.velocity.Text = "0 m/s";
             this.velocity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -115,33 +116,39 @@
             // play
             // 
             this.play.BackColor = System.Drawing.Color.Transparent;
-            this.play.Location = new System.Drawing.Point(620, 181);
+            this.play.ForeColor = System.Drawing.Color.DimGray;
+            this.play.Location = new System.Drawing.Point(641, 372);
             this.play.Name = "play";
-            this.play.Size = new System.Drawing.Size(38, 12);
+            this.play.Size = new System.Drawing.Size(170, 50);
             this.play.TabIndex = 20;
-            this.play.Text = "label1";
+            this.play.Text = "play game";
+            this.play.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.play.Visible = false;
             this.play.Click += new System.EventHandler(this.playButton_Click);
             // 
             // shop
             // 
             this.shop.BackColor = System.Drawing.Color.Transparent;
-            this.shop.Location = new System.Drawing.Point(620, 221);
+            this.shop.ForeColor = System.Drawing.Color.DimGray;
+            this.shop.Location = new System.Drawing.Point(641, 472);
             this.shop.Name = "shop";
-            this.shop.Size = new System.Drawing.Size(38, 12);
+            this.shop.Size = new System.Drawing.Size(170, 50);
             this.shop.TabIndex = 21;
-            this.shop.Text = "label2";
+            this.shop.Text = "shop";
+            this.shop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.shop.Visible = false;
             this.shop.Click += new System.EventHandler(this.shopButton_Click);
             // 
             // board
             // 
             this.board.BackColor = System.Drawing.Color.Transparent;
-            this.board.Location = new System.Drawing.Point(620, 264);
+            this.board.ForeColor = System.Drawing.Color.DimGray;
+            this.board.Location = new System.Drawing.Point(641, 572);
             this.board.Name = "board";
-            this.board.Size = new System.Drawing.Size(38, 12);
+            this.board.Size = new System.Drawing.Size(170, 50);
             this.board.TabIndex = 22;
-            this.board.Text = "label3";
+            this.board.Text = "board";
+            this.board.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.board.Visible = false;
             this.board.Click += new System.EventHandler(this.boardButton_Click);
             // 
@@ -150,8 +157,9 @@
             this.canvas.BackColor = System.Drawing.Color.Transparent;
             this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.canvas.Location = new System.Drawing.Point(0, 0);
+            this.canvas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1280, 720);
+            this.canvas.Size = new System.Drawing.Size(1463, 900);
             this.canvas.TabIndex = 24;
             this.canvas.TabStop = false;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
@@ -181,29 +189,41 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(30, 35);
+            this.label1.Location = new System.Drawing.Point(34, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 25;
             this.label1.Text = "Testing";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label2.Location = new System.Drawing.Point(34, 94);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(54, 15);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Testing";
+            // 
             // GameForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1445, 851);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.velocity);
             this.Controls.Add(this.airTankPercent);
             this.Controls.Add(this.distanceValue);
             this.Controls.Add(this.distance);
-            this.Controls.Add(this.clickToStart);
             this.Controls.Add(this.play);
             this.Controls.Add(this.board);
             this.Controls.Add(this.shop);
             this.Controls.Add(this.canvas);
+            this.Controls.Add(this.clickToStart);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
@@ -230,6 +250,7 @@
         private System.Windows.Forms.PictureBox canvas;
         private System.Windows.Forms.ImageList settingImageList;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
