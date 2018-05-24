@@ -10,13 +10,16 @@ namespace Air
     class Background
     {
         Bitmap image;
-        Point bgOffset, location;
+        Point bgOffset;
+        public Point location;
+        public int y;
 
         public Background(Bitmap bitmap, Point location)
         {
             this.image = bitmap;
             Size size = image.Size;
             this.location = location;
+            y = location.Y;
         }
 
         public void draw(Graphics g)
@@ -29,12 +32,18 @@ namespace Air
 
         public void update(int speed, int msec)
         {
-            bgOffset.X -= speed * msec;
-
+            move(speed * msec, 0);
+            
             if (bgOffset.X < -image.Size.Width)
             {
                 bgOffset.X += image.Size.Width;
             }
+        }
+
+        public void move(int x, int y)
+        {
+            bgOffset.X -= x;
+            this.location.Y += y;
         }
     }
 }

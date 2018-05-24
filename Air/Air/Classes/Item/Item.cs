@@ -13,12 +13,6 @@ namespace Air
     {
         public List<AnimObject> objects = new List<AnimObject>();
 
-        public bool effect;
-        public int count;
-
-        bool generate = true;
-        float generateTime = 0;
-
         public bool startTimer = false;
         DateTime timeFlag;
         TimeSpan currentTime;
@@ -27,11 +21,19 @@ namespace Air
         TimeSpan totalTime;
 
         Bitmap image;
+
         int frameCount;
         float framesPerSecond;
-        RectangleF rect;
+        public RectangleF rect;
         RectangleF srcRect;
+
         string tagName;
+        float y;
+        public bool effect;
+        public int count;
+
+        bool generate = true;
+        float generateTime = 0;
 
         public Item(Bitmap bitmap, int frameCount, float framesPerSecond, RectangleF rect, RectangleF srcRect, string tagName, float generateTime)
         {
@@ -44,9 +46,11 @@ namespace Air
             this.generateTime = generateTime;
         }
 
-        public float setGenerateTime { set { generateTime = value; } }
+        public float generatePositionY { set { y = value; } }
 
         public List<AnimObject> obj { get { return objects; } }
+
+        public float setGenerateTime { set { generateTime = value; } }
 
         public void draw(Graphics g)
         {
@@ -85,7 +89,7 @@ namespace Air
             if (x > 0 && generate)
             {
                 x = 1280;
-                appendObject(x);
+                appendObject(x, y);
                 generate = false;
             }
 
@@ -126,14 +130,16 @@ namespace Air
             }
         }
 
-        private void appendObject(float x)
+        private void appendObject(float x, float y)
         {
             if (tagName == "Star")
                 this.rect.Y = new Random().Next(200, 500);
 
-            AnimObject obj = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
-            obj.position(x, obj.bounds.Y);
-            objects.Add(obj);
+            rect.Y = y - 20;
+
+            AnimObject item = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
+            item.position(x, item.bounds.Y);
+            objects.Add(item);
         }
 
         public void playSound()

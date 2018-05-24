@@ -39,11 +39,9 @@
             this.play = new System.Windows.Forms.Label();
             this.shop = new System.Windows.Forms.Label();
             this.board = new System.Windows.Forms.Label();
-            this.canvas = new System.Windows.Forms.PictureBox();
             this.settingImageList = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // timerFunction
@@ -152,21 +150,6 @@
             this.board.Visible = false;
             this.board.Click += new System.EventHandler(this.boardButton_Click);
             // 
-            // canvas
-            // 
-            this.canvas.BackColor = System.Drawing.Color.Transparent;
-            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.canvas.Location = new System.Drawing.Point(0, 0);
-            this.canvas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1463, 900);
-            this.canvas.TabIndex = 24;
-            this.canvas.TabStop = false;
-            this.canvas.Click += new System.EventHandler(this.canvas_Click);
-            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
-            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
-            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
-            // 
             // settingImageList
             // 
             this.settingImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("settingImageList.ImageStream")));
@@ -220,18 +203,20 @@
             this.Controls.Add(this.distanceValue);
             this.Controls.Add(this.distance);
             this.Controls.Add(this.play);
-            this.Controls.Add(this.board);
             this.Controls.Add(this.shop);
-            this.Controls.Add(this.canvas);
             this.Controls.Add(this.clickToStart);
+            this.Controls.Add(this.board);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
             this.Text = "Air.";
             this.TransparencyKey = System.Drawing.Color.Sienna;
             this.Load += new System.EventHandler(this.GameForm_Load);
+            this.Click += new System.EventHandler(this.canvas_Click);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -247,7 +232,6 @@
         private System.Windows.Forms.Label play;
         private System.Windows.Forms.Label shop;
         private System.Windows.Forms.Label board;
-        private System.Windows.Forms.PictureBox canvas;
         private System.Windows.Forms.ImageList settingImageList;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

@@ -30,13 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timerFunction = new System.Windows.Forms.Timer(this.components);
-            this.canvas = new System.Windows.Forms.PictureBox();
             this.distance = new System.Windows.Forms.Label();
             this.youflight = new System.Windows.Forms.Label();
             this.comment = new System.Windows.Forms.Label();
             this.retry = new System.Windows.Forms.PictureBox();
             this.gotomenu = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.retry)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gotomenu)).BeginInit();
             this.SuspendLayout();
@@ -46,16 +44,6 @@
             this.timerFunction.Enabled = true;
             this.timerFunction.Interval = 1;
             this.timerFunction.Tick += new System.EventHandler(this.timerFunction_Tick);
-            // 
-            // canvas
-            // 
-            this.canvas.BackColor = System.Drawing.SystemColors.Control;
-            this.canvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.canvas.Location = new System.Drawing.Point(0, 0);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(585, 375);
-            this.canvas.TabIndex = 1;
-            this.canvas.TabStop = false;
             // 
             // distance
             // 
@@ -119,13 +107,11 @@
             this.Controls.Add(this.comment);
             this.Controls.Add(this.youflight);
             this.Controls.Add(this.distance);
-            this.Controls.Add(this.canvas);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "scoreForm";
             this.Text = "scoreForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.scoreForm_FormClosed);
             this.Load += new System.EventHandler(this.scoreForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.retry)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gotomenu)).EndInit();
             this.ResumeLayout(false);
@@ -134,7 +120,6 @@
 
         #endregion
         private System.Windows.Forms.Timer timerFunction;
-        private System.Windows.Forms.PictureBox canvas;
         private System.Windows.Forms.Label distance;
         private System.Windows.Forms.Label youflight;
         private System.Windows.Forms.Label comment;

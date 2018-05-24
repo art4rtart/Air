@@ -45,12 +45,15 @@
   <ItemGroup>
     <Compile Include="Classes\Airtank.cs" />
     <Compile Include="Classes\AnimObject.cs" />
+    <Compile Include="Classes\GameManager.cs" />
     <Compile Include="Classes\UI\AnimUI.cs" />
     <Compile Include="Classes\Background.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Item\Item.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="Classes\UI\Button.cs" />
+    <Compile Include="Classes\UI\Text.cs" />
     <Compile Include="Classes\UI\UI.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -178,6 +181,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sound_item.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\space.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\atmosphere.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
