@@ -17,7 +17,6 @@ namespace Air
         DateTime timeFlag;
         TimeSpan currentTime;
 
-        DateTime startTime;
         TimeSpan totalTime;
 
         Bitmap image;
@@ -34,6 +33,7 @@ namespace Air
 
         bool generate = true;
         float generateTime = 0;
+        DateTime startTime;
 
         public Item(Bitmap bitmap, int frameCount, float framesPerSecond, RectangleF rect, RectangleF srcRect, string tagName, float generateTime)
         {
@@ -44,6 +44,7 @@ namespace Air
             this.srcRect = srcRect;
             this.tagName = tagName;
             this.generateTime = generateTime;
+            startTime = DateTime.Now;
         }
 
         public float generatePositionY { set { y = value; } }

@@ -14,12 +14,11 @@ namespace Air
         public bool checkTime = true;
         public float waitForSeconds = 1.5f;
 
-        public string sceneName = "InGame";
-        public string logoName = "daydream";
+        public string sceneName = "Logo";
 
         public bool update = false;
         public bool playing = false;
-
+        public bool initialization = true;
         public static double score;
 
         public void gameOver(Player player)

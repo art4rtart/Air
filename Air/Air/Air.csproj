@@ -55,11 +55,6 @@
     <Compile Include="Classes\UI\Button.cs" />
     <Compile Include="Classes\UI\Text.cs" />
     <Compile Include="Classes\UI\UI.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ScoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +93,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -141,12 +141,6 @@
     <None Include="Resources\gameName.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo_collaboration.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\logo_daydream.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logo_kpu.png" />
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\title.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bgm.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\kputext.png" />
@@ -190,6 +181,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\atmosphere.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound_bgm.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_polymorphism.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sceneChanger.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

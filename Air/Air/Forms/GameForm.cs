@@ -49,14 +49,13 @@ namespace Air
         // variables
         #region
         // opacity variables
-        private float fadingSpeed = 0.1f;
+        private float fadingSpeed = 0.01f;
         private float fadeDir = 1;
-        private float opacity = 0;
+        private float opacity = 1;
 
         // etc
         bool firstChanged = true;
         bool secondChanged = true;
-        bool initialization = true;
         bool pressToStart = false;
         bool firstTime = true;                 // shit value
 
@@ -68,15 +67,19 @@ namespace Air
         // recent added variables
         Bitmap titleImage;
         Bitmap gameName;
+        Bitmap kpuText;
+
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
         bool gameMode = true;
         bool settingMode = false;
-        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.bgm);
+        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
         int goupspeed = 0;
         bool setGoUpSpeed = true;
         bool goUp;
         bool isGoingUp;
+        Bitmap[] logoImage = new Bitmap[4];
+        int index;
 
         public GameForm()
         {
@@ -106,10 +109,11 @@ namespace Air
             // resource load
             titleImage = Air.Properties.Resources.title;
             gameName = Air.Properties.Resources.gameName;
+            kpuText = Air.Properties.Resources.kputext;
 
             // bgm play
-            if (firstTime)
-                bgm.Play();
+            //if (firstTime)
+            //    bgm.Play();
         }
 
         // update
@@ -124,109 +128,65 @@ namespace Air
                 case "Logo":
                     #region
                     {
-                        if (initialization)
+                        if(gameManager.initialization)
                         {
-                            this.BackgroundImage = null;
-                            gameManager.logoName = null;
-
-                            this.BackgroundImage = Air.Properties.Resources.logo_kpu;
-
-                            if (gameManager.checkTime)
-                            {
-                                gameManager.timeFlag = DateTime.Now;
-                                gameManager.checkTime = false;
-                            }
-
-                            TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
-
-                            if (currentTime.TotalSeconds > gameManager.waitForSeconds)
-                            {
-                                initialization = false;
-                                gameManager.logoName = "daydream";
-                                gameManager.checkTime = true;
-                                gameManager.waitForSeconds = 6.3f;
-                            }
+                            logoImage[0] = Air.Properties.Resources.logo_kpu;
+                            logoImage[1] = Air.Properties.Resources.logo_window;
+                            logoImage[2] = Air.Properties.Resources.logo_polymorphism;
+                            gameManager.initialization = false;
                         }
 
-                        else
+                        this.BackgroundImage = ChangeOpacity(logoImage[index], opacity);
+
+                        if (gameManager.checkTime)
                         {
-                            opacity += (fadingSpeed * msec) * fadeDir;
+                            gameManager.timeFlag = DateTime.Now;
+                            gameManager.checkTime = false;
+                        }
 
-                            if (opacity > 1)
+                        TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
+
+                        if (currentTime.TotalSeconds > gameManager.waitForSeconds)
+                        {
+                            opacity -= fadingSpeed * fadeDir * msec;
+
+                            if (opacity < 0)
                             {
-                                opacity = 1;
-
-                                if (gameManager.checkTime)
-                                {
-                                    gameManager.timeFlag = DateTime.Now;
-                                    gameManager.checkTime = false;
-                                }
-
-                                TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
-
-                                if (currentTime.TotalSeconds > gameManager.waitForSeconds)
-                                {
-                                    fadeDir *= -1;
-                                    gameManager.checkTime = true;
-                                }
-                            }
-
-                            else if (opacity < 0)
-                            {
-                                opacity = 0;
-
-                                if (firstChanged && secondChanged) {
-                                    gameManager.logoName = "collaboration";
-                                    firstChanged = false;
-                                }
-
-                                else if (secondChanged && !firstChanged) {
-                                    gameManager.logoName = "windowprogramming";
-                                    secondChanged = false;
-                                }
-
-                                else
-                                {
-                                    gameManager.sceneName = "Title";
-                                    fadingSpeed = 0.1f;
-                                    initialization = true;
-                                    opacity = 0;
-                                }
-
+                                if (index < logoImage.Length - 1)
+                                    index++;
                                 fadeDir *= -1;
                             }
 
-                            if (gameManager.logoName == "daydream")
+                            else if (opacity > 1)
                             {
-                                this.BackgroundImage = ChangeOpacity(Air.Properties.Resources.logo_daydream, opacity);
+                                gameManager.checkTime = true;
+                                fadeDir *= -1;
+                                opacity = 1;
                             }
 
-                            else if (gameManager.logoName == "collaboration")
+                            if (index == 3)
                             {
-                                this.BackgroundImage = ChangeOpacity(Air.Properties.Resources.logo_collaboration, opacity);
-                            }
-
-                            else if (gameManager.logoName == "windowprogramming")
-                            {
-                                this.BackgroundImage = ChangeOpacity(Air.Properties.Resources.logo_kpu, opacity); // windowprogramming
+                                this.BackgroundImage = null;
+                                gameManager.sceneName = "Title";
+                                gameManager.initialization = true;
                             }
                         }
+
+                        break;
                     }
-                    break;
                     #endregion
 
                 case "Title":
                     #region
                     {
-
-                        if (initialization)
+                        if (gameManager.initialization)
                         {
                             // time setting
                             gameManager.waitForSeconds = 2.3f;
                             gameManager.checkTime = true;
 
                             // UI location settings
-                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2), clickToStart.Location.Y);
+                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 2, clickToStart.Location.Y);
 
                             // UI font settings
                             playgameButton.init(play, new Font("Agency FB", 20, play.Font.Style));
@@ -239,46 +199,36 @@ namespace Air
                             shopButton.visible(false);
                             boardButton.visible(false);
 
-                            initialization = false;
+                            gameManager.initialization = false;
                         }
 
-                        if (opacity < 1)
+                        if (gameManager.checkTime && firstTime) // shit code
                         {
-                            opacity += fadingSpeed * msec * fadeDir;
+                            gameManager.timeFlag = DateTime.Now;
+                            gameManager.checkTime = false;
+                        }
+
+                        if (firstTime)              // shit code
+                        {
+                            TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
+
+                            if (currentTime.TotalSeconds > gameManager.waitForSeconds - 1)
+                            {
+                                showGameName = true;
+                            }
+
+                            if (currentTime.TotalSeconds > gameManager.waitForSeconds)
+                            {
+                                if (!clickToStart.IsDisposed)
+                                    clickToStart.Visible = true;
+                            }
                         }
 
                         else
                         {
-                            opacity = 1;
-
-                            if (gameManager.checkTime && firstTime) // shit code
-                            {
-                                gameManager.timeFlag = DateTime.Now;
-                                gameManager.checkTime = false;
-                            }
-
-                            if (firstTime)              // shit code
-                            {
-                                TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
-
-                                if (currentTime.TotalSeconds > gameManager.waitForSeconds - 1)
-                                {
-                                    showGameName = true;
-                                }
-
-                                if (currentTime.TotalSeconds > gameManager.waitForSeconds)
-                                {
-                                    if (!clickToStart.IsDisposed)
-                                        clickToStart.Visible = true;
-                                }
-                            }
-
-                            else
-                            {
-                                playgameButton.visible(true);
-                                shopButton.visible(true);
-                                boardButton.visible(true);
-                            }
+                            playgameButton.visible(true);
+                            shopButton.visible(true);
+                            boardButton.visible(true);
                         }
 
                         if (pressToStart && firstTime)
@@ -298,6 +248,7 @@ namespace Air
                         boardButton.update(PointToClient(MousePosition));
                         title.update(1, msec);
                     }
+                    
                     break;
                     #endregion
 
@@ -305,7 +256,7 @@ namespace Air
                     #region
                     {
                         // initialization
-                        if (initialization)
+                        if (gameManager.initialization)
                         {
                             player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
 
@@ -340,7 +291,7 @@ namespace Air
                             backgrounds.Add(rock);
                             backgrounds.Add(field);
 
-                            initialization = false;
+                            gameManager.initialization = false;
                         }
 
 
@@ -353,7 +304,6 @@ namespace Air
                         {
                             player.update(msec);
 ;
-                            label1.Text = goupspeed.ToString();
                             if (gameManager.playing)                                    // "after throwing" code
                             {
                                 if (gameManager.update)
@@ -373,10 +323,13 @@ namespace Air
                                     star.update(player.speed / 5, msec);
                                     airtank.update(msec);
 
-                                    player.checkCollision(pineWheel.obj, pineWheel);
-                                    player.checkCollision(star.obj, star);
+                                    if (!player.isGrounded)
+                                    {
+                                        player.checkCollision(pineWheel.obj, pineWheel);
+                                        player.checkCollision(star.obj, star);
+                                    }
 
-                                    // please update this code
+                                    // please fix this code
                                     if (player.location.Y < 150)
                                     {
                                         if(!isGoingUp)
@@ -503,10 +456,12 @@ namespace Air
 
                 if (showGameName)
                 {
+                    e.Graphics.DrawImage(kpuText, (this.Width / 2) - (kpuText.Size.Width / 2), 670, kpuText.Size.Width, kpuText.Size.Height);
+
                     e.Graphics.DrawImage(gameName, ((this.Width / 2) - (gameName.Size.Width / 2) - gameNameOffset.X), 170 + gameNameOffset.Y, 128, 128);
 
                     if (gameNameOffset.Y + 170 > 110 && clickToStart.IsDisposed)
-                        gameNameOffset.Y -= 5;
+                        gameNameOffset.Y -= 1;
                 }
             }
 
@@ -612,21 +567,21 @@ namespace Air
         private void playButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "InGame";
-            initialization = true;
+            gameManager.initialization = true;
             opacity = 0;
         }
 
         private void shopButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Shop";
-            initialization = true;
+            gameManager.initialization = true;
             opacity = 0;
         }
 
         private void boardButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Board";
-            initialization = true;
+            gameManager.initialization = true;
             opacity = 0;
         }
         #endregion
@@ -655,13 +610,14 @@ namespace Air
                 // please fix this dirty shit.
                 timerFunction.Start();
                 gameManager.sceneName = "Title";
+                showGameName = true;
                 opacity = 0.9f;
                 firstTime = false;
                 distance.Visible = false;
                 distanceText.visible(false);
                 velocityText.visible(false);
                 airPercentageText.visible(false);
-                initialization = true;
+                gameManager.initialization = true;
             }
 
             if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")
