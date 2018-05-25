@@ -113,7 +113,7 @@
             // 
             this.play.BackColor = System.Drawing.Color.Transparent;
             this.play.ForeColor = System.Drawing.Color.DimGray;
-            this.play.Location = new System.Drawing.Point(567, 298);
+            this.play.Location = new System.Drawing.Point(569, 298);
             this.play.Name = "play";
             this.play.Size = new System.Drawing.Size(149, 40);
             this.play.TabIndex = 20;
@@ -126,7 +126,7 @@
             // 
             this.shop.BackColor = System.Drawing.Color.Transparent;
             this.shop.ForeColor = System.Drawing.Color.DimGray;
-            this.shop.Location = new System.Drawing.Point(567, 378);
+            this.shop.Location = new System.Drawing.Point(569, 378);
             this.shop.Name = "shop";
             this.shop.Size = new System.Drawing.Size(149, 40);
             this.shop.TabIndex = 21;
@@ -139,7 +139,7 @@
             // 
             this.board.BackColor = System.Drawing.Color.Transparent;
             this.board.ForeColor = System.Drawing.Color.DimGray;
-            this.board.Location = new System.Drawing.Point(567, 458);
+            this.board.Location = new System.Drawing.Point(569, 458);
             this.board.Name = "board";
             this.board.Size = new System.Drawing.Size(149, 40);
             this.board.TabIndex = 22;

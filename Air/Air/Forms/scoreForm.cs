@@ -31,7 +31,6 @@ namespace Air
             scoreText.init((this.Width / 2) - (distance.Size.Width / 2), 70, distance, new Font("Agency FB", 20, distance.Font.Style));  // 70
             commentText.init((this.Width / 2) - (comment.Size.Width / 2), 130, comment, new Font("Agency FB", 20, comment.Font.Style));
 
-
             retry.Location = new Point((this.Width / 2) - (retry.Size.Width / 2) - 60, 220);
             gotomenu.Location = new Point(retry.Location.X + 120, retry.Location.Y);
 
@@ -51,7 +50,7 @@ namespace Air
         {
             // update
             flyText.update("you flight");
-            scoreText.update(Math.Round(scoreValue,2) + " M");
+            scoreText.update(scoreValue + " M");
 
             // animation
             if (youflight.Location.Y < 5)
@@ -62,19 +61,19 @@ namespace Air
                 scoreText.visible(true);
 
                 if (scoreValue < playerScore)
-                    scoreValue += 0.01;                // add 1 point
+                    scoreValue += 1;                // add 1 point
 
                 else
                 {
                     commentText.visible(true);
 
-                    if(playerScore < 5)
+                    if(playerScore < 100)
                         commentText.update("that means you fucked up :(");
 
-                    else if (playerScore < 10 && playerScore > 5)
+                    else if (playerScore < 1000 && playerScore > 100)
                         commentText.update("not bad, but you should practice more :P");
 
-                    else if (playerScore < 15 && playerScore > 10)
+                    else if (playerScore < 2000 && playerScore > 1000)
                         commentText.update("nice, still not better than me :-)");
 
                     else

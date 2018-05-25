@@ -54,8 +54,6 @@ namespace Air
         private float opacity = 1;
 
         // etc
-        bool firstChanged = true;
-        bool secondChanged = true;
         bool pressToStart = false;
         bool firstTime = true;                 // shit value
 
@@ -110,10 +108,6 @@ namespace Air
             titleImage = Air.Properties.Resources.title;
             gameName = Air.Properties.Resources.gameName;
             kpuText = Air.Properties.Resources.kputext;
-
-            // bgm play
-            //if (firstTime)
-            //    bgm.Play();
         }
 
         // update
@@ -182,7 +176,7 @@ namespace Air
                         if (gameManager.initialization)
                         {
                             // time setting
-                            gameManager.waitForSeconds = 2.3f;
+                            gameManager.waitForSeconds = 2.8f;
                             gameManager.checkTime = true;
 
                             // UI location settings
@@ -199,16 +193,19 @@ namespace Air
                             shopButton.visible(false);
                             boardButton.visible(false);
 
+                            if(firstTime)
+                                bgm.Play();
+
                             gameManager.initialization = false;
                         }
 
-                        if (gameManager.checkTime && firstTime) // shit code
+                        if (gameManager.checkTime && firstTime)
                         {
                             gameManager.timeFlag = DateTime.Now;
                             gameManager.checkTime = false;
                         }
 
-                        if (firstTime)              // shit code
+                        if (firstTime)       
                         {
                             TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
 
@@ -217,7 +214,7 @@ namespace Air
                                 showGameName = true;
                             }
 
-                            if (currentTime.TotalSeconds > gameManager.waitForSeconds)
+                            if (currentTime.TotalSeconds > gameManager.waitForSeconds + 0.7)
                             {
                                 if (!clickToStart.IsDisposed)
                                     clickToStart.Visible = true;
@@ -314,13 +311,13 @@ namespace Air
                                     airtank.isFlying = player.isFlying;
                                     pineWheel.generatePositionY = field.location.Y;
 
-                                    sky.update(player.speed / 15, msec);
-                                    ss.update(player.speed / 15, msec);
-                                    space.update(player.speed / 15, msec);
-                                    rock.update(player.speed / 10, msec);
-                                    field.update(player.speed / 5, msec);
-                                    pineWheel.update(player.speed / 5, msec);
-                                    star.update(player.speed / 5, msec);
+                                    sky.update((int)player.speed / 20, msec);
+                                    ss.update((int)player.speed / 20, msec);
+                                    space.update((int)player.speed / 20, msec);
+                                    rock.update((int)player.speed / 15, msec);
+                                    field.update((int)player.speed / 8, msec);
+                                    pineWheel.update((int)player.speed / 8, msec);
+                                    star.update((int)player.speed / 8, msec);
                                     airtank.update(msec);
 
                                     if (!player.isGrounded)
@@ -380,8 +377,14 @@ namespace Air
                                     }
 
                                     // speed update : UI
-                                    if (player.speed > player.maxSpeed)
-                                        player.speed -= 1;
+                                    if (!player.isGrounded)
+                                    {
+                                        if (player.speed > player.minSpeed)
+                                            player.speed -= 1;
+
+                                        else if (player.speed < player.minSpeed)
+                                            player.speed = player.minSpeed;
+                                    }
 
                                     // item effects
                                     if (pineWheel.effect)
@@ -389,7 +392,7 @@ namespace Air
                                         isGoingUp = true;
                                         if (setGoUpSpeed)
                                         {
-                                            goupspeed = 23;
+                                            goupspeed = 30;
                                             setGoUpSpeed = false;
                                         }
 
@@ -409,7 +412,6 @@ namespace Air
 
                                 if (sky.location.Y == 0)
                                     gameManager.gameOver(player);
-
                                 // here
                             }
 
@@ -417,10 +419,10 @@ namespace Air
                             {
                                 player.pickUp(PointToClient(MousePosition));
                             }
-
+                            label1.Text = player.speed.ToString();
                             // UI update
-                            distanceText.update(Math.Round(player.flightDistance, 2).ToString() + " M");
-                            velocityText.update(player.speed.ToString() + " M/S");
+                            distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
+                            velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
                             airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
 
                             if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
@@ -440,7 +442,6 @@ namespace Air
                     break;
                     #endregion
             }
-
             gameManager.updateFlag = DateTime.Now;
             Invalidate();
         }
@@ -592,7 +593,7 @@ namespace Air
         {
             if (e.KeyCode == Keys.F && gameManager.sceneName == "InGame")
             {
-                player.maxSpeed += 10;
+                player.minSpeed += 10;
                 player.speed += 10;
             }
 

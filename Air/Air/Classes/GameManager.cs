@@ -12,7 +12,7 @@ namespace Air
         public DateTime updateFlag;
         public DateTime timeFlag;
         public bool checkTime = true;
-        public float waitForSeconds = 1.5f;
+        public float waitForSeconds = 4.5f;
 
         public string sceneName = "Logo";
 
@@ -27,13 +27,13 @@ namespace Air
 
             if (player.isGrounded)
             {
-                score = player.flightDistance;
+                score = Math.Round(player.flightDistance, 0);
                 player.gameStart = false;
 
                 if (player.speed > 0)
                 {
-                    player.speed -= (int)((player.airResistance) / player.slidingValue);
-                    player.location.X += player.speed;
+                    player.speed -= (player.airResistance) / player.slidingValue + 2;
+                    player.location.X += (int)player.speed;
                 }
 
                 else

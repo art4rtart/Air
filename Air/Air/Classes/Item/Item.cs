@@ -145,8 +145,8 @@ namespace Air
 
         public void playSound()
         {
-            SoundPlayer sound = new SoundPlayer(Air.Properties.Resources.sound_item);
-            sound.Play();
+            //SoundPlayer sound = new SoundPlayer(Air.Properties.Resources.sound_item);
+            //sound.Play();
         }
     }
 }

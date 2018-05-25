@@ -51,7 +51,7 @@
             this.distance.ForeColor = System.Drawing.Color.Brown;
             this.distance.Location = new System.Drawing.Point(0, 0);
             this.distance.Name = "distance";
-            this.distance.Size = new System.Drawing.Size(197, 99);
+            this.distance.Size = new System.Drawing.Size(172, 79);
             this.distance.TabIndex = 2;
             this.distance.Text = "10m";
             this.distance.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -62,7 +62,7 @@
             this.youflight.ForeColor = System.Drawing.Color.Brown;
             this.youflight.Location = new System.Drawing.Point(0, 0);
             this.youflight.Name = "youflight";
-            this.youflight.Size = new System.Drawing.Size(197, 99);
+            this.youflight.Size = new System.Drawing.Size(172, 79);
             this.youflight.TabIndex = 3;
             this.youflight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -72,7 +72,7 @@
             this.comment.ForeColor = System.Drawing.Color.Crimson;
             this.comment.Location = new System.Drawing.Point(0, 0);
             this.comment.Name = "comment";
-            this.comment.Size = new System.Drawing.Size(295, 99);
+            this.comment.Size = new System.Drawing.Size(509, 79);
             this.comment.TabIndex = 4;
             this.comment.Text = "you fucked up :)";
             this.comment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -81,9 +81,10 @@
             // 
             this.retry.BackColor = System.Drawing.Color.Transparent;
             this.retry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.retry.Location = new System.Drawing.Point(170, 293);
+            this.retry.Location = new System.Drawing.Point(149, 234);
+            this.retry.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.retry.Name = "retry";
-            this.retry.Size = new System.Drawing.Size(52, 52);
+            this.retry.Size = new System.Drawing.Size(46, 42);
             this.retry.TabIndex = 6;
             this.retry.TabStop = false;
             // 
@@ -91,23 +92,23 @@
             // 
             this.gotomenu.BackColor = System.Drawing.Color.Transparent;
             this.gotomenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.gotomenu.Location = new System.Drawing.Point(290, 293);
+            this.gotomenu.Location = new System.Drawing.Point(254, 234);
+            this.gotomenu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gotomenu.Name = "gotomenu";
-            this.gotomenu.Size = new System.Drawing.Size(52, 52);
+            this.gotomenu.Size = new System.Drawing.Size(46, 42);
             this.gotomenu.TabIndex = 7;
             this.gotomenu.TabStop = false;
             // 
             // scoreForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 373);
+            this.ClientSize = new System.Drawing.Size(509, 298);
             this.Controls.Add(this.gotomenu);
             this.Controls.Add(this.retry);
             this.Controls.Add(this.comment);
             this.Controls.Add(this.youflight);
             this.Controls.Add(this.distance);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "scoreForm";
             this.Text = "scoreForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.scoreForm_FormClosed);

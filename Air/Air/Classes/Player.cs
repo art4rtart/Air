@@ -9,23 +9,26 @@ namespace Air
 {
     class Player : GameObject
     {
+        private const int playerX = 150;
         public Point offset = new Point(100, 50);
         public Point startPosition, endPosition, location;
         public DateTime startTime ,endTime;
 
-        public int speed = 40;              // max speed is 30
-        public int maxSpeed = 40;          // temp value
+        public double speed;              // max speed is 30
+        public int minSpeed = 100;          // temp value
         public int msec;
+        private int boostSpeed = 5;         // 10 is max value
 
         private double val, min;
         public double gravity = 2;          // please calculate this value
-        public double airResistance = 2;    // bigger is slower
+        public double airResistance = 20;    // bigger is slower
         public double slidingValue = 0;
         public double flightDistance;       // records variables
 
         public bool isFlying, isGrounded, isPicked;
         public bool gameStart = false;
         public bool canPickUp = false;
+        private bool startTimer = true;
 
         public double slidingVelocity { set { slidingValue = value; } }
 
@@ -57,20 +60,39 @@ namespace Air
 
             if (gameStart)
             {
-                if (this.location.X > 150)            // dont use magic number
-                    this.location = new Point(this.location.X - (speed / 2), this.location.Y);
+                if (startTimer)
+                {
+                    startTime = DateTime.Now;
+                    startTimer = false;
+                }
 
-                else if (this.location.X < 150)       // dont use magic number
-                    this.location = new Point(150, this.location.Y);
+                TimeSpan gameTime = DateTime.Now - startTime;
+
+                if (this.location.X > playerX)
+                {        
+                    this.location.X -= (int)(airResistance / 5);
+                    airResistance += 1;
+                }
+
+                else if (this.location.X < playerX)
+                    this.location.X = playerX;
 
 
                 if (isFlying && val > min)
+                {
+                    this.speed += boostSpeed;
                     this.location.Y -= (int)((gravity + (int)(gravity / 2)) * msec);
+                }
 
                 else
-                    this.location.Y += (int)((gravity) * msec);
+                {
+                    if(speed > minSpeed)
+                        this.speed -= boostSpeed;
 
-                flightDistance += 0.01;     // calculate this value please
+                    this.location.Y += (int)((gravity) * msec);
+                }
+
+                flightDistance += (speed * gameTime.TotalSeconds) / 10000;     // calculate this value please
             }
         }
 
@@ -99,7 +121,7 @@ namespace Air
         public int velocity()
         {
             Point velocity = new Point(endPosition.X - startPosition.X, endPosition.Y - startPosition.Y);
-            return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / (int)((endTime - startTime).TotalMilliseconds / 10);
+            return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / 7;
         }
 
         public void checkCollision(List<AnimObject> objects, Item item)
