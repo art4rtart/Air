@@ -38,7 +38,11 @@ namespace Air
             if (isVisible)
                 button.Visible = true;
             else
+            {
+                button.ForeColor = Color.Transparent;
+                button.BackColor = Color.Transparent;
                 button.Visible = false;
+            }
         }
     }
 }

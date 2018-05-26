@@ -11,7 +11,7 @@ namespace Air
     class Text
     {
         // member variables
-        Label text = new Label();
+        public Label text = new Label();
         int x, y;
 
         // methods

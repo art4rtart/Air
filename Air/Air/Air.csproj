@@ -197,5 +197,17 @@
   <ItemGroup>
     <None Include="Resources\sceneChanger.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\height.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\width.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

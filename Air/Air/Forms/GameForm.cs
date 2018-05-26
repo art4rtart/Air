@@ -65,6 +65,10 @@ namespace Air
         // recent added variables
         Bitmap titleImage;
         Bitmap gameName;
+
+        Bitmap arrow = Air.Properties.Resources.arrow;
+        Bitmap cost = Air.Properties.Resources.star;
+
         Bitmap kpuText;
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
@@ -259,18 +263,18 @@ namespace Air
                         // initialization
                         if (gameManager.initialization)
                         {
-                            player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
-
-                            // unvisible game objects
+                            // unvisible menus
                             playgameButton.visible(false);
                             shopButton.visible(false);
                             boardButton.visible(false);
+
+                            player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
 
                             // text init
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
-                            
+
                             // visible game objects
                             distanceText.visible(true);
                             velocityText.visible(true);
@@ -295,158 +299,191 @@ namespace Air
                             gameManager.initialization = false;
                         }
 
-
-                        if (developerMode)
-                        {
-                            // this is developer mode
-                        }
-
                         else
                         {
-                            player.update(msec);
-;
-                            if (gameManager.playing)                                    // "after throwing" code
+                            if (developerMode)
                             {
-                                if (gameManager.update)
+                                // this is developer mode
+                            }
+
+                            else
+                            {
+                                player.update(msec);
+                                ;
+                                if (gameManager.playing)
                                 {
-                                    // properties
-                                    player.airtankValue = airtank.value;
-                                    player.airtankMin = airtank.minimum;
-                                    airtank.isFlying = player.isFlying;
-                                    pineWheel.generatePositionY = field.location.Y;
-
-                                    sky.update((int)player.speed / 20, msec);
-                                    ss.update((int)player.speed / 20, msec);
-                                    space.update((int)player.speed / 20, msec);
-                                    rock.update((int)player.speed / 15, msec);
-                                    field.update((int)player.speed / 8, msec);
-                                    pineWheel.update((int)player.speed / 8, msec);
-                                    star.update((int)player.speed / 8, msec);
-                                    airtank.update(msec);
-
-                                    if (!player.isGrounded)
+                                    if (gameManager.update)
                                     {
-                                        player.checkCollision(pineWheel.obj, pineWheel);
-                                        player.checkCollision(star.obj, star);
-                                    }
+                                        player.airtankValue = airtank.value;
+                                        player.airtankMin = airtank.minimum;
+                                        airtank.isFlying = player.isFlying;
+                                        pineWheel.generatePositionY = field.location.Y;
 
-                                    // please fix this code
-                                    if (player.location.Y < 150)
-                                    {
-                                        if(!isGoingUp)
-                                            player.location.Y = 150;
+                                        sky.update((int)player.speed / 20, msec);
+                                        ss.update((int)player.speed / 20, msec);
+                                        space.update((int)player.speed / 20, msec);
+                                        rock.update((int)player.speed / 15, msec);
+                                        field.update((int)player.speed / 8, msec);
+                                        pineWheel.update((int)player.speed / 8, msec);
+                                        star.update((int)player.speed / 8, msec);
+                                        airtank.update(msec);
 
-                                        goUp = true;
-
-                                        if (space.location.Y < 0)
+                                        if (!player.isGrounded)
                                         {
-                                            foreach (Background background in backgrounds)
-                                                background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
-
-                                            foreach (AnimObject pineWheel in pineWheel.obj)
-                                                pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
-
-                                            foreach (AnimObject star in star.obj)
-                                                star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                            player.checkCollision(pineWheel.obj, pineWheel);
+                                            player.checkCollision(star.obj, star);
                                         }
-                                    }
 
-                                    else
-                                    {
-                                        isGoingUp = false;
-                                        foreach (Background background in backgrounds)
+                                        #region
+                                        // please fix this code
+                                        if (player.location.Y < 150)
                                         {
-                                            background.location.Y -= (int)((player.gravity) * msec);
-
-                                            if (background.location.Y > background.y)
-                                            {
+                                            if (!isGoingUp)
                                                 player.location.Y = 150;
-                                            }
 
-                                            else
+                                            goUp = true;
+
+                                            if (space.location.Y < 0)
                                             {
-                                                background.location.Y = background.y;
-                                                goUp = false;
+                                                foreach (Background background in backgrounds)
+                                                    background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
+
+                                                foreach (AnimObject pineWheel in pineWheel.obj)
+                                                    pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                                foreach (AnimObject star in star.obj)
+                                                    star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
                                             }
                                         }
-
-                                        if (goUp)
-                                        {
-                                            foreach (AnimObject pineWheel in pineWheel.obj)
-                                                pineWheel.move(0, -(int)((player.gravity) * msec));
-
-                                            foreach (AnimObject star in star.obj)
-                                                star.move(0, -(int)((player.gravity) * msec));
-                                        }
-                                    }
-
-                                    // speed update : UI
-                                    if (!player.isGrounded)
-                                    {
-                                        if (player.speed > player.minSpeed)
-                                            player.speed -= 1;
-
-                                        else if (player.speed < player.minSpeed)
-                                            player.speed = player.minSpeed;
-                                    }
-
-                                    // item effects
-                                    if (pineWheel.effect)
-                                    {
-                                        isGoingUp = true;
-                                        if (setGoUpSpeed)
-                                        {
-                                            goupspeed = 25;     // go up power
-                                            setGoUpSpeed = false;
-                                        }
-
-                                        goupspeed -= 1;
-
-                                        if (goupspeed > 0)
-                                            player.location.Y -= goupspeed * msec;
 
                                         else
                                         {
-                                            pineWheel.effect = false;
-                                            goupspeed = 0;
-                                            setGoUpSpeed = true;
+                                            isGoingUp = false;
+                                            foreach (Background background in backgrounds)
+                                            {
+                                                background.location.Y -= (int)((player.gravity) * msec);
+
+                                                if (background.location.Y > background.y)
+                                                {
+                                                    player.location.Y = 150;
+                                                }
+
+                                                else
+                                                {
+                                                    background.location.Y = background.y;
+                                                    goUp = false;
+                                                }
+                                            }
+
+                                            if (goUp)
+                                            {
+                                                foreach (AnimObject pineWheel in pineWheel.obj)
+                                                    pineWheel.move(0, -(int)((player.gravity) * msec));
+
+                                                foreach (AnimObject star in star.obj)
+                                                    star.move(0, -(int)((player.gravity) * msec));
+                                            }
                                         }
+
+                                        // speed update : UI
+                                        if (!player.isGrounded)
+                                        {
+                                            if (player.speed > player.minSpeed)
+                                                player.speed -= 1;
+
+                                            else if (player.speed < player.minSpeed)
+                                                player.speed = player.minSpeed;
+                                        }
+
+                                        // item effects
+                                        if (pineWheel.effect)
+                                        {
+                                            isGoingUp = true;
+                                            if (setGoUpSpeed)
+                                            {
+                                                goupspeed = 25;     // go up power
+                                                setGoUpSpeed = false;
+                                            }
+
+                                            goupspeed -= 1;
+
+                                            if (goupspeed > 0)
+                                                player.location.Y -= goupspeed * msec;
+
+                                            else
+                                            {
+                                                pineWheel.effect = false;
+                                                goupspeed = 0;
+                                                setGoUpSpeed = true;
+                                            }
+                                        }
+                                        #endregion
                                     }
+
+                                    if (sky.location.Y == 0)
+                                        gameManager.gameOver(player, msec);
                                 }
 
-                                if (sky.location.Y == 0)
-                                    gameManager.gameOver(player, msec);
-                                // here
-                            }
+                                else
+                                {
+                                    player.pickUp(PointToClient(MousePosition));
+                                }
 
-                            else
-                            {
-                                player.pickUp(PointToClient(MousePosition));
-                            }
+                                distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
+                                velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
+                                airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
 
-                            label1.Text = player.speed.ToString();
-
-                            // UI update
-                            distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
-                            velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
-                            airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
-
-                            if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
-                            {
-                                setting.updateFrame(msec);
-                                gameMode = false;
-                                settingMode = true;
-                            }
-
-                            else
-                            {
-                                gameMode = true;
-                                settingMode = false;
+                                if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
+                                {
+                                    setting.updateFrame(msec);
+                                    gameMode = false;
+                                    settingMode = true;
+                                }
+                                else
+                                {
+                                    gameMode = true;
+                                    settingMode = false;
+                                }
                             }
                         }
                     }
                     break;
-                    #endregion
+                #endregion
+
+                case "Shop":
+                    // code here
+                    if (gameManager.initialization)
+                    {
+                        this.BackgroundImage = null;
+
+                        shopText.Location = new Point((this.Width / 2) - (distance.Size.Width / 2), 50);
+                        shopText.Font = new Font("Agency FB", 45, distance.Font.Style);
+                        shopText.Parent = this;
+                        shopText.Visible = true;
+
+                        // unvisible game objects
+                        playgameButton.visible(false);
+                        shopButton.visible(false);
+                        boardButton.visible(false);
+
+                        gameManager.initialization = false;
+                    }
+
+                    else
+                    {
+                        this.BackgroundImage = Air.Properties.Resources.paper;
+                    }
+
+                    break;
+
+                case "Board":
+                    // code here
+                    if (gameManager.initialization)
+                    {
+
+                        gameManager.initialization = false;
+                    }
+                    break;
             }
             gameManager.updateFlag = DateTime.Now;
             Invalidate();
@@ -480,13 +517,22 @@ namespace Air
                 rock.draw(e.Graphics);
                 field.draw(e.Graphics);
                 airtank.draw(e.Graphics);
-
                 pineWheel.draw(e.Graphics);
                 star.draw(e.Graphics);
-
                 player.draw(e.Graphics);
-
                 setting.draw(e.Graphics);
+            }
+
+            else if (gameManager.sceneName == "Shop")
+            {
+
+                for (int i = 0; i < 3; i++)
+                {
+                    e.Graphics.DrawImage(arrow, 800, 200 + i * 150, arrow.Size.Width, arrow.Size.Height);
+                    e.Graphics.DrawImage(cost, 900, 210 + i * 150, cost.Size.Width, cost.Size.Height);
+                }
+
+                e.Graphics.DrawImage(kpuText, (this.Width / 2) - (kpuText.Size.Width / 2), 670, kpuText.Size.Width, kpuText.Size.Height);
             }
         }
 
@@ -559,10 +605,7 @@ namespace Air
                 player.isFlying = false;
             }
         }
-        #endregion
 
-        // menu change methods
-        #region
         private void canvas_Click(object sender, EventArgs e)
         {
             if (gameManager.sceneName == "Title" && !pressToStart)
@@ -570,7 +613,10 @@ namespace Air
                 pressToStart = true;
             }
         }
+        #endregion
 
+        // menu change methods
+        #region
         private void playButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "InGame";
@@ -580,13 +626,13 @@ namespace Air
         private void shopButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Shop";
-            gameManager.initialization = true;
+            gameManager.init();
         }
 
         private void boardButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Board";
-            gameManager.initialization = true;
+            gameManager.init();
         }
         #endregion
 
@@ -606,7 +652,7 @@ namespace Air
             if (e.KeyCode == Keys.S && gameManager.sceneName == "InGame")
                 developerMode = false;
 
-            if (e.KeyCode == Keys.M && gameManager.sceneName == "InGame")
+            if (e.KeyCode == Keys.M && gameManager.sceneName == "Shop")
             {
                 gameManager.sceneName = "Title";
                 firstTime = false;
