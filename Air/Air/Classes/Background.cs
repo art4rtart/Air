@@ -12,6 +12,7 @@ namespace Air
         Bitmap image;
         Point bgOffset;
         public Point location;
+        public Point initLocation;
         public int y;
 
         public Background(Bitmap bitmap, Point location)
@@ -19,6 +20,7 @@ namespace Air
             this.image = bitmap;
             Size size = image.Size;
             this.location = location;
+            this.initLocation = this.location;
             y = location.Y;
         }
 
@@ -28,6 +30,13 @@ namespace Air
             {
                 g.DrawImage(image, x, this.location.Y, image.Size.Width, image.Size.Height);
             }
+        }
+
+        public void init()
+        {
+            this.location = initLocation;
+            y = this.location.Y;
+            bgOffset = new Point(0, 0);
         }
 
         public void update(int speed, int msec)

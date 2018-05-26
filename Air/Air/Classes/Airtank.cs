@@ -13,6 +13,7 @@ namespace Air
         Bitmap bar = Air.Properties.Resources.bar;
         RectangleF rect;
         Size size;
+        Point location;
 
         public double maximum;
         public double minimum;
@@ -29,7 +30,15 @@ namespace Air
             maximum = size.Width;
             value = maximum;
             minimum = 0;
-            rect = new RectangleF(location.X, location.Y, size.Width, size.Height);
+            this.location = location;
+            rect = new RectangleF(this.location.X, this.location.Y, size.Width, size.Height);
+        }
+
+        public void init()
+        {
+            value = maximum;
+            size.Width = (int)value;
+            rect = new RectangleF(this.location.X, this.location.Y, size.Width, size.Height);
         }
 
         public void draw(Graphics g)
@@ -46,7 +55,7 @@ namespace Air
             {
                 if (value > minimum)
                 {
-                    value -= 2 * msec;
+                    value -= 5 * msec;
                 }
 
                 else if (value < minimum)

@@ -47,6 +47,17 @@ namespace Air
             startTime = DateTime.Now;
         }
 
+        public void init()
+        {
+            foreach(AnimObject item in objects)
+                objects.Remove(item);
+            startTimer = false;
+            effect = false;
+            count = 0;
+            generate = true;
+            y = 0;
+        }
+
         public float generatePositionY { set { y = value; } }
 
         public List<AnimObject> obj { get { return objects; } }

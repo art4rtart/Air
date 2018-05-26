@@ -14,14 +14,22 @@ namespace Air
         public bool checkTime = true;
         public float waitForSeconds = 4.5f;
 
-        public string sceneName = "Logo";
+        public string sceneName = "InGame";
 
         public bool update = false;
         public bool playing = false;
         public bool initialization = true;
         public static double score;
 
-        public void gameOver(Player player)
+        public void init()
+        {
+            update = false;
+            playing = false;
+            initialization = true;
+            score = 0;
+        }
+
+        public void gameOver(Player player, int msec)
         {
             player.isGrounded = player.location.Y > 720 - 150 ? true : false;
 
@@ -32,7 +40,8 @@ namespace Air
 
                 if (player.speed > 0)
                 {
-                    player.speed -= (player.airResistance) / player.slidingValue + 2;
+                    player.speed -= ((player.airResistance) / 7) * msec;
+                    player.airResistance += 0.2f;
                     player.location.X += (int)player.speed;
                 }
 

@@ -11,7 +11,7 @@ namespace Air
     {
         private const int playerX = 150;
         public Point offset = new Point(100, 50);
-        public Point startPosition, endPosition, location;
+        public Point startPosition, endPosition, location, initLocation;
         public DateTime startTime ,endTime;
 
         public double speed;              // max speed is 30
@@ -21,7 +21,7 @@ namespace Air
 
         private double val, min;
         public double gravity = 2;          // please calculate this value
-        public double airResistance = 20;    // bigger is slower
+        public double airResistance = 1;    // bigger is slower
         public double slidingValue = 0;
         public double flightDistance;       // records variables
 
@@ -50,6 +50,25 @@ namespace Air
         {
             this.image = bitmap;
             this.location = location;
+            this.initLocation = this.location;
+        }
+
+        public void init()
+        {
+            this.location = initLocation;
+
+            speed = 0;              // max speed is 30
+            minSpeed = 100;          // temp value
+            boostSpeed = 5;         // 10 is max value
+
+            val = 0; min = 0;
+            gravity = 2;          // please calculate this value
+            airResistance = 20;    // bigger is slower
+            slidingValue = 0;
+            flightDistance = 0;       // records variables
+
+            isFlying = false; isGrounded = false; isPicked = false; gameStart = false; canPickUp = false;
+            startTimer = true;
         }
 
         public void update(int msec)

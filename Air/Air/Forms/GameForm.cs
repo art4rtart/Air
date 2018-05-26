@@ -66,7 +66,6 @@ namespace Air
         Bitmap titleImage;
         Bitmap gameName;
         Bitmap kpuText;
-
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
         bool gameMode = true;
@@ -193,7 +192,12 @@ namespace Air
                             shopButton.visible(false);
                             boardButton.visible(false);
 
-                            if(firstTime)
+                            distance.Visible = false;
+                            distanceText.visible(false);
+                            velocityText.visible(false);
+                            airPercentageText.visible(false);
+
+                            if (firstTime)
                                 bgm.Play();
 
                             gameManager.initialization = false;
@@ -392,7 +396,7 @@ namespace Air
                                         isGoingUp = true;
                                         if (setGoUpSpeed)
                                         {
-                                            goupspeed = 30;
+                                            goupspeed = 25;     // go up power
                                             setGoUpSpeed = false;
                                         }
 
@@ -411,7 +415,7 @@ namespace Air
                                 }
 
                                 if (sky.location.Y == 0)
-                                    gameManager.gameOver(player);
+                                    gameManager.gameOver(player, msec);
                                 // here
                             }
 
@@ -419,7 +423,9 @@ namespace Air
                             {
                                 player.pickUp(PointToClient(MousePosition));
                             }
+
                             label1.Text = player.speed.ToString();
+
                             // UI update
                             distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
                             velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
@@ -568,22 +574,19 @@ namespace Air
         private void playButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "InGame";
-            gameManager.initialization = true;
-            opacity = 0;
+            gameManager.init();
         }
 
         private void shopButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Shop";
             gameManager.initialization = true;
-            opacity = 0;
         }
 
         private void boardButton_Click(object sender, EventArgs e)
         {
             gameManager.sceneName = "Board";
             gameManager.initialization = true;
-            opacity = 0;
         }
         #endregion
 
@@ -597,9 +600,6 @@ namespace Air
                 player.speed += 10;
             }
 
-            if (e.KeyCode == Keys.D && gameManager.sceneName == "InGame")
-                gameManager.gameOver(player);
-
             if (e.KeyCode == Keys.P && gameManager.sceneName == "InGame")
                 timerFunction.Start();
 
@@ -608,17 +608,13 @@ namespace Air
 
             if (e.KeyCode == Keys.M && gameManager.sceneName == "InGame")
             {
-                // please fix this dirty shit.
-                timerFunction.Start();
                 gameManager.sceneName = "Title";
-                showGameName = true;
-                opacity = 0.9f;
                 firstTime = false;
-                distance.Visible = false;
-                distanceText.visible(false);
-                velocityText.visible(false);
-                airPercentageText.visible(false);
-                gameManager.initialization = true;
+
+                gameManager.init();
+                player.init();
+                airtank.init();
+                developerMode = false;
             }
 
             if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")
