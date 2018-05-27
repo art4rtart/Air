@@ -14,7 +14,7 @@ namespace Air
         public bool checkTime = true;
         public float waitForSeconds = 4.5f;
 
-        public string sceneName = "Shop";
+        public string sceneName = "Logo";
 
         public bool update = false;
         public bool playing = false;

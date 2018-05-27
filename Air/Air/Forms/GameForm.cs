@@ -20,17 +20,26 @@ namespace Air
 
         Player player = new Player(Air.Properties.Resources.plane, new Point(150, 200));
 
-        Background title = new Background(Air.Properties.Resources.title, new Point(0, 0));
-        Background sky = new Background(Air.Properties.Resources.sky, new Point(0, 0));
-        Background ss = new Background(Air.Properties.Resources.atmosphere, new Point(0, -720));
-        Background space = new Background(Air.Properties.Resources.space, new Point(0, -1440));
-        Background rock = new Background(Air.Properties.Resources.rock, new Point(150, 390));
-        Background field = new Background(Air.Properties.Resources.field, new Point(150, 520));
+        List<Background> backgrounds = new List<Background>();
+        Background title = new Background(Air.Properties.Resources.background_title, new Point(0, 0));
+        Background sky = new Background(Air.Properties.Resources.background_sky, new Point(0, 0));
+        Background ss = new Background(Air.Properties.Resources.background_atmosphere, new Point(0, -720));
+        Background space = new Background(Air.Properties.Resources.background_space, new Point(0, -1440));
+        Background rock = new Background(Air.Properties.Resources.background_rock, new Point(150, 390));
+        Background field = new Background(Air.Properties.Resources.background_field, new Point(150, 520));
+        Background cloud = new Background(Air.Properties.Resources.background_shop, new Point(0, 0));
+        Background paper = new Background(Air.Properties.Resources.paper, new Point(0, 0));
 
         Airtank airtank = new Airtank(Air.Properties.Resources.airgage, new Point(270, 675));
 
         Item pineWheel = new Item(Air.Properties.Resources.pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
         Item star = new Item(Air.Properties.Resources.star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
+
+        GameObject name = new GameObject(Air.Properties.Resources.gameName);
+        GameObject plane = new GameObject(Air.Properties.Resources.plane);
+        GameObject kpu = new GameObject(Air.Properties.Resources.kputext);
+        GameObject frame = new GameObject(Air.Properties.Resources.Frame);
+        GameObject starIcon = new GameObject(Air.Properties.Resources.star);
 
         Text distanceText = new Text();
         Text velocityText = new Text();
@@ -43,7 +52,6 @@ namespace Air
 
         AnimUI setting = new AnimUI(Air.Properties.Resources.setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
 
-        List<Background> backgrounds = new List<Background>();
         #endregion
 
         // variables
@@ -63,13 +71,9 @@ namespace Air
         #endregion
 
         // recent added variables
-        Bitmap titleImage;
-        Bitmap gameName;
-
         Bitmap arrow = Air.Properties.Resources.arrow;
         Bitmap cost = Air.Properties.Resources.star;
 
-        Bitmap kpuText;
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
         bool gameMode = true;
@@ -100,17 +104,16 @@ namespace Air
 
             // start position setting
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(220, 70);
+            this.Location = new Point(150, 30);
 
             // double buffering
             this.SetStyle(ControlStyles.DoubleBuffer, true);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             this.SetStyle(ControlStyles.UserPaint, true);
 
-            // resource load
-            titleImage = Air.Properties.Resources.title;
-            gameName = Air.Properties.Resources.gameName;
-            kpuText = Air.Properties.Resources.kputext;
+            // set position
+            name.position((this.Width / 2) - (name.size.Width / 2), 180);
+            kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 3, 670);
         }
 
         // update
@@ -195,6 +198,8 @@ namespace Air
                             playgameButton.visible(false);
                             shopButton.visible(false);
                             boardButton.visible(false);
+                            shopText.Visible = false;
+                            shopFrame.Visible = false;
 
                             distance.Visible = false;
                             distanceText.visible(false);
@@ -240,7 +245,7 @@ namespace Air
                         {
                             clickToStart.Dispose();
 
-                            if (gameNameOffset.Y + 170 <= 110)
+                            if (name.bounds.Y <= 110)
                             {
                                 playgameButton.visible(true);
                                 shopButton.visible(true);
@@ -454,33 +459,47 @@ namespace Air
                     // code here
                     if (gameManager.initialization)
                     {
-                        this.BackgroundImage = null;
-
-                        shopText.Location = new Point((this.Width / 2) - (distance.Size.Width / 2), 50);
+                        shopText.Location = new Point((this.Width / 2) - (distance.Size.Width / 2), 20);
                         shopText.Font = new Font("Agency FB", 45, distance.Font.Style);
                         shopText.Parent = this;
                         shopText.Visible = true;
 
                         // unvisible game objects
+                        shopText.Visible = true;
+                        shopFrame.Visible = true;
                         playgameButton.visible(false);
                         shopButton.visible(false);
                         boardButton.visible(false);
+
+                        shopFrame.ClientSize = new Size(338, 290);
+                        frame.position(shopFrame.Location.X - 5, shopFrame.Location.Y - 5);
+
+                        plane.position(105, 100);
+                        starIcon.position(200, 500);
 
                         gameManager.initialization = false;
                     }
 
                     else
                     {
-                        this.BackgroundImage = Air.Properties.Resources.paper;
-                    }
+                        cloud.update(1, msec);
 
+                        int moveY = 1 * (int)fadeDir;
+
+                        plane.move(0, moveY);
+
+                        if (plane.bounds.Y > 140)
+                            fadeDir = -1;
+
+                        if (plane.bounds.Y < 80)
+                            fadeDir = 1;
+                    }
                     break;
 
                 case "Board":
                     // code here
                     if (gameManager.initialization)
                     {
-
                         gameManager.initialization = false;
                     }
                     break;
@@ -492,7 +511,7 @@ namespace Air
 
         // draw
         #region
-        private void canvas_Paint(object sender, PaintEventArgs e)
+        private void inGameCanvas_Paint(object sender, PaintEventArgs e)
         {
             if (gameManager.sceneName == "Title")
             {
@@ -500,12 +519,12 @@ namespace Air
 
                 if (showGameName)
                 {
-                    e.Graphics.DrawImage(kpuText, (this.Width / 2) - (kpuText.Size.Width / 2), 670, kpuText.Size.Width, kpuText.Size.Height);
 
-                    e.Graphics.DrawImage(gameName, ((this.Width / 2) - (gameName.Size.Width / 2) - gameNameOffset.X), 170 + gameNameOffset.Y, 128, 128);
+                    name.draw(e.Graphics);
+                    kpu.draw(e.Graphics);
 
-                    if (gameNameOffset.Y + 170 > 110 && clickToStart.IsDisposed)
-                        gameNameOffset.Y -= 1;
+                    if (name.bounds.Y > 110 && clickToStart.IsDisposed)
+                        name.move(0, -2);
                 }
             }
 
@@ -525,15 +544,18 @@ namespace Air
 
             else if (gameManager.sceneName == "Shop")
             {
-
-                for (int i = 0; i < 3; i++)
-                {
-                    e.Graphics.DrawImage(arrow, 800, 200 + i * 150, arrow.Size.Width, arrow.Size.Height);
-                    e.Graphics.DrawImage(cost, 900, 210 + i * 150, cost.Size.Width, cost.Size.Height);
-                }
-
-                e.Graphics.DrawImage(kpuText, (this.Width / 2) - (kpuText.Size.Width / 2), 670, kpuText.Size.Width, kpuText.Size.Height);
+                paper.draw(e.Graphics);
+                frame.draw(e.Graphics);
+                kpu.draw(e.Graphics);
+                starIcon.draw(e.Graphics);
             }
+        }
+
+        private void shopCanvas_Paint(object sender, PaintEventArgs e)
+        {
+
+            cloud.draw(e.Graphics);
+            plane.draw(e.Graphics);
         }
 
         public Bitmap ChangeOpacity(Image img, float opacityvalue)
@@ -652,7 +674,7 @@ namespace Air
             if (e.KeyCode == Keys.S && gameManager.sceneName == "InGame")
                 developerMode = false;
 
-            if (e.KeyCode == Keys.M && gameManager.sceneName == "Shop")
+            if (e.KeyCode == Keys.M)
             {
                 gameManager.sceneName = "Title";
                 firstTime = false;

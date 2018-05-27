@@ -209,5 +209,29 @@
   <ItemGroup>
     <None Include="Resources\arrow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_atmosphere.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_field.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_shop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_sky.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_title.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_rock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_space.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
