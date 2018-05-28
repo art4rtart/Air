@@ -44,6 +44,7 @@ namespace Air
         Text distanceText = new Text();
         Text velocityText = new Text();
         Text airPercentageText = new Text();
+        Text starCountText = new Text();
         Text presstostartText = new Text();
 
         Button playgameButton = new Button();
@@ -202,7 +203,9 @@ namespace Air
                             shopFrame.Visible = false;
 
                             distance.Visible = false;
+                            starCount.Visible = false;
                             distanceText.visible(false);
+     
                             velocityText.visible(false);
                             airPercentageText.visible(false);
 
@@ -277,11 +280,15 @@ namespace Air
                             player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
                             player.position(150, 200);
                             // text init
+                            starCountText.init(90, 30, starCount, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
 
+                            starIcon.position(30, 20);
+
                             // visible game objects
+                            starCountText.visible(true);
                             distanceText.visible(true);
                             velocityText.visible(true);
                             airPercentageText.visible(true);
@@ -436,6 +443,7 @@ namespace Air
                                 }
 
                                 distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
+                                starCountText.update(" X   " + star.count.ToString());
                                 velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
                                 airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
 
@@ -541,6 +549,7 @@ namespace Air
                 star.draw(e.Graphics);
                 player.draw(e.Graphics);
                 setting.draw(e.Graphics);
+                starIcon.draw(e.Graphics);
             }
 
             else if (gameManager.sceneName == "Shop")
