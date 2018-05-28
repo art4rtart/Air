@@ -280,7 +280,7 @@ namespace Air
                             player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
                             player.position(150, 200);
                             // text init
-                            starCountText.init(90, 30, starCount, new Font("Agency FB", 20, distance.Font.Style));                // set this value
+                            starCountText.init(48, 31, starCount, new Font("Agency FB", 16, distance.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
@@ -443,7 +443,7 @@ namespace Air
                                 }
 
                                 distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
-                                starCountText.update(" X   " + star.count.ToString());
+                                starCountText.update(star.count.ToString());
                                 velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
                                 airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
 

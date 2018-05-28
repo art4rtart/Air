@@ -183,9 +183,9 @@
             this.starCount.ForeColor = System.Drawing.SystemColors.ControlText;
             this.starCount.Location = new System.Drawing.Point(113, 48);
             this.starCount.Name = "starCount";
-            this.starCount.Size = new System.Drawing.Size(33, 12);
+            this.starCount.Size = new System.Drawing.Size(59, 12);
             this.starCount.TabIndex = 25;
-            this.starCount.Text = "shop";
+            this.starCount.Text = "starCount";
             this.starCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.starCount.Visible = false;
             // 
