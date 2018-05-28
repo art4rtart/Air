@@ -206,8 +206,8 @@ namespace Air
                             velocityText.visible(false);
                             airPercentageText.visible(false);
 
-                            if (firstTime)
-                                bgm.Play();
+                            //if (firstTime)
+                            //    bgm.Play();
 
                             gameManager.initialization = false;
                         }
