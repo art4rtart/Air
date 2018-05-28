@@ -206,8 +206,8 @@ namespace Air
                             velocityText.visible(false);
                             airPercentageText.visible(false);
 
-                            //if (firstTime)
-                            //    bgm.Play();
+                            if (firstTime)
+                                bgm.Play();
 
                             gameManager.initialization = false;
                         }
@@ -268,13 +268,14 @@ namespace Air
                         // initialization
                         if (gameManager.initialization)
                         {
+                            bgm.Stop();
                             // unvisible menus
                             playgameButton.visible(false);
                             shopButton.visible(false);
                             boardButton.visible(false);
 
                             player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
-
+                            player.position(150, 200);
                             // text init
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value

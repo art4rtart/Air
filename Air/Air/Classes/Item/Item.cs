@@ -147,7 +147,8 @@ namespace Air
             if (tagName == "Star")
                 this.rect.Y = new Random().Next(200, 500);
 
-            rect.Y = y - 20;
+            else
+                rect.Y = y - 20;
 
             AnimObject item = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
             item.position(x, item.bounds.Y);
