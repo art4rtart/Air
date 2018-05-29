@@ -118,8 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="airgage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\airgage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sound_bgm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound_bgm.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound_item" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound_item.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="airtank_bar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\airtank_bar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="airtank_gage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\airtank_gage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -130,8 +139,14 @@
   <data name="background_field" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background_field.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="background_paper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background_paper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="background_rock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background_rock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="background_scoreboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background_scoreboard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="background_shop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background_shop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,20 +160,32 @@
   <data name="background_title" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background_title.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="bar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Frame" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Frame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="gameName" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gameName.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="kputext" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\kputext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="item_airdown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\item_airdown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="item_airup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\item_airup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="item_pinewheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\item_pinewheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="item_star" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\item_star.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="item_wind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\item_wind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_kpu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_kpu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_kputext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo_kputext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_polymorphism" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_polymorphism.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,28 +193,10 @@
   <data name="logo_window" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo_window.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="paper" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\paper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="pinewheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pinewheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="plane" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plane.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="scoreboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\scoreboard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="setting" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\setting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sound_bgm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sound_bgm.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="sound_item" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sound_item.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="star" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\star.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

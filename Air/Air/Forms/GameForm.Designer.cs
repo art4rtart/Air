@@ -38,7 +38,7 @@
             this.play = new System.Windows.Forms.Label();
             this.shop = new System.Windows.Forms.Label();
             this.board = new System.Windows.Forms.Label();
-            this.shopText = new System.Windows.Forms.Label();
+            this.multiple = new System.Windows.Forms.Label();
             this.shopFrame = new System.Windows.Forms.PictureBox();
             this.starCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
@@ -150,24 +150,24 @@
             this.board.Visible = false;
             this.board.Click += new System.EventHandler(this.boardButton_Click);
             // 
-            // shopText
+            // multiple
             // 
-            this.shopText.AutoSize = true;
-            this.shopText.BackColor = System.Drawing.Color.Transparent;
-            this.shopText.ForeColor = System.Drawing.Color.Black;
-            this.shopText.Location = new System.Drawing.Point(53, 91);
-            this.shopText.Name = "shopText";
-            this.shopText.Size = new System.Drawing.Size(33, 12);
-            this.shopText.TabIndex = 23;
-            this.shopText.Text = "shop";
-            this.shopText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.shopText.Visible = false;
+            this.multiple.AutoSize = true;
+            this.multiple.BackColor = System.Drawing.Color.Transparent;
+            this.multiple.ForeColor = System.Drawing.Color.Black;
+            this.multiple.Location = new System.Drawing.Point(1, 1);
+            this.multiple.Name = "multiple";
+            this.multiple.Size = new System.Drawing.Size(12, 12);
+            this.multiple.TabIndex = 23;
+            this.multiple.Text = "x";
+            this.multiple.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.multiple.Visible = false;
             // 
             // shopFrame
             // 
             this.shopFrame.BackColor = System.Drawing.Color.Transparent;
             this.shopFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.shopFrame.Location = new System.Drawing.Point(155, 152);
+            this.shopFrame.Location = new System.Drawing.Point(0, 0);
             this.shopFrame.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.shopFrame.Name = "shopFrame";
             this.shopFrame.Size = new System.Drawing.Size(296, 232);
@@ -178,14 +178,13 @@
             // 
             // starCount
             // 
-            this.starCount.AutoSize = true;
             this.starCount.BackColor = System.Drawing.Color.Transparent;
-            this.starCount.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.starCount.Location = new System.Drawing.Point(113, 48);
+            this.starCount.ForeColor = System.Drawing.Color.OrangeRed;
+            this.starCount.Location = new System.Drawing.Point(0, 1);
             this.starCount.Name = "starCount";
-            this.starCount.Size = new System.Drawing.Size(59, 12);
+            this.starCount.Size = new System.Drawing.Size(158, 67);
             this.starCount.TabIndex = 25;
-            this.starCount.Text = "starCount";
+            this.starCount.Text = "2013180043";
             this.starCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.starCount.Visible = false;
             // 
@@ -197,9 +196,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1124, 681);
-            this.Controls.Add(this.starCount);
-            this.Controls.Add(this.shopFrame);
-            this.Controls.Add(this.shopText);
+            this.Controls.Add(this.multiple);
             this.Controls.Add(this.play);
             this.Controls.Add(this.shop);
             this.Controls.Add(this.board);
@@ -208,6 +205,8 @@
             this.Controls.Add(this.distanceValue);
             this.Controls.Add(this.distance);
             this.Controls.Add(this.clickToStart);
+            this.Controls.Add(this.starCount);
+            this.Controls.Add(this.shopFrame);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
@@ -235,7 +234,7 @@
         private System.Windows.Forms.Label play;
         private System.Windows.Forms.Label shop;
         private System.Windows.Forms.Label board;
-        private System.Windows.Forms.Label shopText;
+        private System.Windows.Forms.Label multiple;
         private System.Windows.Forms.PictureBox shopFrame;
         private System.Windows.Forms.Label starCount;
     }

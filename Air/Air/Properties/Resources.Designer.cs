@@ -19,7 +19,7 @@ namespace Air.Properties {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,19 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap airgage {
+        internal static System.Drawing.Bitmap airtank_bar {
             get {
-                object obj = ResourceManager.GetObject("airgage", resourceCulture);
+                object obj = ResourceManager.GetObject("airtank_bar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap airtank_gage {
+            get {
+                object obj = ResourceManager.GetObject("airtank_gage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +113,29 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap background_paper {
+            get {
+                object obj = ResourceManager.GetObject("background_paper", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap background_rock {
             get {
                 object obj = ResourceManager.GetObject("background_rock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap background_scoreboard {
+            get {
+                object obj = ResourceManager.GetObject("background_scoreboard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,16 +183,6 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap bar {
-            get {
-                object obj = ResourceManager.GetObject("bar", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap Frame {
             get {
                 object obj = ResourceManager.GetObject("Frame", resourceCulture);
@@ -183,9 +203,49 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap kputext {
+        internal static System.Drawing.Bitmap item_airdown {
             get {
-                object obj = ResourceManager.GetObject("kputext", resourceCulture);
+                object obj = ResourceManager.GetObject("item_airdown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap item_airup {
+            get {
+                object obj = ResourceManager.GetObject("item_airup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap item_pinewheel {
+            get {
+                object obj = ResourceManager.GetObject("item_pinewheel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap item_star {
+            get {
+                object obj = ResourceManager.GetObject("item_star", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap item_wind {
+            get {
+                object obj = ResourceManager.GetObject("item_wind", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -196,6 +256,16 @@ namespace Air.Properties {
         internal static System.Drawing.Bitmap logo_kpu {
             get {
                 object obj = ResourceManager.GetObject("logo_kpu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_kputext {
+            get {
+                object obj = ResourceManager.GetObject("logo_kputext", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,39 +293,9 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap paper {
-            get {
-                object obj = ResourceManager.GetObject("paper", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap pinewheel {
-            get {
-                object obj = ResourceManager.GetObject("pinewheel", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap plane {
             get {
                 object obj = ResourceManager.GetObject("plane", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap scoreboard {
-            get {
-                object obj = ResourceManager.GetObject("scoreboard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -285,16 +325,6 @@ namespace Air.Properties {
         internal static System.IO.UnmanagedMemoryStream sound_item {
             get {
                 return ResourceManager.GetStream("sound_item", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap star {
-            get {
-                object obj = ResourceManager.GetObject("star", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

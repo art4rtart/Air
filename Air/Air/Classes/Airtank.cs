@@ -10,13 +10,13 @@ namespace Air
     class Airtank
     {
         Bitmap image;
-        Bitmap bar = Air.Properties.Resources.bar;
+        Bitmap bar = Air.Properties.Resources.airtank_bar;
         RectangleF rect;
         Size size;
         Point location;
 
         public double maximum;
-        public double minimum;
+        public double minimum = 0;
         public double value;
 
         bool fly;
@@ -58,9 +58,9 @@ namespace Air
                     value -= 5 * msec;
                 }
 
-                else if (value < minimum)
+                if (value < minimum)
                 {
-                    value = (int)minimum;
+                    value = minimum;
                 }
             }
 

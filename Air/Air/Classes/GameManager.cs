@@ -40,8 +40,8 @@ namespace Air
 
                 if (player.speed > 0)
                 {
-                    player.speed -= ((player.airResistance) / 7) * msec;
-                    player.airResistance += 0.2f;
+                    player.speed -= ((player.airResistance) / 8) * msec;
+                    player.airResistance += 0.1f;
                     player.location.X += (int)player.speed;
                 }
 

@@ -28,18 +28,20 @@ namespace Air
         Background rock = new Background(Air.Properties.Resources.background_rock, new Point(150, 390));
         Background field = new Background(Air.Properties.Resources.background_field, new Point(150, 520));
         Background cloud = new Background(Air.Properties.Resources.background_shop, new Point(0, 0));
-        Background paper = new Background(Air.Properties.Resources.paper, new Point(0, 0));
+        Background paper = new Background(Air.Properties.Resources.background_paper, new Point(0, 0));
 
-        Airtank airtank = new Airtank(Air.Properties.Resources.airgage, new Point(270, 675));
+        Airtank airtank = new Airtank(Air.Properties.Resources.airtank_gage, new Point(270, 675));
 
-        Item pineWheel = new Item(Air.Properties.Resources.pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
-        Item star = new Item(Air.Properties.Resources.star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
+        Item pineWheel = new Item(Air.Properties.Resources.item_pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
+        Item star = new Item(Air.Properties.Resources.item_star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
+        Item airup = new Item(Air.Properties.Resources.item_airup, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirUp", 5.0f);
+        Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 7.0f);
 
+        GameObject kpu = new GameObject(Air.Properties.Resources.logo_kputext);
+        GameObject frame = new GameObject(Air.Properties.Resources.Frame);
         GameObject name = new GameObject(Air.Properties.Resources.gameName);
         GameObject plane = new GameObject(Air.Properties.Resources.plane);
-        GameObject kpu = new GameObject(Air.Properties.Resources.kputext);
-        GameObject frame = new GameObject(Air.Properties.Resources.Frame);
-        GameObject starIcon = new GameObject(Air.Properties.Resources.star);
+        GameObject starIcon = new GameObject(Air.Properties.Resources.item_star);
 
         Text distanceText = new Text();
         Text velocityText = new Text();
@@ -73,7 +75,7 @@ namespace Air
 
         // recent added variables
         Bitmap arrow = Air.Properties.Resources.arrow;
-        Bitmap cost = Air.Properties.Resources.star;
+        Bitmap cost = Air.Properties.Resources.item_star;
 
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
@@ -199,7 +201,7 @@ namespace Air
                             playgameButton.visible(false);
                             shopButton.visible(false);
                             boardButton.visible(false);
-                            shopText.Visible = false;
+                            multiple.Visible = false;
                             shopFrame.Visible = false;
 
                             distance.Visible = false;
@@ -272,6 +274,7 @@ namespace Air
                         if (gameManager.initialization)
                         {
                             bgm.Stop();
+
                             // unvisible menus
                             playgameButton.visible(false);
                             shopButton.visible(false);
@@ -279,13 +282,15 @@ namespace Air
 
                             player.slidingVelocity = Math.Round((double)(new Random().NextDouble() * (2.0 - 1.0) + 1.0), 1);
                             player.position(150, 200);
+
                             // text init
-                            starCountText.init(48, 31, starCount, new Font("Agency FB", 16, distance.Font.Style));                // set this value
+                            starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, distance.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
 
                             starIcon.position(30, 20);
+                            starCount.ForeColor = Color.DimGray;
 
                             // visible game objects
                             starCountText.visible(true);
@@ -295,7 +300,7 @@ namespace Air
 
                             // time settings
                             gameManager.checkTime = true;
-                            gameManager.waitForSeconds = 0;
+                            gameManager.waitForSeconds = 0.3f;
 
                             // visible static text UI
                             distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2) + 10, distance.Location.Y);
@@ -322,12 +327,13 @@ namespace Air
                             else
                             {
                                 player.update(msec);
-                                ;
+
                                 if (gameManager.playing)
                                 {
                                     if (gameManager.update)
                                     {
                                         player.airtankValue = airtank.value;
+                                        airtank.value = player.airtankValue;
                                         player.airtankMin = airtank.minimum;
                                         airtank.isFlying = player.isFlying;
                                         pineWheel.generatePositionY = field.location.Y;
@@ -339,12 +345,16 @@ namespace Air
                                         field.update((int)player.speed / 8, msec);
                                         pineWheel.update((int)player.speed / 8, msec);
                                         star.update((int)player.speed / 8, msec);
+                                        airup.update((int)player.speed / 8, msec);
+                                        airdown.update((int)player.speed / 8, msec);
                                         airtank.update(msec);
 
                                         if (!player.isGrounded)
                                         {
                                             player.checkCollision(pineWheel.obj, pineWheel);
                                             player.checkCollision(star.obj, star);
+                                            player.checkCollision(airup.obj, airup);
+                                            player.checkCollision(airdown.obj, airdown);
                                         }
 
                                         #region
@@ -366,6 +376,12 @@ namespace Air
 
                                                 foreach (AnimObject star in star.obj)
                                                     star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                                foreach (AnimObject airup in airup.obj)
+                                                    airup.move(0, (int)((player.gravity) * msec));
+
+                                                foreach (AnimObject airdown in airdown.obj)
+                                                    airdown.move(0, (int)((player.gravity) * msec));
                                             }
                                         }
 
@@ -395,6 +411,12 @@ namespace Air
 
                                                 foreach (AnimObject star in star.obj)
                                                     star.move(0, -(int)((player.gravity) * msec));
+
+                                                foreach (AnimObject airup in airup.obj)
+                                                    airup.move(0, -(int)((player.gravity) * msec));
+
+                                                foreach (AnimObject airdown in airdown.obj)
+                                                    airdown.move(0, -(int)((player.gravity) * msec));
                                             }
                                         }
 
@@ -430,6 +452,19 @@ namespace Air
                                                 setGoUpSpeed = true;
                                             }
                                         }
+
+                                        if (airup.effect)
+                                        {
+                                            airtank.value += 10;
+                                            airup.effect = false;
+                                        }
+
+                                        if (airdown.effect)
+                                        {
+                                            airtank.value -= 100;
+                                            airdown.effect = false;
+                                        }
+
                                         #endregion
                                     }
 
@@ -442,11 +477,6 @@ namespace Air
                                     player.pickUp(PointToClient(MousePosition));
                                 }
 
-                                distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
-                                starCountText.update(star.count.ToString());
-                                velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
-                                airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
-
                                 if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
                                 {
                                     setting.updateFrame(msec);
@@ -458,6 +488,11 @@ namespace Air
                                     gameMode = true;
                                     settingMode = false;
                                 }
+
+                                distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
+                                starCountText.update(star.count.ToString());
+                                velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
+                                airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
                             }
                         }
                     }
@@ -465,26 +500,31 @@ namespace Air
                 #endregion
 
                 case "Shop":
+                    #region
                     // code here
                     if (gameManager.initialization)
                     {
-                        shopText.Location = new Point((this.Width / 2) - (distance.Size.Width / 2), 20);
-                        shopText.Font = new Font("Agency FB", 45, distance.Font.Style);
-                        shopText.Parent = this;
-                        shopText.Visible = true;
-
                         // unvisible game objects
-                        shopText.Visible = true;
+                        multiple.Visible = true;
                         shopFrame.Visible = true;
                         playgameButton.visible(false);
                         shopButton.visible(false);
                         boardButton.visible(false);
 
-                        shopFrame.ClientSize = new Size(338, 290);
-                        frame.position(shopFrame.Location.X - 5, shopFrame.Location.Y - 5);
+                        multiple.Font = new Font("Agency FB", 25, distance.Font.Style);
+                        multiple.Parent = this;
+                        multiple.Visible = true;
+                        starCount.Visible = true;
 
+                        shopFrame.ClientSize = new Size(338, 290);
+                        shopFrame.Location = new Point(150, 150);
+                        multiple.Location = new Point(308, 488);
                         plane.position(105, 100);
-                        starIcon.position(200, 500);
+                        starIcon.position(197, 490);
+
+                        starCount.ForeColor = Color.OrangeRed;
+                        starCountText.init(343, 482, starCount, new Font("Agency FB", 20, distance.Font.Style));
+                        frame.position(shopFrame.Location.X - 5, shopFrame.Location.Y - 5);
 
                         gameManager.initialization = false;
                     }
@@ -502,8 +542,11 @@ namespace Air
 
                         if (plane.bounds.Y < 80)
                             fadeDir = 1;
+
+                        starCountText.update(star.count.ToString());
                     }
                     break;
+                #endregion
 
                 case "Board":
                     // code here
@@ -547,6 +590,8 @@ namespace Air
                 airtank.draw(e.Graphics);
                 pineWheel.draw(e.Graphics);
                 star.draw(e.Graphics);
+                airup.draw(e.Graphics);
+                airdown.draw(e.Graphics);
                 player.draw(e.Graphics);
                 setting.draw(e.Graphics);
                 starIcon.draw(e.Graphics);

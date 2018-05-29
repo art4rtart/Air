@@ -48,7 +48,7 @@
     <Compile Include="Classes\GameManager.cs" />
     <Compile Include="Classes\UI\AnimUI.cs" />
     <Compile Include="Classes\Background.cs" />
-    <Compile Include="Classes\Enemy.cs" />
+    <Compile Include="Classes\Enemy\Enemy.cs" />
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Item\Item.cs" />
     <Compile Include="Classes\Player.cs" />
@@ -120,9 +120,6 @@
     <None Include="bin\Release\resource\field2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bar.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="bin\Release\resource\plane2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -135,76 +132,25 @@
     <None Include="bin\Release\resource\plane.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\field.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gameName.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\logo_kpu.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\rock.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\scoreboard.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sky.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\star.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\title.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\kputext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\setting.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\airgage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pinewheel.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sound_item.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\space.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ss.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\atmosphere.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\sound_bgm.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\window.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\logo_window.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\logo_polymorphism.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sceneChanger.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\paper.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\height.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\width.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\arrow.png" />
@@ -232,6 +178,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\airtank_bar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\airtank_gage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_paper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_scoreboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\item_airdown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\item_airup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\item_pinewheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\item_star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\item_wind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_kputext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

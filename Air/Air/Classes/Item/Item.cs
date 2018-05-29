@@ -27,7 +27,7 @@ namespace Air
         RectangleF srcRect;
 
         string tagName;
-        float y;
+        int generateY;
         public bool effect;
         public int count;
 
@@ -55,10 +55,10 @@ namespace Air
             effect = false;
             count = 0;
             generate = true;
-            y = 0;
+            generateY = 0;
         }
 
-        public float generatePositionY { set { y = value; } }
+        public int generatePositionY { set { generateY = value; } }
 
         public List<AnimObject> obj { get { return objects; } }
 
@@ -101,7 +101,7 @@ namespace Air
             if (x > 0 && generate)
             {
                 x = 1280;
-                appendObject(x, y);
+                appendObject(x, generateY);
                 generate = false;
             }
 
@@ -139,16 +139,16 @@ namespace Air
                     generate = true;
                     startTimer = false;
                 }
-            }
+            } 
         }
 
         private void appendObject(float x, float y)
         {
-            if (tagName == "Star")
-                this.rect.Y = new Random().Next(200, 500);
+            if (tagName == "PineWheel")
+                rect.Y = y - 20;
 
             else
-                rect.Y = y - 20;
+                this.rect.Y = new Random().Next(200, 500);
 
             AnimObject item = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
             item.position(x, item.bounds.Y);
@@ -157,8 +157,8 @@ namespace Air
 
         public void playSound()
         {
-            //SoundPlayer sound = new SoundPlayer(Air.Properties.Resources.sound_item);
-            //sound.Play();
+            SoundPlayer sound = new SoundPlayer(Air.Properties.Resources.sound_item);
+            sound.Play();
         }
     }
 }

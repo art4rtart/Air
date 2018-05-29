@@ -37,7 +37,7 @@ namespace Air
             scoreText.visible(false);
             commentText.visible(false);
 
-            this.BackgroundImage = Air.Properties.Resources.scoreboard;
+            this.BackgroundImage = Air.Properties.Resources.background_scoreboard;
             this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 

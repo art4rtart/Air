@@ -13,7 +13,6 @@ namespace Air
         private int frameIndex;
         private float framesPerSecond;
         private int millisecondsElapsed;
-        private RectangleF srcRect;
 
         public int index
         {

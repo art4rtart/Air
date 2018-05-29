@@ -32,7 +32,7 @@ namespace Air
 
         public double slidingVelocity { set { slidingValue = value; } }
 
-        public double airtankValue { set { val = value; } }
+        public double airtankValue { set { val = value; } get { return val; } }
 
         public double airtankMin { set { min = value; } }
 
@@ -163,6 +163,32 @@ namespace Air
                         item.playSound();
                         item.startTimer = true;
                         
+                        objects.Remove(obj);
+                        return;
+                    }
+                }
+
+                else if (obj.tagName == "AirUp")
+                {
+                    if (obj.collides(this))
+                    {
+                        item.effect = true;
+                        item.playSound();
+                        item.startTimer = true;
+
+                        objects.Remove(obj);
+                        return;
+                    }
+                }
+
+                else if (obj.tagName == "AirDown")
+                {
+                    if (obj.collides(this))
+                    {
+                        item.effect = true;
+                        item.playSound();
+                        item.startTimer = true;
+
                         objects.Remove(obj);
                         return;
                     }
