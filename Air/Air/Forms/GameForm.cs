@@ -74,6 +74,8 @@ namespace Air
         #endregion
 
         // recent added variables
+        Bitmap[] logoImage = new Bitmap[4];
+        int index;
         Bitmap arrow = Air.Properties.Resources.arrow;
         Bitmap cost = Air.Properties.Resources.item_star;
 
@@ -84,10 +86,11 @@ namespace Air
         SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
         int goupspeed = 0;
         bool setGoUpSpeed = true;
-        bool goUp;
-        bool isGoingUp;
-        Bitmap[] logoImage = new Bitmap[4];
-        int index;
+        bool goUp = false;
+        bool isGoingUp = false;
+        bool goingDown = false;
+        bool heightTrim = false;
+        bool throwPlane = true;
 
         public GameForm()
         {
@@ -314,6 +317,8 @@ namespace Air
                             backgrounds.Add(rock);
                             backgrounds.Add(field);
 
+                            player.gravity = 0;
+
                             gameManager.initialization = false;
                         }
 
@@ -332,6 +337,8 @@ namespace Air
                                 {
                                     if (gameManager.update)
                                     {
+                                        label1.Text = goingDown.ToString();
+
                                         player.airtankValue = airtank.value;
                                         airtank.value = player.airtankValue;
                                         player.airtankMin = airtank.minimum;
@@ -357,80 +364,90 @@ namespace Air
                                             player.checkCollision(airdown.obj, airdown);
                                         }
 
-                                        #region
-                                        // please fix this code
-                                        if (player.location.Y < 150)
+                                        if (throwPlane)
                                         {
-                                            if (!isGoingUp)
-                                                player.location.Y = 150;
-
-                                            goUp = true;
-
-                                            if (space.location.Y < 0)
-                                            {
+                                            if (sky.location.Y > 0)
                                                 foreach (Background background in backgrounds)
-                                                    background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
+                                                    background.location.Y -= 2;
 
-                                                foreach (AnimObject pineWheel in pineWheel.obj)
-                                                    pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
-
-                                                foreach (AnimObject star in star.obj)
-                                                    star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
-
-                                                foreach (AnimObject airup in airup.obj)
-                                                    airup.move(0, (int)((player.gravity) * msec));
-
-                                                foreach (AnimObject airdown in airdown.obj)
-                                                    airdown.move(0, (int)((player.gravity) * msec));
+                                            else if (sky.location.Y <= 0)
+                                            {
+                                                player.gravity = 2;
+                                                sky.location.Y = 0;
+                                                throwPlane = false;
+                                                goingDown = true;
                                             }
                                         }
-
-                                        else
+                                        
+                                        if(goingDown)
                                         {
-                                            isGoingUp = false;
-                                            foreach (Background background in backgrounds)
-                                            {
-                                                background.location.Y -= (int)((player.gravity) * msec);
+                                            if (player.location.Y > 100)
+                                                heightTrim = true;
 
-                                                if (background.location.Y > background.y)
+                                            if (player.location.Y < 100 && heightTrim)
+                                            {
+                                                if (!isGoingUp)
+                                                    player.location.Y = 100;
+
+                                                goUp = true;
+
+                                                if (space.location.Y < 0)
                                                 {
-                                                    player.location.Y = 150;
+                                                    foreach (Background background in backgrounds)
+                                                        background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
+
+                                                    foreach (AnimObject pineWheel in pineWheel.obj)
+                                                        pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                                    foreach (AnimObject star in star.obj)
+                                                        star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                                    foreach (AnimObject airup in airup.obj)
+                                                        airup.move(0, (int)((player.gravity) * msec));
+
+                                                    foreach (AnimObject airdown in airdown.obj)
+                                                        airdown.move(0, (int)((player.gravity) * msec));
+                                                }
+                                            }
+
+                                            else
+                                            {
+                                                isGoingUp = false;
+                                                foreach (Background background in backgrounds)
+                                                {
+                                                    background.location.Y -= (int)((player.gravity) * msec);
+
+                                                    if (background.location.Y > background.y)
+                                                    {
+                                                        player.location.Y = 150;
+                                                    }
+
+                                                    else
+                                                    {
+                                                        background.location.Y = background.y;
+                                                        goUp = false;
+                                                    }
                                                 }
 
-                                                else
+                                                if (goUp)
                                                 {
-                                                    background.location.Y = background.y;
-                                                    goUp = false;
+                                                    foreach (AnimObject pineWheel in pineWheel.obj)
+                                                        pineWheel.move(0, -(int)((player.gravity) * msec));
+
+                                                    foreach (AnimObject star in star.obj)
+                                                        star.move(0, -(int)((player.gravity) * msec));
+
+                                                    foreach (AnimObject airup in airup.obj)
+                                                        airup.move(0, -(int)((player.gravity) * msec));
+
+                                                    foreach (AnimObject airdown in airdown.obj)
+                                                        airdown.move(0, -(int)((player.gravity) * msec));
                                                 }
-                                            }
-
-                                            if (goUp)
-                                            {
-                                                foreach (AnimObject pineWheel in pineWheel.obj)
-                                                    pineWheel.move(0, -(int)((player.gravity) * msec));
-
-                                                foreach (AnimObject star in star.obj)
-                                                    star.move(0, -(int)((player.gravity) * msec));
-
-                                                foreach (AnimObject airup in airup.obj)
-                                                    airup.move(0, -(int)((player.gravity) * msec));
-
-                                                foreach (AnimObject airdown in airdown.obj)
-                                                    airdown.move(0, -(int)((player.gravity) * msec));
+                                                //background.move((int)player.speed / 5, 5);
                                             }
                                         }
 
-                                        // speed update : UI
-                                        if (!player.isGrounded)
-                                        {
-                                            if (player.speed > player.minSpeed)
-                                                player.speed -= 1;
-
-                                            else if (player.speed < player.minSpeed)
-                                                player.speed = player.minSpeed;
-                                        }
-
-                                        // item effects
+                                        // item effect
                                         if (pineWheel.effect)
                                         {
                                             isGoingUp = true;
@@ -461,11 +478,23 @@ namespace Air
 
                                         if (airdown.effect)
                                         {
-                                            airtank.value -= 100;
+                                            airtank.value -= 10;
                                             airdown.effect = false;
                                         }
+                                    }
 
-                                        #endregion
+                                    else
+                                    {
+                                        if (!player.temp)
+                                        {
+                                            foreach (Background background in backgrounds)
+                                                background.move((int)player.speed / 5, 5);
+                                        }
+
+                                        else
+                                        {
+                                            gameManager.update = true;
+                                        }
                                     }
 
                                     if (sky.location.Y == 0)
@@ -608,7 +637,6 @@ namespace Air
 
         private void shopCanvas_Paint(object sender, PaintEventArgs e)
         {
-
             cloud.draw(e.Graphics);
             plane.draw(e.Graphics);
         }
@@ -656,7 +684,6 @@ namespace Air
                 {
                     developerMode = true;
                     SettingForm settingForm = new SettingForm();
-
                     settingForm.StartPosition = FormStartPosition.Manual;
                     settingForm.Location = new Point(this.Width / 2 - (settingForm.Size.Width / 10), ((this.Height / 2) - settingForm.Size.Height / 3));
                     settingForm.ShowDialog();    // this is modeless
@@ -674,7 +701,7 @@ namespace Air
                 player.isGrounded = false;
                 player.speed = player.velocity();
                 player.gameStart = true;
-                gameManager.update = gameManager.playing = true;
+                gameManager.playing = true;
             }
 
             else

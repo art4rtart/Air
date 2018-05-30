@@ -41,6 +41,7 @@
             this.multiple = new System.Windows.Forms.Label();
             this.shopFrame = new System.Windows.Forms.PictureBox();
             this.starCount = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
             this.SuspendLayout();
             // 
@@ -188,6 +189,15 @@
             this.starCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.starCount.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(41, 312);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 12);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "label1";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -196,6 +206,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1124, 681);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.multiple);
             this.Controls.Add(this.play);
             this.Controls.Add(this.shop);
@@ -237,6 +248,7 @@
         private System.Windows.Forms.Label multiple;
         private System.Windows.Forms.PictureBox shopFrame;
         private System.Windows.Forms.Label starCount;
+        private System.Windows.Forms.Label label1;
     }
 }
 

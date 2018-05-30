@@ -28,6 +28,7 @@ namespace Air
         public bool isFlying, isGrounded, isPicked;
         public bool gameStart = false;
         public bool canPickUp = false;
+        public bool temp = false;
         private bool startTimer = true;
 
         public double slidingVelocity { set { slidingValue = value; } }
@@ -79,23 +80,27 @@ namespace Air
 
             if (gameStart)
             {
+                TimeSpan gameTime = DateTime.Now - startTime;
+
                 if (startTimer)
                 {
                     startTime = DateTime.Now;
                     startTimer = false;
                 }
 
-                TimeSpan gameTime = DateTime.Now - startTime;
-
                 if (this.location.X > playerX)
-                {        
-                    this.location.X -= (int)(airResistance / 5);
-                    airResistance += 1;
+                {
+                    this.location.X -= (int)(airResistance / 2);
+                    if(this.location.Y > 100)
+                        this.location.Y -= (int)gravity;
+                    airResistance += 0.5;
                 }
 
                 else if (this.location.X < playerX)
+                {
                     this.location.X = playerX;
-
+                    temp = true;
+                }
 
                 if (isFlying && val > min)
                 {
@@ -140,7 +145,7 @@ namespace Air
         public int velocity()
         {
             Point velocity = new Point(endPosition.X - startPosition.X, endPosition.Y - startPosition.Y);
-            return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / 7;
+            return (int)(Math.Pow(Math.Pow(velocity.X, 2) + Math.Pow(velocity.Y, 2), 0.5)) / 2;
         }
 
         public void checkCollision(List<AnimObject> objects, Item item)

@@ -55,7 +55,7 @@ namespace Air
             {
                 if (value > minimum)
                 {
-                    value -= 5 * msec;
+                    value -= 1 * msec;
                 }
 
                 if (value < minimum)
