@@ -209,5 +209,17 @@
   <ItemGroup>
     <None Include="Resources\logo_kputext.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_puzzle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_search.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

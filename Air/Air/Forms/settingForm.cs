@@ -18,12 +18,17 @@ namespace Air
 
         private void settingForm_Load(object sender, EventArgs e)
         {
-
+            this.BackgroundImage = Air.Properties.Resources.background_paper;
         }
 
         private void settingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             GameForm.developerMode = false;
+        }
+
+        private void SettingForm_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

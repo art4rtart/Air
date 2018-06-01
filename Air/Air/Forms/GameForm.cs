@@ -91,7 +91,6 @@ namespace Air
         bool goingDown = false;
         bool heightTrim = false;
         bool throwPlane = true;
-        const int MAX_Y = 100;
 
         public GameForm()
         {
@@ -375,20 +374,20 @@ namespace Air
                                             {
                                                 player.gravity = 2;
                                                 sky.location.Y = 0;
+                                                throwPlane = false;
                                                 goingDown = true;
-                                                throwPlane = false;                                                
                                             }
                                         }
                                         
                                         if(goingDown)
                                         {
-                                            if (player.location.Y > MAX_Y)
+                                            if (player.location.Y > 100)
                                                 heightTrim = true;
 
-                                            if (player.location.Y < MAX_Y && heightTrim)
+                                            if (player.location.Y < 100 && heightTrim)
                                             {
                                                 if (!isGoingUp)
-                                                    player.location.Y = MAX_Y;
+                                                    player.location.Y = 100;
 
                                                 goUp = true;
 
@@ -404,10 +403,10 @@ namespace Air
                                                         star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
                                                     foreach (AnimObject airup in airup.obj)
-                                                        airup.move(0, (int)(player.gravity + (int)(player.gravity / 2)) * msec);
+                                                        airup.move(0, (int)((player.gravity) * msec));
 
                                                     foreach (AnimObject airdown in airdown.obj)
-                                                        airdown.move(0, (int)(player.gravity + (int)(player.gravity / 2)) * msec);
+                                                        airdown.move(0, (int)((player.gravity) * msec));
                                                 }
                                             }
 
@@ -420,7 +419,7 @@ namespace Air
 
                                                     if (background.location.Y > background.y)
                                                     {
-                                                        player.location.Y = MAX_Y;
+                                                        player.location.Y = 150;
                                                     }
 
                                                     else
