@@ -15,7 +15,7 @@ namespace Air
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SettingForm());
+            Application.Run(new GameForm());
         }
     }
 }

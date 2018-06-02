@@ -11,26 +11,38 @@ namespace Air
     class Button
     {
         // member variables
-        private Label button = new Label();
+        public Label button = new Label();
+        Color activeColor;
+        Color deactiveColor;
+        public bool active;
+        public bool isChecked;
 
         // methods
-        public void init(Label button, Font font)
+        public void init(Label button, Point location, Color deactiveColor, Color activeColor, Font font)
         {
             this.button = button;
+            this.button.TextAlign = ContentAlignment.MiddleCenter;
+            this.deactiveColor = deactiveColor;
+            this.activeColor = activeColor;
             button.Font = font;
+            button.Location = location;
+            button.BackColor = Color.Transparent;
+            button.AutoSize = true;
         }
 
         public void update(Point MousePosition)
         {
-            if (MousePosition.X > button.Location.X && MousePosition.X < button.Location.X + button.Size.Width)
+            if (MousePosition.X > button.Location.X && MousePosition.X < button.Location.X + button.Size.Width && MousePosition.Y > button.Location.Y && MousePosition.Y < button.Location.Y + button.Size.Height)
             {
-                if (MousePosition.Y > button.Location.Y && MousePosition.Y < button.Location.Y + button.Size.Height)
-                    button.ForeColor = Color.WhiteSmoke;
-                else
-                    button.ForeColor = Color.DimGray;
+                button.ForeColor = activeColor;
+                active = true;
             }
+
             else
-                button.ForeColor = Color.DimGray;
+            {
+                button.ForeColor = deactiveColor;
+                active = false;
+            }
         }
 
         public void visible(bool isVisible)

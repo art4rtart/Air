@@ -46,6 +46,7 @@
     <Compile Include="Classes\Object\Airtank.cs" />
     <Compile Include="Classes\Object\AnimObject.cs" />
     <Compile Include="Classes\GameManager.cs" />
+    <Compile Include="Classes\Settings.cs" />
     <Compile Include="Classes\UI\Icon.cs" />
     <Compile Include="Classes\Object\Background.cs" />
     <Compile Include="Classes\Enemy\Enemy.cs" />
@@ -54,6 +55,12 @@
     <Compile Include="Classes\Object\Player.cs" />
     <Compile Include="Classes\UI\Button.cs" />
     <Compile Include="Classes\UI\Text.cs" />
+    <Compile Include="Forms\CreditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreditForm.Designer.cs">
+      <DependentUpon>CreditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ScoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +81,9 @@
     <Compile Include="Forms\settingForm.Designer.cs">
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\CreditForm.resx">
+      <DependentUpon>CreditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -212,9 +222,6 @@
     <None Include="Resources\icon_puzzle.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon_search.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icon_sound.png" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +232,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon_setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_cheart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_chome.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_cpuzzle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_cback.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,10 +9,16 @@ namespace Air
 {
     class Icon : GameObject
     {
+        private Bitmap cImage;
+        private Bitmap iconImage;
+
         private int frameCount;
         private int frameIndex;
         private float framesPerSecond;
         private int millisecondsElapsed;
+
+        public bool active;
+        public bool isChecked;
 
         public int index
         {
@@ -25,8 +31,14 @@ namespace Air
             }
         }
 
+        public Bitmap colorImage
+        {
+            set { cImage = value; }
+        }
+
         public Icon(Bitmap bitmap, int frameCount, float framesPerSecond, Rectangle rect, RectangleF srcRect) : base(bitmap)
         {
+            this.iconImage = bitmap;
             this.frameCount = frameCount;
             this.rect.Width = this.rect.Width / frameCount;
 
@@ -47,7 +59,25 @@ namespace Air
 
         public override void draw(Graphics g)
         {
-            g.DrawImage(image, rect, srcRect, GraphicsUnit.Pixel);
+            if(!isChecked)
+                g.DrawImage(image, rect, srcRect, GraphicsUnit.Pixel);
+            else
+                g.DrawImage(cImage, rect, srcRect, GraphicsUnit.Pixel);
+        }
+
+        public void handleMouseMoveEvent(Point e)
+        {
+            if (e.X > this.rect.X && e.X < this.rect.X + this.rect.Width && e.Y > this.rect.Y && e.Y < this.rect.Y + this.rect.Height)
+            {
+                this.image = cImage;
+                active = true;
+            }
+
+            else
+            {
+                this.image = iconImage;
+                active = false;
+            }
         }
     }
 }

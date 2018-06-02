@@ -213,6 +213,46 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_cback {
+            get {
+                object obj = ResourceManager.GetObject("icon_cback", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_cheart {
+            get {
+                object obj = ResourceManager.GetObject("icon_cheart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_chome {
+            get {
+                object obj = ResourceManager.GetObject("icon_chome", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_cpuzzle {
+            get {
+                object obj = ResourceManager.GetObject("icon_cpuzzle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_heart {
             get {
                 object obj = ResourceManager.GetObject("icon_heart", resourceCulture);
@@ -223,9 +263,9 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_puzzle {
+        internal static System.Drawing.Bitmap icon_home {
             get {
-                object obj = ResourceManager.GetObject("icon_puzzle", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_home", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +273,9 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_search {
+        internal static System.Drawing.Bitmap icon_puzzle {
             get {
-                object obj = ResourceManager.GetObject("icon_search", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_puzzle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

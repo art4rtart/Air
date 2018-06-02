@@ -54,6 +54,7 @@ namespace Air
         Button boardButton = new Button();
 
         Icon setting = new Icon(Air.Properties.Resources.icon_setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
+        public static Settings settings = new Settings();
 
         #endregion
 
@@ -195,9 +196,9 @@ namespace Air
                             clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 2, clickToStart.Location.Y);
 
                             // UI font settings
-                            playgameButton.init(play, new Font("Agency FB", 20, play.Font.Style));
-                            shopButton.init(shop, new Font("Agency FB", 20, shop.Font.Style));
-                            boardButton.init(board, new Font("Agency FB", 20, board.Font.Style));
+                            playgameButton.init(play, play.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, play.Font.Style));
+                            shopButton.init(shop, shop.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, shop.Font.Style));
+                            boardButton.init(board, board.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, board.Font.Style));
                             clickToStart.Font = new Font("Agency FB", 15, clickToStart.Font.Style);
 
                             // UI visible settings
@@ -261,9 +262,6 @@ namespace Air
                             }
                         }
 
-                        playgameButton.update(PointToClient(MousePosition));
-                        shopButton.update(PointToClient(MousePosition));
-                        boardButton.update(PointToClient(MousePosition));
                         title.update(1, msec);
                     }
                     
@@ -318,12 +316,14 @@ namespace Air
                             backgrounds.Add(field);
 
                             player.gravity = 0;
+                            settings.soundValue = 7;
 
                             gameManager.initialization = false;
                         }
 
                         else
                         {
+
                             if (developerMode)
                             {
                                 // this is developer mode
