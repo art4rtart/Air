@@ -53,7 +53,7 @@ namespace Air
         Button shopButton = new Button();
         Button boardButton = new Button();
 
-        AnimUI setting = new AnimUI(Air.Properties.Resources.setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
+        Icon setting = new Icon(Air.Properties.Resources.icon_setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace Air
         // recent added variables
         Bitmap[] logoImage = new Bitmap[4];
         int index;
-        Bitmap arrow = Air.Properties.Resources.arrow;
+        Bitmap arrow = Air.Properties.Resources.icon_arrow;
         Bitmap cost = Air.Properties.Resources.item_star;
 
         Point gameNameOffset = new Point(3, 0);
@@ -287,7 +287,7 @@ namespace Air
                             player.position(150, 200);
 
                             // text init
-                            starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, distance.Font.Style));                // set this value
+                            starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, starCount.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value

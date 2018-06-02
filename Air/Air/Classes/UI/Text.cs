@@ -21,6 +21,8 @@ namespace Air
             this.text = label;
             text.Font = font;
             text.Location = new Point(x, y);
+            label.BackColor = Color.Transparent;
+            label.AutoSize = false;
         }
 
 
