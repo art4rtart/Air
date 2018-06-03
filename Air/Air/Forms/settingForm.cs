@@ -138,7 +138,7 @@ namespace Air
             {
                 CreditForm creditForm = new CreditForm();
                 creditForm.StartPosition = FormStartPosition.Manual;
-                creditForm.Location = new Point(this.Width / 2 - (creditForm.Size.Width / 10), ((this.Height / 2) - creditForm.Size.Height / 3));
+                creditForm.Location = new Point(this.Width - (creditForm.Size.Width / 20) + 55, ((this.Height / 2) - creditForm.Size.Height / 3) + 155);
                 creditForm.ShowDialog();
                 credit.Text = "thank you :)";
                 credit.ForeColor = Color.OrangeRed;

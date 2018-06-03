@@ -105,22 +105,14 @@ namespace Air
 
             // game time setting
             gameManager.updateFlag = DateTime.Now;
-            timerFunction_Tick(sender, e);
-            timerFunction.Interval = 10;
-            timerFunction.Start();
 
             // start position setting
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(150, 30);
 
-            // double buffering
-            this.SetStyle(ControlStyles.DoubleBuffer, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.UserPaint, true);
-
             // set position
-            name.position((this.Width / 2) - (name.size.Width / 2), 180);
-            kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 3, 670);
+            name.position((this.Width / 2) - (name.size.Width / 2) - 3, 180);
+            kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 5, 670);
         }
 
         // update
@@ -193,12 +185,12 @@ namespace Air
                             gameManager.checkTime = true;
 
                             // UI location settings
-                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 2, clickToStart.Location.Y);
+                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 4, clickToStart.Location.Y);
 
                             // UI font settings
-                            playgameButton.init(play, play.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, play.Font.Style));
-                            shopButton.init(shop, shop.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, shop.Font.Style));
-                            boardButton.init(board, board.Location, Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, board.Font.Style));
+                            playgameButton.init(play, new Point(595, 300), Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, play.Font.Style));
+                            shopButton.init(shop, new Point(615, 380), Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, shop.Font.Style));
+                            boardButton.init(board, new Point(611, 460), Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, board.Font.Style));
                             clickToStart.Font = new Font("Agency FB", 15, clickToStart.Font.Style);
 
                             // UI visible settings
@@ -262,6 +254,9 @@ namespace Air
                             }
                         }
 
+                        playgameButton.update(PointToClient(MousePosition));
+                        shopButton.update(PointToClient(MousePosition));
+                        boardButton.update(PointToClient(MousePosition));
                         title.update(1, msec);
                     }
                     
@@ -286,7 +281,7 @@ namespace Air
 
                             // text init
                             starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, starCount.Font.Style));                // set this value
-                            distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) + 10, 55, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
+                            distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) - 7, 57, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
 
@@ -304,7 +299,7 @@ namespace Air
                             gameManager.waitForSeconds = 0.3f;
 
                             // visible static text UI
-                            distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2) + 10, distance.Location.Y);
+                            distance.Location = new Point((this.Width / 2) - (distance.Size.Width / 2) - 7, 22);
                             distance.Font = new Font("Agency FB", 17, distance.Font.Style);
                             distance.Parent = this;
                             distance.Visible = true;
@@ -323,7 +318,6 @@ namespace Air
 
                         else
                         {
-
                             if (developerMode)
                             {
                                 // this is developer mode
@@ -337,8 +331,6 @@ namespace Air
                                 {
                                     if (gameManager.update)
                                     {
-                                        label1.Text = goingDown.ToString();
-
                                         player.airtankValue = airtank.value;
                                         airtank.value = player.airtankValue;
                                         player.airtankMin = airtank.minimum;
@@ -419,7 +411,7 @@ namespace Air
 
                                                     if (background.location.Y > background.y)
                                                     {
-                                                        player.location.Y = 150;
+                                                        player.location.Y = 100;
                                                     }
 
                                                     else
@@ -477,7 +469,7 @@ namespace Air
 
                                         if (airdown.effect)
                                         {
-                                            airtank.value -= 10;
+                                            airtank.value -= 200;
                                             airdown.effect = false;
                                         }
                                     }
@@ -577,7 +569,6 @@ namespace Air
                 #endregion
 
                 case "Board":
-                    // code here
                     if (gameManager.initialization)
                     {
                         gameManager.initialization = false;
@@ -640,7 +631,7 @@ namespace Air
             plane.draw(e.Graphics);
         }
 
-        public Bitmap ChangeOpacity(Image img, float opacityvalue)
+        public static Bitmap ChangeOpacity(Image img, float opacityvalue)
         {
             Bitmap bmp = new Bitmap(img.Width, img.Height);
             Graphics graphics = Graphics.FromImage(bmp);
@@ -684,7 +675,7 @@ namespace Air
                     developerMode = true;
                     SettingForm settingForm = new SettingForm();
                     settingForm.StartPosition = FormStartPosition.Manual;
-                    settingForm.Location = new Point(this.Width / 2 - (settingForm.Size.Width / 10), ((this.Height / 2) - settingForm.Size.Height / 3));
+                    settingForm.Location = new Point(this.Width / 2 - (settingForm.Size.Width / 10) - 40, ((this.Height / 2) - settingForm.Size.Height / 3) - 60);
                     settingForm.ShowDialog();    // this is modeless
                 }
             }
@@ -759,7 +750,6 @@ namespace Air
             {
                 gameManager.sceneName = "Title";
                 firstTime = false;
-
                 gameManager.init();
                 player.init();
                 airtank.init();

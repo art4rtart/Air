@@ -248,5 +248,29 @@
   <ItemGroup>
     <None Include="Resources\icon_cback.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\credit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\credit_page1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\credit_page2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\credit_page3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_cnext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_cprevious.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_previous.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

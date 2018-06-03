@@ -14,7 +14,7 @@ namespace Air
         public bool checkTime = true;
         public float waitForSeconds = 4.5f;
 
-        public string sceneName = "Title";
+        public string sceneName = "InGame";
 
         public bool update = false;
         public bool playing = false;
@@ -40,9 +40,16 @@ namespace Air
 
                 if (player.speed > 0)
                 {
+                    if (player.speed < 0)
+                        player.speed = 0;
+
+                    if (player.speed < player.minSpeed)
+                    {
+                        player.location.X += (int)player.speed;
+                    }
+
                     player.speed -= ((player.airResistance) / 8) * msec;
                     player.airResistance += 0.1f;
-                    player.location.X += (int)player.speed;
                 }
 
                 else
@@ -62,7 +69,7 @@ namespace Air
                         scoreForm scoreForm = new scoreForm();
 
                         scoreForm.StartPosition = FormStartPosition.Manual;
-                        scoreForm.Location = new Point(1280 / 2 - (scoreForm.Size.Width / 10), ((720 / 2) - scoreForm.Size.Height / 3));
+                        scoreForm.Location = new Point(1280 / 2 - (scoreForm.Size.Width / 10) - 55, ((720 / 2) - scoreForm.Size.Height / 3) - 45);
                         scoreForm.ShowDialog();    // this is modeless
                     }
                 }

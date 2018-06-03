@@ -17,7 +17,8 @@ namespace Air
         public double speed;              // max speed is 30
         public int minSpeed = 100;          // temp value
         public int msec;
-        private int boostSpeed = 5;         // 10 is max value
+        private double boostSpeed;         // 10 is max value
+        private double slowSpeed;         // 10 is max value
 
         private double val, min;
         public double gravity = 2;          // please calculate this value
@@ -52,6 +53,8 @@ namespace Air
             this.image = bitmap;
             this.location = location;
             this.initLocation = this.location;
+            boostSpeed = 1.5;
+            slowSpeed = 0.5;
         }
 
         public void init()
@@ -60,7 +63,8 @@ namespace Air
 
             speed = 0;              // max speed is 30
             minSpeed = 100;          // temp value
-            boostSpeed = 5;         // 10 is max value
+            boostSpeed = 1;         // 10 is max value
+            slowSpeed = 1;
 
             val = 0; min = 0;
             gravity = 2;          // please calculate this value
@@ -96,7 +100,7 @@ namespace Air
                     airResistance += 0.5;
                 }
 
-                else if (this.location.X < playerX)
+                else if (this.location.X <= playerX)
                 {
                     this.location.X = playerX;
                     temp = true;
@@ -111,7 +115,7 @@ namespace Air
                 else
                 {
                     if(speed > minSpeed)
-                        this.speed -= boostSpeed;
+                        this.speed -= slowSpeed;
 
                     this.location.Y += (int)((gravity) * msec);
                 }

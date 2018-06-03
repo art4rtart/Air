@@ -22,6 +22,8 @@ namespace Air
             rect = new RectangleF(0, 0, size.Width, size.Height);
         }
 
+        public Bitmap getImage {  get { return image; } }
+
         public RectangleF bounds { get { return rect; } }
 
         public RectangleF src { get { return srcRect; } }
