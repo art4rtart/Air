@@ -54,7 +54,7 @@ namespace Air
             this.location = location;
             this.initLocation = this.location;
             boostSpeed = 1.5;
-            slowSpeed = 0.5;
+            slowSpeed = 1.5;
         }
 
         public void init()

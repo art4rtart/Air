@@ -48,7 +48,7 @@ namespace Air
                         player.location.X += (int)player.speed;
                     }
 
-                    player.speed -= ((player.airResistance) / 8) * msec;
+                    player.speed -= ((player.airResistance) / 10) * msec;
                     player.airResistance += 0.1f;
                 }
 

@@ -34,8 +34,8 @@ namespace Air
 
         Item pineWheel = new Item(Air.Properties.Resources.item_pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
         Item star = new Item(Air.Properties.Resources.item_star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
-        Item airup = new Item(Air.Properties.Resources.item_airup, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirUp", 5.0f);
-        Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 7.0f);
+        Item airup = new Item(Air.Properties.Resources.item_airup, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirUp", 3.0f);
+        Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 3.0f);
 
         GameObject kpu = new GameObject(Air.Properties.Resources.logo_kputext);
         GameObject frame = new GameObject(Air.Properties.Resources.Frame);
@@ -100,17 +100,10 @@ namespace Air
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-            // size settings
-            this.ClientSize = new Size(1280, 720);
-
-            // game time setting
-            gameManager.updateFlag = DateTime.Now;
-
-            // start position setting
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(150, 30);
-
-            // set position
+            this.ClientSize = new Size(1280, 720);
+            gameManager.updateFlag = DateTime.Now;
             name.position((this.Width / 2) - (name.size.Width / 2) - 3, 180);
             kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 5, 670);
         }
@@ -335,17 +328,23 @@ namespace Air
                                         airtank.value = player.airtankValue;
                                         player.airtankMin = airtank.minimum;
                                         airtank.isFlying = player.isFlying;
+
                                         pineWheel.generatePositionY = field.location.Y;
+                                        star.generatePositionY = field.location.Y;
+                                        star.setGenerateTime = 0.1f;
+                                        airup.generatePositionY = field.location.Y;
+                                        airup.generatePositionY = field.location.Y;
+
+                                        pineWheel.update((int)player.speed / 8, msec);
+                                        star.update((int)player.speed / 8, msec);
+                                        airup.update((int)player.speed / 8, msec);
+                                        airdown.update((int)player.speed / 8, msec);
 
                                         sky.update((int)player.speed / 20, msec);
                                         ss.update((int)player.speed / 20, msec);
                                         space.update((int)player.speed / 20, msec);
                                         rock.update((int)player.speed / 15, msec);
                                         field.update((int)player.speed / 8, msec);
-                                        pineWheel.update((int)player.speed / 8, msec);
-                                        star.update((int)player.speed / 8, msec);
-                                        airup.update((int)player.speed / 8, msec);
-                                        airdown.update((int)player.speed / 8, msec);
                                         airtank.update(msec);
 
                                         if (!player.isGrounded)
@@ -383,23 +382,22 @@ namespace Air
 
                                                 goUp = true;
 
-                                                if (space.location.Y < 0)
-                                                {
-                                                    foreach (Background background in backgrounds)
-                                                        background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
+                                                foreach (Background background in backgrounds)
+                                                    background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
 
-                                                    foreach (AnimObject pineWheel in pineWheel.obj)
-                                                        pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                foreach (AnimObject pineWheel in pineWheel.obj)
+                                                    pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                    foreach (AnimObject star in star.obj)
-                                                        star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                foreach (AnimObject star in star.obj)
+                                                    star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                    foreach (AnimObject airup in airup.obj)
-                                                        airup.move(0, (int)((player.gravity) * msec));
+                                                foreach (AnimObject airup in airup.obj)
+                                                    airup.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                    foreach (AnimObject airdown in airdown.obj)
-                                                        airdown.move(0, (int)((player.gravity) * msec));
-                                                }
+                                                foreach (AnimObject airdown in airdown.obj)
+                                                    airdown.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+
                                             }
 
                                             else
@@ -423,17 +421,20 @@ namespace Air
 
                                                 if (goUp)
                                                 {
-                                                    foreach (AnimObject pineWheel in pineWheel.obj)
-                                                        pineWheel.move(0, -(int)((player.gravity) * msec));
+                                                    if (sky.location.Y > 0)
+                                                    {
+                                                        foreach (AnimObject pineWheel in pineWheel.obj)
+                                                            pineWheel.move(0, -(int)((player.gravity) * msec));
 
-                                                    foreach (AnimObject star in star.obj)
-                                                        star.move(0, -(int)((player.gravity) * msec));
+                                                        foreach (AnimObject star in star.obj)
+                                                            star.move(0, -(int)((player.gravity) * msec));
 
-                                                    foreach (AnimObject airup in airup.obj)
-                                                        airup.move(0, -(int)((player.gravity) * msec));
+                                                        foreach (AnimObject airup in airup.obj)
+                                                            airup.move(0, -(int)((player.gravity) * msec));
 
-                                                    foreach (AnimObject airdown in airdown.obj)
-                                                        airdown.move(0, -(int)((player.gravity) * msec));
+                                                        foreach (AnimObject airdown in airdown.obj)
+                                                            airdown.move(0, -(int)((player.gravity) * msec));
+                                                    }
                                                 }
                                             }
                                         }
@@ -480,6 +481,18 @@ namespace Air
                                         {
                                             foreach (Background background in backgrounds)
                                                 background.move((int)player.speed / 5, 5);
+
+                                            foreach (AnimObject pineWheel in pineWheel.obj)
+                                                pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                            foreach (AnimObject star in star.obj)
+                                                star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                            foreach (AnimObject airup in airup.obj)
+                                                airup.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+
+                                            foreach (AnimObject airdown in airdown.obj)
+                                                airdown.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
                                         }
 
                                         else

@@ -30,6 +30,7 @@ namespace Air
         int generateY;
         public bool effect;
         public int count;
+        int maxItemCount = 30;
 
         bool generate = true;
         float generateTime = 0;
@@ -136,7 +137,8 @@ namespace Air
                 if (currentTime.TotalSeconds > generateTime)
                 {
                     timeFlag = DateTime.Now;
-                    generate = true;
+                    if(obj.Count < maxItemCount)
+                        generate = true;
                     startTimer = false;
                 }
             } 
@@ -148,7 +150,7 @@ namespace Air
                 rect.Y = y - 20;
 
             else
-                this.rect.Y = new Random().Next(200, 500);
+                rect.Y = y - new Random().Next(200, 1440);
 
             AnimObject item = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
             item.position(x, item.bounds.Y);
