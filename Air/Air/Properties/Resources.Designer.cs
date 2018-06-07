@@ -19,7 +19,7 @@ namespace Air.Properties {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -213,16 +213,6 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Frame {
-            get {
-                object obj = ResourceManager.GetObject("Frame", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap gameName {
             get {
                 object obj = ResourceManager.GetObject("gameName", resourceCulture);
@@ -253,6 +243,16 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_carrow {
+            get {
+                object obj = ResourceManager.GetObject("icon_carrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_cback {
             get {
                 object obj = ResourceManager.GetObject("icon_cback", resourceCulture);
@@ -266,6 +266,26 @@ namespace Air.Properties {
         internal static System.Drawing.Bitmap icon_cheart {
             get {
                 object obj = ResourceManager.GetObject("icon_cheart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_check {
+            get {
+                object obj = ResourceManager.GetObject("icon_check", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_check1 {
+            get {
+                object obj = ResourceManager.GetObject("icon_check1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -476,6 +496,26 @@ namespace Air.Properties {
         internal static System.Drawing.Bitmap logo_window {
             get {
                 object obj = ResourceManager.GetObject("logo_window", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap object_frame {
+            get {
+                object obj = ResourceManager.GetObject("object_frame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap object_itemframe {
+            get {
+                object obj = ResourceManager.GetObject("object_itemframe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

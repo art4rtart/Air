@@ -81,11 +81,20 @@
     <Compile Include="Forms\settingForm.Designer.cs">
       <DependentUpon>SettingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PurchaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PurchaseForm.Designer.cs">
+      <DependentUpon>PurchaseForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Forms\CreditForm.resx">
       <DependentUpon>CreditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PurchaseForm.resx">
+      <DependentUpon>PurchaseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -271,6 +280,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon_previous.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\object_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\object_itemframe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_carrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

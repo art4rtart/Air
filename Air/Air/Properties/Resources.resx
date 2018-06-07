@@ -124,9 +124,6 @@
   <data name="sound_item" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sound_item.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="airtank_bar" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\airtank_bar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="airtank_gage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\airtank_gage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,9 +153,6 @@
   </data>
   <data name="background_title" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background_title.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Frame" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Frame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="gameName" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gameName.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -252,5 +246,23 @@
   </data>
   <data name="icon_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="object_frame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\object_frame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="object_itemframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\object_itemframe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="airtank_bar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\airtank_bar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_carrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_carrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_check1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

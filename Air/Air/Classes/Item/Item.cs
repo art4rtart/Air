@@ -36,6 +36,10 @@ namespace Air
         float generateTime = 0;
         DateTime startTime;
 
+        int upgradePrice;
+        int currentValue;
+        int upgradeValue;
+
         public Item(Bitmap bitmap, int frameCount, float framesPerSecond, RectangleF rect, RectangleF srcRect, string tagName, float generateTime)
         {
             this.image = bitmap;
@@ -46,6 +50,13 @@ namespace Air
             this.tagName = tagName;
             this.generateTime = generateTime;
             startTime = DateTime.Now;
+        }
+
+        public Item(int upgradePrice, int currentValue, int upgradeValue)
+        {
+            this.upgradePrice = upgradePrice;
+            this.currentValue = currentValue;
+            this.upgradeValue = upgradeValue;
         }
 
         public void init()

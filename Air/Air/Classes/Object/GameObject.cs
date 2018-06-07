@@ -14,6 +14,7 @@ namespace Air
         protected RectangleF rect;
         protected RectangleF srcRect;
         public Size size;
+        public bool isCheckable;
 
         public GameObject(Bitmap bitmap)
         {
@@ -22,11 +23,11 @@ namespace Air
             rect = new RectangleF(0, 0, size.Width, size.Height);
         }
 
-        public Bitmap getImage {  get { return image; } }
+        public Bitmap getImage {  get { return image; } set { this.image = value; } }
 
-        public RectangleF bounds { get { return rect; } }
+        public RectangleF bounds { get { return rect; } set { this.rect = value; } }
 
-        public RectangleF src { get { return srcRect; } }
+        public RectangleF src { get { return srcRect; } set { this.srcRect = value; } }
 
         public virtual RectangleF collisionBounds { get { return rect; } }
 

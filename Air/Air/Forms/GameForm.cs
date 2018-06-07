@@ -38,7 +38,11 @@ namespace Air
         Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 3.0f);
 
         GameObject kpu = new GameObject(Air.Properties.Resources.logo_kputext);
-        GameObject frame = new GameObject(Air.Properties.Resources.Frame);
+        GameObject frame = new GameObject(Air.Properties.Resources.object_frame);
+
+        List<GameObject> itemFrames = new List<GameObject>();
+        GameObject[] itemFrame = new GameObject[6];
+
         GameObject name = new GameObject(Air.Properties.Resources.gameName);
         GameObject plane = new GameObject(Air.Properties.Resources.plane);
         GameObject starIcon = new GameObject(Air.Properties.Resources.item_star);
@@ -49,11 +53,21 @@ namespace Air
         Text starCountText = new Text();
         Text presstostartText = new Text();
 
+        Text itemNameText = new Text();
+        Text purchaseText = new Text();
+        Text currentValueText = new Text();
+        Text upgradeValueText = new Text();
+        Text arrowText = new Text();
+
         Button playgameButton = new Button();
         Button shopButton = new Button();
         Button boardButton = new Button();
 
-        Icon setting = new Icon(Air.Properties.Resources.icon_setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
+        Icon settingIcon = new Icon(Air.Properties.Resources.icon_setting, 4, 1.0f, new Rectangle(1200, 20, 54, 54), new RectangleF(0, 0, 132, 132));
+        Icon arrowIcon = new Icon(Air.Properties.Resources.icon_arrow, 1, 1.0f, new Rectangle(0, 0, 30, 30), new RectangleF(0, 0, 60, 60));
+        Icon goBackIcon = new Icon(Air.Properties.Resources.icon_back, 1, 1.0f, new Rectangle(1200, 20, 45, 45), new RectangleF(0, 0, 64, 64));
+        Icon checkedIcon = new Icon(Air.Properties.Resources.icon_check, 1, 1.0f, new Rectangle(0, 0, 45, 45), new RectangleF(0, 0, 64, 64));
+
         public static Settings settings = new Settings();
 
         #endregion
@@ -76,9 +90,9 @@ namespace Air
 
         // recent added variables
         Bitmap[] logoImage = new Bitmap[4];
-        int index;
-        Bitmap arrow = Air.Properties.Resources.icon_arrow;
-        Bitmap cost = Air.Properties.Resources.item_star;
+        int logoImageIndex;
+        //Bitmap arrow = Air.Properties.Resources.icon_arrow;
+        //Bitmap cost = Air.Properties.Resources.item_star;
 
         Point gameNameOffset = new Point(3, 0);
         bool showGameName = false;
@@ -120,7 +134,7 @@ namespace Air
                 case "Logo":
                     #region
                     {
-                        if(gameManager.initialization)
+                        if (gameManager.initialization)
                         {
                             logoImage[0] = Air.Properties.Resources.logo_kpu;
                             logoImage[1] = Air.Properties.Resources.logo_window;
@@ -128,7 +142,7 @@ namespace Air
                             gameManager.initialization = false;
                         }
 
-                        this.BackgroundImage = ChangeOpacity(logoImage[index], opacity);
+                        this.BackgroundImage = ChangeOpacity(logoImage[logoImageIndex], opacity);
 
                         if (gameManager.checkTime)
                         {
@@ -144,8 +158,8 @@ namespace Air
 
                             if (opacity < 0)
                             {
-                                if (index < logoImage.Length - 1)
-                                    index++;
+                                if (logoImageIndex < logoImage.Length - 1)
+                                    logoImageIndex++;
                                 fadeDir *= -1;
                             }
 
@@ -156,7 +170,7 @@ namespace Air
                                 opacity = 1;
                             }
 
-                            if (index == 3)
+                            if (logoImageIndex == 3)
                             {
                                 this.BackgroundImage = null;
                                 gameManager.sceneName = "Title";
@@ -166,7 +180,7 @@ namespace Air
 
                         break;
                     }
-                    #endregion
+                #endregion
 
                 case "Title":
                     #region
@@ -196,7 +210,7 @@ namespace Air
                             distance.Visible = false;
                             starCount.Visible = false;
                             distanceText.visible(false);
-     
+
                             velocityText.visible(false);
                             airPercentageText.visible(false);
 
@@ -212,7 +226,7 @@ namespace Air
                             gameManager.checkTime = false;
                         }
 
-                        if (firstTime)       
+                        if (firstTime)
                         {
                             TimeSpan currentTime = DateTime.Now - gameManager.timeFlag;
 
@@ -252,9 +266,9 @@ namespace Air
                         boardButton.update(PointToClient(MousePosition));
                         title.update(1, msec);
                     }
-                    
+
                     break;
-                    #endregion
+                #endregion
 
                 case "InGame":
                     #region
@@ -369,8 +383,8 @@ namespace Air
                                                 goingDown = true;
                                             }
                                         }
-                                        
-                                        if(goingDown)
+
+                                        if (goingDown)
                                         {
                                             if (player.location.Y > 100)
                                                 heightTrim = true;
@@ -512,7 +526,7 @@ namespace Air
 
                                 if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
                                 {
-                                    setting.updateFrame(msec);
+                                    settingIcon.updateFrame(msec);
                                     gameMode = false;
                                     settingMode = true;
                                 }
@@ -554,10 +568,44 @@ namespace Air
                         multiple.Location = new Point(308, 488);
                         plane.position(105, 100);
                         starIcon.position(197, 490);
+                        checkedIcon.position(200, 200); // hide on bush
 
                         starCount.ForeColor = Color.OrangeRed;
-                        starCountText.init(343, 482, starCount, new Font("Agency FB", 20, distance.Font.Style));
+                        arrowIcon.colorImage = Air.Properties.Resources.icon_carrow;
+                        goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
+                        arrowIcon.position(1065, 544);
+
+                        starCountText.init(343, 482, starCount, new Font("Agency FB", 20, starCount.Font.Style));
+                        itemNameText.init(785, 480, itemName, new Font("Agency FB", 20, itemName.Font.Style));
+                        purchaseText.init(674, 540, purchase, new Font("Agency FB", 20, purchase.Font.Style));
+                        currentValueText.init(195, 5, currentValue, new Font("Agency FB", 20, currentValue.Font.Style));
+                        upgradeValueText.init(300, 5, upgradeValue, new Font("Agency FB", 20, upgradeValue.Font.Style));
+                        arrowText.init(265, 0, to, new Font("Agency FB", 22, to.Font.Style));
+
+                        currentValue.Parent = purchase;
+                        upgradeValue.Parent = purchase;
+                        to.Parent = purchase;
+
                         frame.position(shopFrame.Location.X - 5, shopFrame.Location.Y - 5);
+
+                        int xAddValue = 120;
+                        for (int i = 0; i < itemFrame.Length / 2; i++)
+                        {
+                            itemFrame[i] = new GameObject(Air.Properties.Resources.object_itemframe);
+                            itemFrame[i].bounds = new RectangleF(0, 0, 120, 120);
+                            itemFrame[i].position(510 + xAddValue, 150);
+                            itemFrames.Add(itemFrame[i]);
+                            xAddValue += 190;
+                        }
+                        xAddValue = 120;
+                        for (int i = 3; i < itemFrame.Length; i++)
+                        {
+                            itemFrame[i] = new GameObject(Air.Properties.Resources.object_itemframe);
+                            itemFrame[i].bounds = new RectangleF(0, 0, 120, 120);
+                            itemFrame[i].position(510 + xAddValue, 320);
+                            itemFrames.Add(itemFrame[i]);
+                            xAddValue += 190;
+                        }
 
                         gameManager.initialization = false;
                     }
@@ -577,6 +625,12 @@ namespace Air
                             fadeDir = 1;
 
                         starCountText.update(star.count.ToString());
+                        itemNameText.update("seletected item name");
+                        purchaseText.update("upgrade your item :)");
+                        currentValueText.update("30%");
+                        upgradeValueText.update("100%");
+
+                        arrowIcon.updateFrame(msec);
                     }
                     break;
                 #endregion
@@ -588,6 +642,7 @@ namespace Air
                     }
                     break;
             }
+
             gameManager.updateFlag = DateTime.Now;
             Invalidate();
         }
@@ -625,7 +680,7 @@ namespace Air
                 airup.draw(e.Graphics);
                 airdown.draw(e.Graphics);
                 player.draw(e.Graphics);
-                setting.draw(e.Graphics);
+                settingIcon.draw(e.Graphics);
                 starIcon.draw(e.Graphics);
             }
 
@@ -633,8 +688,15 @@ namespace Air
             {
                 paper.draw(e.Graphics);
                 frame.draw(e.Graphics);
+
+                foreach (GameObject itemFrame in itemFrames)
+                    itemFrame.draw(e.Graphics);
+
                 kpu.draw(e.Graphics);
                 starIcon.draw(e.Graphics);
+                arrowIcon.draw(e.Graphics);
+                goBackIcon.draw(e.Graphics);
+                checkedIcon.draw(e.Graphics);
             }
         }
 
@@ -713,11 +775,66 @@ namespace Air
             }
         }
 
+        private void canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (gameManager.sceneName == "Shop")
+            {
+                arrowIcon.handleMouseMoveEvent(e.Location);
+                goBackIcon.handleMouseMoveEvent(e.Location);
+
+                foreach (GameObject itemFrame in itemFrames)
+                {
+                    if (e.Location.X > itemFrame.bounds.X && e.Location.X < itemFrame.bounds.X + itemFrame.bounds.Width)
+                    {
+                        if (e.Location.Y > itemFrame.bounds.Y && e.Location.Y < itemFrame.bounds.Y + itemFrame.bounds.Height)
+                        {
+                            itemFrame.isCheckable = true;
+                        }
+                    }
+                    else
+                    {
+                        itemFrame.isCheckable = false;
+                    }
+                }
+            }
+        }
+
         private void canvas_Click(object sender, EventArgs e)
         {
-            if (gameManager.sceneName == "Title" && !pressToStart)
+            if (gameManager.sceneName == "Title")
             {
-                pressToStart = true;
+                if (pressToStart is false)
+                    pressToStart = true;
+            }
+
+            else if (gameManager.sceneName == "Shop")
+            {
+                if (arrowIcon.active is true)
+                {
+                    star.count -= 10;
+                    //PurchaseForm purchaseForm = new PurchaseForm();
+                    //purchaseForm.StartPosition = FormStartPosition.Manual;
+                    //purchaseForm.Location = new Point(this.Width / 2 - (purchaseForm.Size.Width / 10) - 40, ((this.Height / 2) - purchaseForm.Size.Height / 3) - 70);
+                    //purchaseForm.ShowDialog();    // this is modeless
+                }
+
+                if (goBackIcon.active is true)
+                {
+                    gameManager.sceneName = "Title";
+                    firstTime = false;
+                    gameManager.init();
+                    player.init();
+                    airtank.init();
+                    developerMode = false;
+                }
+
+                foreach (GameObject itemFrame in itemFrames)
+                {
+                    if (itemFrame.isCheckable is true)
+                    {
+                        checkedIcon.position(itemFrame.bounds.X + itemFrame.bounds.Width - 20, itemFrame.bounds.Y);
+                    }
+                }
             }
         }
         #endregion
@@ -761,12 +878,7 @@ namespace Air
 
             if (e.KeyCode == Keys.M)
             {
-                gameManager.sceneName = "Title";
-                firstTime = false;
-                gameManager.init();
-                player.init();
-                airtank.init();
-                developerMode = false;
+
             }
 
             if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")
