@@ -83,6 +83,26 @@ namespace Air.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap animation_pump {
+            get {
+                object obj = ResourceManager.GetObject("animation_pump", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap animation_star {
+            get {
+                object obj = ResourceManager.GetObject("animation_star", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap background_atmosphere {
             get {
                 object obj = ResourceManager.GetObject("background_atmosphere", resourceCulture);

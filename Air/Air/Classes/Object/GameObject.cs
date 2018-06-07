@@ -14,7 +14,9 @@ namespace Air
         protected RectangleF rect;
         protected RectangleF srcRect;
         public Size size;
-        public bool isCheckable;
+        public bool isCheckable = false;
+        public bool isChecked = false;
+        public int index;
 
         public GameObject(Bitmap bitmap)
         {

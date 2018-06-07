@@ -68,6 +68,9 @@ namespace Air
         Icon goBackIcon = new Icon(Air.Properties.Resources.icon_back, 1, 1.0f, new Rectangle(1200, 20, 45, 45), new RectangleF(0, 0, 64, 64));
         Icon checkedIcon = new Icon(Air.Properties.Resources.icon_check, 1, 1.0f, new Rectangle(0, 0, 45, 45), new RectangleF(0, 0, 64, 64));
 
+        Icon starAnimation = new Icon(Air.Properties.Resources.animation_star, 6, 1.0f, new Rectangle(0, 0, 100, 100), new RectangleF(0, 0, 300, 300));
+        Icon pumpAnimation = new Icon(Air.Properties.Resources.animation_pump, 6, 1.0f, new Rectangle(0, 0, 200, 200), new RectangleF(0, 0, 300, 300));
+
         public static Settings settings = new Settings();
 
         #endregion
@@ -574,6 +577,9 @@ namespace Air
                         arrowIcon.colorImage = Air.Properties.Resources.icon_carrow;
                         goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
                         arrowIcon.position(1065, 544);
+                        starAnimation.position(641, 155);
+                        pumpAnimation.position(783, 115);
+
 
                         starCountText.init(343, 482, starCount, new Font("Agency FB", 20, starCount.Font.Style));
                         itemNameText.init(785, 480, itemName, new Font("Agency FB", 20, itemName.Font.Style));
@@ -594,6 +600,7 @@ namespace Air
                             itemFrame[i] = new GameObject(Air.Properties.Resources.object_itemframe);
                             itemFrame[i].bounds = new RectangleF(0, 0, 120, 120);
                             itemFrame[i].position(510 + xAddValue, 150);
+                            itemFrame[i].index = i;
                             itemFrames.Add(itemFrame[i]);
                             xAddValue += 190;
                         }
@@ -603,6 +610,7 @@ namespace Air
                             itemFrame[i] = new GameObject(Air.Properties.Resources.object_itemframe);
                             itemFrame[i].bounds = new RectangleF(0, 0, 120, 120);
                             itemFrame[i].position(510 + xAddValue, 320);
+                            itemFrame[i].index = i;
                             itemFrames.Add(itemFrame[i]);
                             xAddValue += 190;
                         }
@@ -631,6 +639,30 @@ namespace Air
                         upgradeValueText.update("100%");
 
                         arrowIcon.updateFrame(msec);
+
+                        //if (itemFrame[0].isChecked)
+                        //{
+                        //    tempIndex = 0;
+                        //    for (int i = 0; i < itemFrame.Length; i++)
+                        //    {
+                        //        if (i != tempIndex)
+                        //            itemFrame[i].isChecked = false;
+                        //    }
+                        //    starAnimation.updateFrame(msec);
+                        //}
+
+                        //if (itemFrame[1].isChecked)
+                        //{
+                        //    tempIndex = 1;
+                        //    for (int i = 0; i < itemFrame.Length; i++)
+                        //    {
+                        //        if (i != tempIndex)
+                        //            itemFrame[i].isChecked = false;
+                        //    }
+                        //    pumpAnimation.updateFrame(msec);
+                        //}
+
+                        //label1.Text = itemFrame[0].isChecked.ToString();
                     }
                     break;
                 #endregion
@@ -647,7 +679,7 @@ namespace Air
             Invalidate();
         }
         #endregion
-
+        int tempIndex;
         // draw
         #region
         private void inGameCanvas_Paint(object sender, PaintEventArgs e)
@@ -697,6 +729,9 @@ namespace Air
                 arrowIcon.draw(e.Graphics);
                 goBackIcon.draw(e.Graphics);
                 checkedIcon.draw(e.Graphics);
+
+                starAnimation.draw(e.Graphics);
+                pumpAnimation.draw(e.Graphics);
             }
         }
 
@@ -775,6 +810,7 @@ namespace Air
             }
         }
 
+        Point clickPoint = new Point();
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (gameManager.sceneName == "Shop")
@@ -788,6 +824,7 @@ namespace Air
                     {
                         if (e.Location.Y > itemFrame.bounds.Y && e.Location.Y < itemFrame.bounds.Y + itemFrame.bounds.Height)
                         {
+                            clickPoint = e.Location;
                             itemFrame.isCheckable = true;
                         }
                     }
@@ -833,6 +870,7 @@ namespace Air
                     if (itemFrame.isCheckable is true)
                     {
                         checkedIcon.position(itemFrame.bounds.X + itemFrame.bounds.Width - 20, itemFrame.bounds.Y);
+                        itemFrames[itemFrame.index].isChecked = true;
                     }
                 }
             }

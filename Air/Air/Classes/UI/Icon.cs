@@ -18,7 +18,6 @@ namespace Air
         private int millisecondsElapsed;
 
         public bool active;
-        public bool isChecked;
 
         public int index
         {

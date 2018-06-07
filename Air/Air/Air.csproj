@@ -293,5 +293,11 @@
   <ItemGroup>
     <None Include="Resources\icon_check.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\animation_pump.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\animation_star.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
