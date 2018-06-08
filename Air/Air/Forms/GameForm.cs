@@ -640,29 +640,29 @@ namespace Air
 
                         arrowIcon.updateFrame(msec);
 
-                        //if (itemFrame[0].isChecked)
-                        //{
-                        //    tempIndex = 0;
-                        //    for (int i = 0; i < itemFrame.Length; i++)
-                        //    {
-                        //        if (i != tempIndex)
-                        //            itemFrame[i].isChecked = false;
-                        //    }
-                        //    starAnimation.updateFrame(msec);
-                        //}
+                        if (itemFrame[0].isChecked)
+                        {
+                            tempIndex = 0;
+                            for (int i = 0; i < itemFrame.Length; i++)
+                            {
+                                if (i != tempIndex)
+                                    itemFrame[i].isChecked = false;
+                            }
+                            starAnimation.updateFrame(msec);
+                        }
 
-                        //if (itemFrame[1].isChecked)
-                        //{
-                        //    tempIndex = 1;
-                        //    for (int i = 0; i < itemFrame.Length; i++)
-                        //    {
-                        //        if (i != tempIndex)
-                        //            itemFrame[i].isChecked = false;
-                        //    }
-                        //    pumpAnimation.updateFrame(msec);
-                        //}
+                        if (itemFrame[1].isChecked)
+                        {
+                            tempIndex = 1;
+                            for (int i = 0; i < itemFrame.Length; i++)
+                            {
+                                if (i != tempIndex)
+                                    itemFrame[i].isChecked = false;
+                            }
+                            pumpAnimation.updateFrame(msec);
+                        }
 
-                        //label1.Text = itemFrame[0].isChecked.ToString();
+                        label1.Text = itemFrame[0].isChecked.ToString();
                     }
                     break;
                 #endregion
