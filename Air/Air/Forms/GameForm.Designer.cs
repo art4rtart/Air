@@ -46,7 +46,6 @@
             this.itemName = new System.Windows.Forms.Label();
             this.shopFrame = new System.Windows.Forms.PictureBox();
             this.to = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
             this.SuspendLayout();
             // 
@@ -183,43 +182,47 @@
             // currentValue
             // 
             this.currentValue.BackColor = System.Drawing.Color.Transparent;
-            this.currentValue.Location = new System.Drawing.Point(788, 91);
+            this.currentValue.Location = new System.Drawing.Point(0, 0);
             this.currentValue.Name = "currentValue";
             this.currentValue.Size = new System.Drawing.Size(79, 36);
             this.currentValue.TabIndex = 26;
             this.currentValue.Text = "label1";
             this.currentValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.currentValue.Visible = false;
             // 
             // upgradeValue
             // 
             this.upgradeValue.BackColor = System.Drawing.Color.Transparent;
             this.upgradeValue.ForeColor = System.Drawing.Color.OrangeRed;
-            this.upgradeValue.Location = new System.Drawing.Point(788, 143);
+            this.upgradeValue.Location = new System.Drawing.Point(0, 0);
             this.upgradeValue.Name = "upgradeValue";
             this.upgradeValue.Size = new System.Drawing.Size(79, 35);
             this.upgradeValue.TabIndex = 26;
             this.upgradeValue.Text = "label1";
             this.upgradeValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.upgradeValue.Visible = false;
             // 
             // purchase
             // 
             this.purchase.BackColor = System.Drawing.Color.Transparent;
-            this.purchase.Location = new System.Drawing.Point(613, 167);
+            this.purchase.Location = new System.Drawing.Point(0, 0);
             this.purchase.Name = "purchase";
             this.purchase.Size = new System.Drawing.Size(424, 50);
             this.purchase.TabIndex = 26;
             this.purchase.Text = "label1";
             this.purchase.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.purchase.Visible = false;
             // 
             // itemName
             // 
             this.itemName.BackColor = System.Drawing.Color.Transparent;
-            this.itemName.Location = new System.Drawing.Point(613, 36);
+            this.itemName.Location = new System.Drawing.Point(0, 0);
             this.itemName.Name = "itemName";
             this.itemName.Size = new System.Drawing.Size(228, 36);
             this.itemName.TabIndex = 26;
             this.itemName.Text = "label1";
             this.itemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.itemName.Visible = false;
             // 
             // shopFrame
             // 
@@ -237,22 +240,13 @@
             // to
             // 
             this.to.BackColor = System.Drawing.Color.Transparent;
-            this.to.Location = new System.Drawing.Point(613, 206);
+            this.to.Location = new System.Drawing.Point(0, 0);
             this.to.Name = "to";
             this.to.Size = new System.Drawing.Size(37, 39);
             this.to.TabIndex = 27;
             this.to.Text = "→";
             this.to.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(631, 333);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 36);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "label1";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.to.Visible = false;
             // 
             // GameForm
             // 
@@ -266,7 +260,6 @@
             this.Controls.Add(this.purchase);
             this.Controls.Add(this.upgradeValue);
             this.Controls.Add(this.itemName);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.currentValue);
             this.Controls.Add(this.multiple);
             this.Controls.Add(this.velocity);
@@ -315,7 +308,6 @@
         private System.Windows.Forms.Label purchase;
         private System.Windows.Forms.Label itemName;
         private System.Windows.Forms.Label to;
-        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -195,7 +195,7 @@ namespace Air
                             gameManager.checkTime = true;
 
                             // UI location settings
-                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 4, clickToStart.Location.Y);
+                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 4, clickToStart.Location.Y + 150);
 
                             // UI font settings
                             playgameButton.init(play, new Point(595, 300), Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, play.Font.Style));
@@ -209,6 +209,13 @@ namespace Air
                             boardButton.visible(false);
                             multiple.Visible = false;
                             shopFrame.Visible = false;
+
+                            itemNameText.visible(false);
+                            purchaseText.visible(false);
+                            purchaseText.visible(false);
+                            currentValueText.visible(false);
+                            upgradeValueText.visible(false);
+                            to.Visible = false;
 
                             distance.Visible = false;
                             starCount.Visible = false;
@@ -554,6 +561,8 @@ namespace Air
                     // code here
                     if (gameManager.initialization)
                     {
+                        
+
                         // unvisible game objects
                         multiple.Visible = true;
                         shopFrame.Visible = true;
@@ -587,6 +596,13 @@ namespace Air
                         currentValueText.init(195, 5, currentValue, new Font("Agency FB", 20, currentValue.Font.Style));
                         upgradeValueText.init(300, 5, upgradeValue, new Font("Agency FB", 20, upgradeValue.Font.Style));
                         arrowText.init(265, 0, to, new Font("Agency FB", 22, to.Font.Style));
+                        
+                        itemNameText.visible(true);
+                        purchaseText.visible(true);
+                        purchaseText.visible(true);
+                        currentValueText.visible(true);
+                        upgradeValueText.visible(true);
+                        to.Visible = true;
 
                         currentValue.Parent = purchase;
                         upgradeValue.Parent = purchase;
@@ -661,8 +677,6 @@ namespace Air
                             }
                             pumpAnimation.updateFrame(msec);
                         }
-
-                        label1.Text = itemFrame[0].isChecked.ToString();
                     }
                     break;
                 #endregion
