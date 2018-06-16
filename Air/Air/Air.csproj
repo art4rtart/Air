@@ -46,6 +46,7 @@
     <Compile Include="Classes\Object\Airtank.cs" />
     <Compile Include="Classes\Object\AnimObject.cs" />
     <Compile Include="Classes\GameManager.cs" />
+    <Compile Include="Classes\Score.cs" />
     <Compile Include="Classes\Settings.cs" />
     <Compile Include="Classes\UI\Icon.cs" />
     <Compile Include="Classes\Object\Background.cs" />

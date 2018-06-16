@@ -16,6 +16,7 @@ namespace Air
 
         public double speed;              // max speed is 30
         public int minSpeed = 100;          // temp value
+        public double maxSpeed = 0;
         public int msec;
         private double boostSpeed;         // 10 is max value
         private double slowSpeed;         // 10 is max value
@@ -65,12 +66,14 @@ namespace Air
             minSpeed = 100;          // temp value
             boostSpeed = 1;         // 10 is max value
             slowSpeed = 1;
+            maxSpeed = 0;
 
             val = 0; min = 0;
             gravity = 2;          // please calculate this value
             airResistance = 20;    // bigger is slower
             slidingValue = 0;
             flightDistance = 0;       // records variables
+            temp = false;
 
             isFlying = false; isGrounded = false; isPicked = false; gameStart = false; canPickUp = false;
             startTimer = true;

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Media;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace Air
 {
@@ -77,6 +78,7 @@ namespace Air
 
         // variables
         #region
+
         // opacity variables
         private float fadingSpeed = 0.01f;
         private float fadeDir = 1;
@@ -91,24 +93,27 @@ namespace Air
         public static bool developerMode = false;      // change it to false when playing
         #endregion
 
-        // recent added variables
-        Bitmap[] logoImage = new Bitmap[4];
-        int logoImageIndex;
-        //Bitmap arrow = Air.Properties.Resources.icon_arrow;
-        //Bitmap cost = Air.Properties.Resources.item_star;
+        public static Score[] scores = new Score[10];
+        public static List<Score> boardScore = new List<Score>();
 
+        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
+        Bitmap[] logoImage = new Bitmap[4];
         Point gameNameOffset = new Point(3, 0);
+        Point clickPoint = new Point();
+
+        int logoImageIndex;
+        int goupspeed = 0;
+
         bool showGameName = false;
         bool gameMode = true;
         bool settingMode = false;
-        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
-        int goupspeed = 0;
         bool setGoUpSpeed = true;
         bool goUp = false;
         bool isGoingUp = false;
         bool goingDown = false;
         bool heightTrim = false;
         bool throwPlane = true;
+        int tempIndex;
 
         public GameForm()
         {
@@ -299,7 +304,7 @@ namespace Air
                             // text init
                             starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, starCount.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) - 7, 57, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
-                            velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 18, velocity.Font.Style));                   // set this value
+                            velocityText.init((this.Width / 2) - (velocity.Size.Width / 2) + 5, 628, velocity, new Font("Agency FB", 16, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
 
                             starIcon.position(30, 20);
@@ -330,6 +335,12 @@ namespace Air
                             player.gravity = 0;
                             settings.soundValue = 7;
 
+                            firstTime = false;
+                            throwPlane = true;
+                            goingDown = false;
+                            developerMode = false;
+                            heightTrim = false;
+
                             gameManager.initialization = false;
                         }
 
@@ -346,6 +357,11 @@ namespace Air
 
                                 if (gameManager.playing)
                                 {
+                                    gameManager.playTime = DateTime.Now - gameManager.playTimeFlag;
+
+                                    if(player.maxSpeed < player.speed)
+                                        player.maxSpeed = player.speed;
+
                                     if (gameManager.update)
                                     {
                                         player.airtankValue = airtank.value;
@@ -548,7 +564,7 @@ namespace Air
 
                                 distanceText.update(Math.Round(player.flightDistance, 0).ToString() + " M");
                                 starCountText.update(star.count.ToString());
-                                velocityText.update(Math.Round((player.speed / 100), 0).ToString() + " M/S");
+                                velocityText.update(Math.Round((player.speed / 10), 0).ToString() + " CM/S");
                                 airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
                             }
                         }
@@ -684,7 +700,61 @@ namespace Air
                 case "Board":
                     if (gameManager.initialization)
                     {
+
+                        StreamWriter writer = new StreamWriter("Score.txt");
+
+                        foreach (Score score in boardScore)
+                        {
+                            string str = score.flightDistance + " " + score.flightTime + " " + score.velocity;
+                            writer.WriteLine(str);
+                            writer.Close();
+                        }
+
+                        //List<double> scoreList = new List<double>();
+                        //StreamReader reader = new StreamReader(fileName);
+
+                        //int scoreIndex = 0;
+                        //try
+                        //{
+                        //    while (!reader.EndOfStream)
+                        //    {
+                        //        string line = reader.ReadLine();
+                        //        string[] str = line.Split();
+                        //        score[scoreIndex] = new Score(Convert.ToDouble(str[0]), Convert.ToDouble(str[1]), Convert.ToDouble(str[2]), scoreIndex);
+                        //        scoreList.Add(score[scoreIndex].flightDistance);
+                        //        scoreIndex++;
+                        //    }
+                        //}
+                        //catch (Exception e)
+                        //{
+                        //    Console.WriteLine(e);
+                        //}
+
+                        //scoreList.Sort();
+
+                        //int[] savedScoreIndex = new int[score.Length];
+
+                        //for (int j = 0; j < score.Length; j++)
+                        //{
+                        //    for (int i = 0; i < score.Length; i++)
+                        //    {
+                        //        if (score[j].flightDistance == scoreList[i])
+                        //            savedScoreIndex[j] = score[i].index;
+                        //    }
+                        //}
+
+
+                        //for (int i = 0; i < score.Length; i++)
+                        //{
+                        //    Console.WriteLine(score[savedScoreIndex[i]].flightDistance + " " + score[savedScoreIndex[i]].flightTime + " " + score[savedScoreIndex[i]].velocity);
+                        //}
+
                         gameManager.initialization = false;
+                    }
+
+                    else
+                    {
+
                     }
                     break;
             }
@@ -693,7 +763,7 @@ namespace Air
             Invalidate();
         }
         #endregion
-        int tempIndex;
+
         // draw
         #region
         private void inGameCanvas_Paint(object sender, PaintEventArgs e)
@@ -816,6 +886,7 @@ namespace Air
                 player.speed = player.velocity();
                 player.gameStart = true;
                 gameManager.playing = true;
+                gameManager.playTimeFlag = DateTime.Now;
             }
 
             else
@@ -824,7 +895,6 @@ namespace Air
             }
         }
 
-        Point clickPoint = new Point();
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (gameManager.sceneName == "Shop")
@@ -930,7 +1000,10 @@ namespace Air
 
             if (e.KeyCode == Keys.M)
             {
-
+                gameManager.sceneName = "Title";
+                gameManager.init();
+                player.init();
+                airtank.init();
             }
 
             if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")

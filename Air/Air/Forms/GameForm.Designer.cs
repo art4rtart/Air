@@ -46,6 +46,7 @@
             this.itemName = new System.Windows.Forms.Label();
             this.shopFrame = new System.Windows.Forms.PictureBox();
             this.to = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
             this.SuspendLayout();
             // 
@@ -248,6 +249,15 @@
             this.to.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.to.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(626, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 15);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "label1";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -256,6 +266,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1285, 851);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.to);
             this.Controls.Add(this.purchase);
             this.Controls.Add(this.upgradeValue);
@@ -308,6 +319,7 @@
         private System.Windows.Forms.Label purchase;
         private System.Windows.Forms.Label itemName;
         private System.Windows.Forms.Label to;
+        private System.Windows.Forms.Label label1;
     }
 }
 

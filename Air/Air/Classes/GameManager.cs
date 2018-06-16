@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -9,17 +10,24 @@ namespace Air
 {
     class GameManager
     {
+        public TimeSpan playTime;
+
         public DateTime updateFlag;
         public DateTime timeFlag;
+        public DateTime playTimeFlag;
+
         public bool checkTime = true;
         public float waitForSeconds = 4.5f;
-
-        public string sceneName = "Title";
+        public string sceneName = "InGame";
 
         public bool update = false;
         public bool playing = false;
         public bool initialization = true;
         public static double score;
+        public static double time;
+        public static double maxVelocity;
+
+        public static int scoreIndex = 0;
 
         public void init()
         {
@@ -27,6 +35,8 @@ namespace Air
             playing = false;
             initialization = true;
             score = 0;
+            time = 0;
+            maxVelocity = 0;
         }
 
         public void gameOver(Player player, int msec)
@@ -36,6 +46,9 @@ namespace Air
             if (player.isGrounded)
             {
                 score = Math.Round(player.flightDistance, 0);
+                time = Math.Round(playTime.TotalSeconds, 2);
+                maxVelocity = Math.Round((player.maxSpeed / 10), 0);
+
                 player.gameStart = false;
 
                 if (player.speed > 0)
@@ -66,8 +79,11 @@ namespace Air
                     {
                         playing = false;
 
-                        scoreForm scoreForm = new scoreForm();
+                        GameForm.scores[scoreIndex] = new Score(score, time, maxVelocity, scoreIndex);
+                        GameForm.boardScore.Add(GameForm.scores[scoreIndex]);
+                        scoreIndex++;
 
+                        scoreForm scoreForm = new scoreForm();
                         scoreForm.StartPosition = FormStartPosition.Manual;
                         scoreForm.Location = new Point(1280 / 2 - (scoreForm.Size.Width / 10) - 55, ((720 / 2) - scoreForm.Size.Height / 3) - 45);
                         scoreForm.ShowDialog();    // this is modeless
