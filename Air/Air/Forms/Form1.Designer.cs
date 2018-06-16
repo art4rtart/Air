@@ -33,10 +33,7 @@
             this.distance = new System.Windows.Forms.Label();
             this.youflight = new System.Windows.Forms.Label();
             this.comment = new System.Windows.Forms.Label();
-            this.retry = new System.Windows.Forms.PictureBox();
-            this.gotomenu = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.retry)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gotomenu)).BeginInit();
+            this.clickToReplay = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timerFunction
@@ -74,47 +71,36 @@
             this.comment.Name = "comment";
             this.comment.Size = new System.Drawing.Size(509, 79);
             this.comment.TabIndex = 4;
-            this.comment.Text = "you fucked up :)";
+            this.comment.Text = "you screwed up :)";
             this.comment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // retry
+            // clickToReplay
             // 
-            this.retry.BackColor = System.Drawing.Color.Transparent;
-            this.retry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.retry.Location = new System.Drawing.Point(149, 234);
-            this.retry.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.retry.Name = "retry";
-            this.retry.Size = new System.Drawing.Size(46, 42);
-            this.retry.TabIndex = 6;
-            this.retry.TabStop = false;
-            // 
-            // gotomenu
-            // 
-            this.gotomenu.BackColor = System.Drawing.Color.Transparent;
-            this.gotomenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.gotomenu.Location = new System.Drawing.Point(254, 234);
-            this.gotomenu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gotomenu.Name = "gotomenu";
-            this.gotomenu.Size = new System.Drawing.Size(46, 42);
-            this.gotomenu.TabIndex = 7;
-            this.gotomenu.TabStop = false;
+            this.clickToReplay.BackColor = System.Drawing.Color.Transparent;
+            this.clickToReplay.Location = new System.Drawing.Point(0, 0);
+            this.clickToReplay.Name = "clickToReplay";
+            this.clickToReplay.Size = new System.Drawing.Size(172, 45);
+            this.clickToReplay.TabIndex = 8;
+            this.clickToReplay.Text = "click to replay !";
+            this.clickToReplay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.clickToReplay.Visible = false;
             // 
             // scoreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(509, 298);
-            this.Controls.Add(this.gotomenu);
-            this.Controls.Add(this.retry);
+            this.Controls.Add(this.clickToReplay);
             this.Controls.Add(this.comment);
             this.Controls.Add(this.youflight);
             this.Controls.Add(this.distance);
+            this.DoubleBuffered = true;
             this.Name = "scoreForm";
             this.Text = "scoreForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.scoreForm_FormClosed);
             this.Load += new System.EventHandler(this.scoreForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.retry)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gotomenu)).EndInit();
+            this.Click += new System.EventHandler(this.scoreForm_Click);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.scoreForm_Paint);
             this.ResumeLayout(false);
 
         }
@@ -124,7 +110,6 @@
         private System.Windows.Forms.Label distance;
         private System.Windows.Forms.Label youflight;
         private System.Windows.Forms.Label comment;
-        private System.Windows.Forms.PictureBox retry;
-        private System.Windows.Forms.PictureBox gotomenu;
+        private System.Windows.Forms.Label clickToReplay;
     }
 }

@@ -33,7 +33,7 @@ namespace Air
         int maxItemCount = 30;
 
         bool generate = true;
-        float generateTime = 0;
+        public float generateTime = 5;
         DateTime startTime;
 
         int upgradePrice;

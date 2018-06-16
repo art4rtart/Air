@@ -19,6 +19,8 @@ namespace Air
 
         public bool active;
 
+        public int price;
+
         public int index
         {
             get { return frameIndex; }

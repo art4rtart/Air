@@ -18,7 +18,7 @@ namespace Air
 
         public bool checkTime = true;
         public float waitForSeconds = 4.5f;
-        public string sceneName = "InGame";
+        public string sceneName = "Title";
 
         public bool update = false;
         public bool playing = false;
@@ -62,6 +62,9 @@ namespace Air
                     }
 
                     player.speed -= ((player.airResistance) / 10) * msec;
+                    if (player.speed < 0)
+                        player.speed = 0;
+
                     player.airResistance += 0.1f;
                 }
 
@@ -79,9 +82,12 @@ namespace Air
                     {
                         playing = false;
 
-                        GameForm.scores[scoreIndex] = new Score(score, time, maxVelocity, scoreIndex);
-                        GameForm.boardScore.Add(GameForm.scores[scoreIndex]);
-                        scoreIndex++;
+                        if (scoreIndex < GameForm.scores.Length)
+                        {
+                            GameForm.scores[scoreIndex] = new Score(score, time, maxVelocity, scoreIndex);
+                            GameForm.boardScore.Add(GameForm.scores[scoreIndex]);
+                            scoreIndex++;
+                        }
 
                         scoreForm scoreForm = new scoreForm();
                         scoreForm.StartPosition = FormStartPosition.Manual;

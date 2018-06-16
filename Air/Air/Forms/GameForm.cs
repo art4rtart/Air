@@ -18,8 +18,8 @@ namespace Air
         // GameObject
         #region
         GameManager gameManager = new GameManager();
-
         Player player = new Player(Air.Properties.Resources.plane, new Point(150, 200));
+        Airtank airtank = new Airtank(Air.Properties.Resources.airtank_gage, new Point(270, 675));
 
         List<Background> backgrounds = new List<Background>();
         Background title = new Background(Air.Properties.Resources.background_title, new Point(0, 0));
@@ -31,12 +31,10 @@ namespace Air
         Background cloud = new Background(Air.Properties.Resources.background_shop, new Point(0, 0));
         Background paper = new Background(Air.Properties.Resources.background_paper, new Point(0, 0));
 
-        Airtank airtank = new Airtank(Air.Properties.Resources.airtank_gage, new Point(270, 675));
-
         Item pineWheel = new Item(Air.Properties.Resources.item_pinewheel, 3, 3.0f, new RectangleF(1280, 500, 70, 100), new RectangleF(0, 0, 350, 505), "PineWheel", 5.0f);
         Item star = new Item(Air.Properties.Resources.item_star, 1, 1.0f, new RectangleF(1280, 0, 150, 150), new RectangleF(0, 0, 150, 150), "Star", 1.0f);
-        Item airup = new Item(Air.Properties.Resources.item_airup, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirUp", 3.0f);
-        Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 3.0f);
+        Item airup = new Item(Air.Properties.Resources.item_airup, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirUp", 5.0f);
+        Item airdown = new Item(Air.Properties.Resources.item_airdown, 1, 1.0f, new RectangleF(1280, 0, 50, 75), new RectangleF(0, 0, 50, 75), "AirDown", 2.0f);
 
         GameObject kpu = new GameObject(Air.Properties.Resources.logo_kputext);
         GameObject frame = new GameObject(Air.Properties.Resources.object_frame);
@@ -60,6 +58,10 @@ namespace Air
         Text upgradeValueText = new Text();
         Text arrowText = new Text();
 
+        Text sceneNameText = new Text();
+        Text flightTimeText = new Text();
+        Text maxVelocityText = new Text();
+
         Button playgameButton = new Button();
         Button shopButton = new Button();
         Button boardButton = new Button();
@@ -69,11 +71,17 @@ namespace Air
         Icon goBackIcon = new Icon(Air.Properties.Resources.icon_back, 1, 1.0f, new Rectangle(1200, 20, 45, 45), new RectangleF(0, 0, 64, 64));
         Icon checkedIcon = new Icon(Air.Properties.Resources.icon_check, 1, 1.0f, new Rectangle(0, 0, 45, 45), new RectangleF(0, 0, 64, 64));
 
+        // shop items
         Icon starAnimation = new Icon(Air.Properties.Resources.animation_star, 6, 1.0f, new Rectangle(0, 0, 100, 100), new RectangleF(0, 0, 300, 300));
-        Icon pumpAnimation = new Icon(Air.Properties.Resources.animation_pump, 6, 1.0f, new Rectangle(0, 0, 200, 200), new RectangleF(0, 0, 300, 300));
+        Icon pumpUpAnimation = new Icon(Air.Properties.Resources.animation_pumpup, 6, 1.0f, new Rectangle(0, 0, 200, 200), new RectangleF(0, 0, 300, 300));
+        Icon pumpDownAnimation = new Icon(Air.Properties.Resources.animation_pumpdown, 6, 1.0f, new Rectangle(0, 0, 200, 200), new RectangleF(0, 0, 300, 300));
+        Icon airtankAnimation = new Icon(Air.Properties.Resources.animation_airtank, 6, 1.0f, new Rectangle(0, 0, 160, 160), new RectangleF(0, 0, 300, 300));
+        Icon pinewheelAnimation = new Icon(Air.Properties.Resources.item_pinewheel, 3, 1.0f, new Rectangle(0, 0, 55, 80), new RectangleF(0, 0, 350, 505));
+        Icon resistanceAnimation = new Icon(Air.Properties.Resources.animation_resistance, 6, 1.0f, new Rectangle(0, 0, 160, 160), new RectangleF(0, 0, 300, 300));
 
         public static Settings settings = new Settings();
 
+        Label[,] mylabel;
         #endregion
 
         // variables
@@ -86,15 +94,18 @@ namespace Air
 
         // etc
         bool pressToStart = false;
-        bool firstTime = true;                 // shit value
+        public static bool firstTime = true;                 // shit value
 
         // static variables
         public static double score;
         public static bool developerMode = false;      // change it to false when playing
+        public static bool scoreBoardClosed = false;
         #endregion
 
         public static Score[] scores = new Score[10];
         public static List<Score> boardScore = new List<Score>();
+
+        string selectedItem = "selected item name";
 
         SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
         Bitmap[] logoImage = new Bitmap[4];
@@ -103,6 +114,11 @@ namespace Air
 
         int logoImageIndex;
         int goupspeed = 0;
+        int frameIndex = 0;
+        int[] firstValue = new int[6] { 10, 10, 10, 10, 10, 10 };
+        int[,] itemEffectValue = new int[6, 2];
+
+        float starGenerateTime = 1.5f;
 
         bool showGameName = false;
         bool gameMode = true;
@@ -113,7 +129,6 @@ namespace Air
         bool goingDown = false;
         bool heightTrim = false;
         bool throwPlane = true;
-        int tempIndex;
 
         public GameForm()
         {
@@ -128,12 +143,20 @@ namespace Air
             gameManager.updateFlag = DateTime.Now;
             name.position((this.Width / 2) - (name.size.Width / 2) - 3, 180);
             kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 5, 670);
+            goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
         }
 
         // update
         #region
         private void timerFunction_Tick(object sender, EventArgs e)
         {
+            mylabel = new Label[,] {
+                        { flightDistance1, flightTime1, maxVeloctiy1 },
+                        { flightDistance2, flightTime2, maxVeloctiy2 },
+                        { flightDistance3, flightTime3, maxVeloctiy3 },
+                        { flightDistance4, flightTime4, maxVeloctiy4 },
+                        { flightDistance5, flightTime5, maxVeloctiy5 }};
+
             TimeSpan deltaTime = DateTime.Now - gameManager.updateFlag;
             int msec = (int)(deltaTime.Milliseconds / 10);
 
@@ -195,12 +218,15 @@ namespace Air
                     {
                         if (gameManager.initialization)
                         {
+                            if (firstTime)
+                                bgm.Play();
+
                             // time setting
                             gameManager.waitForSeconds = 2.8f;
                             gameManager.checkTime = true;
 
                             // UI location settings
-                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 4, clickToStart.Location.Y + 150);
+                            clickToStart.Location = new Point((this.Width / 2 - clickToStart.Size.Width / 2) - 4, clickToStart.Location.Y + 370);
 
                             // UI font settings
                             playgameButton.init(play, new Point(595, 300), Color.DimGray, Color.WhiteSmoke, new Font("Agency FB", 20, play.Font.Style));
@@ -222,15 +248,27 @@ namespace Air
                             upgradeValueText.visible(false);
                             to.Visible = false;
 
+                            sceneName.Visible = false;
+                            rank.Visible = false;
+                            flightDistnace.Visible = false;
+                            flightTime.Visible = false;
+                            maxVelocity.Visible = false;
+                            label1.Visible = false;
+                            label2.Visible = false;
+                            label3.Visible = false;
+                            label4.Visible = false;
+                            label5.Visible = false;
+
+                            for (int i = 0; i < 3; i++)
+                                for (int j = 0; j < 5; j++)
+                                    mylabel[j, i].Visible = false;
+
                             distance.Visible = false;
                             starCount.Visible = false;
                             distanceText.visible(false);
 
                             velocityText.visible(false);
                             airPercentageText.visible(false);
-
-                            if (firstTime)
-                                bgm.Play();
 
                             gameManager.initialization = false;
                         }
@@ -291,6 +329,11 @@ namespace Air
                         // initialization
                         if (gameManager.initialization)
                         {
+                            pineWheel.obj.Clear();
+                            star.obj.Clear();
+                            airdown.obj.Clear();
+                            airup.obj.Clear();
+
                             bgm.Stop();
 
                             // unvisible menus
@@ -304,7 +347,7 @@ namespace Air
                             // text init
                             starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, starCount.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) - 7, 57, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
-                            velocityText.init((this.Width / 2) - (velocity.Size.Width / 2) + 5, 628, velocity, new Font("Agency FB", 16, velocity.Font.Style));                   // set this value
+                            velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 16, velocity.Font.Style));                   // set this value
                             airPercentageText.init(965, 625, airTankPercent, new Font("Agency FB", 20, airTankPercent.Font.Style));       // set this value
 
                             starIcon.position(30, 20);
@@ -341,6 +384,8 @@ namespace Air
                             developerMode = false;
                             heightTrim = false;
 
+                            scoreBoardClosed = false;
+
                             gameManager.initialization = false;
                         }
 
@@ -361,7 +406,7 @@ namespace Air
 
                                     if(player.maxSpeed < player.speed)
                                         player.maxSpeed = player.speed;
-
+                                    
                                     if (gameManager.update)
                                     {
                                         player.airtankValue = airtank.value;
@@ -371,9 +416,9 @@ namespace Air
 
                                         pineWheel.generatePositionY = field.location.Y;
                                         star.generatePositionY = field.location.Y;
-                                        star.setGenerateTime = 0.1f;
+                                        star.setGenerateTime = starGenerateTime;
                                         airup.generatePositionY = field.location.Y;
-                                        airup.generatePositionY = field.location.Y;
+                                        airdown.generatePositionY = field.location.Y;
 
                                         pineWheel.update((int)player.speed / 8, msec);
                                         star.update((int)player.speed / 8, msec);
@@ -385,7 +430,6 @@ namespace Air
                                         space.update((int)player.speed / 20, msec);
                                         rock.update((int)player.speed / 15, msec);
                                         field.update((int)player.speed / 8, msec);
-                                        airtank.update(msec);
 
                                         if (!player.isGrounded)
                                         {
@@ -412,6 +456,7 @@ namespace Air
 
                                         if (goingDown)
                                         {
+                                            airtank.update(msec);
                                             if (player.location.Y > 100)
                                                 heightTrim = true;
 
@@ -422,22 +467,23 @@ namespace Air
 
                                                 goUp = true;
 
-                                                foreach (Background background in backgrounds)
-                                                    background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
+                                                if (space.location.Y <= 0)
+                                                {
+                                                    foreach (Background background in backgrounds)
+                                                        background.location.Y += (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed;
 
-                                                foreach (AnimObject pineWheel in pineWheel.obj)
-                                                    pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                    foreach (AnimObject pineWheel in pineWheel.obj)
+                                                        pineWheel.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                foreach (AnimObject star in star.obj)
-                                                    star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                    foreach (AnimObject star in star.obj)
+                                                        star.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                foreach (AnimObject airup in airup.obj)
-                                                    airup.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                    foreach (AnimObject airup in airup.obj)
+                                                        airup.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
 
-                                                foreach (AnimObject airdown in airdown.obj)
-                                                    airdown.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
-
-
+                                                    foreach (AnimObject airdown in airdown.obj)
+                                                        airdown.move(0, (int)((player.gravity + (int)(player.gravity / 2)) * msec) + goupspeed);
+                                                }
                                             }
 
                                             else
@@ -464,16 +510,16 @@ namespace Air
                                                     if (sky.location.Y > 0)
                                                     {
                                                         foreach (AnimObject pineWheel in pineWheel.obj)
-                                                            pineWheel.move(0, -(int)((player.gravity) * msec));
+                                                            pineWheel.move(0, -((int)((player.gravity) * msec) + goupspeed));
 
                                                         foreach (AnimObject star in star.obj)
-                                                            star.move(0, -(int)((player.gravity) * msec));
+                                                            star.move(0, -((int)((player.gravity) * msec) + goupspeed));
 
                                                         foreach (AnimObject airup in airup.obj)
-                                                            airup.move(0, -(int)((player.gravity) * msec));
+                                                            airup.move(0, -((int)((player.gravity) * msec) + goupspeed));
 
                                                         foreach (AnimObject airdown in airdown.obj)
-                                                            airdown.move(0, -(int)((player.gravity) * msec));
+                                                            airdown.move(0, -((int)((player.gravity) * msec) + goupspeed));
                                                     }
                                                 }
                                             }
@@ -542,7 +588,18 @@ namespace Air
                                     }
 
                                     if (sky.location.Y == 0)
+                                    {
                                         gameManager.gameOver(player, msec);
+
+                                        if(scoreBoardClosed)
+                                        {
+                                            gameManager.sceneName = "Title";
+                                            gameManager.init();
+                                            player.init();
+                                            airtank.init();
+                                            firstTime = false;
+                                        }
+                                    }
                                 }
 
                                 else
@@ -574,12 +631,15 @@ namespace Air
 
                 case "Shop":
                     #region
-                    // code here
                     if (gameManager.initialization)
                     {
+                        selectedItem = null;
                         
+                        starAnimation.price = 100;
+                        pumpUpAnimation.price = 100;
 
                         // unvisible game objects
+                        sceneName.Visible = true;
                         multiple.Visible = true;
                         shopFrame.Visible = true;
                         playgameButton.visible(false);
@@ -600,14 +660,18 @@ namespace Air
 
                         starCount.ForeColor = Color.OrangeRed;
                         arrowIcon.colorImage = Air.Properties.Resources.icon_carrow;
-                        goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
                         arrowIcon.position(1065, 544);
-                        starAnimation.position(641, 155);
-                        pumpAnimation.position(783, 115);
-
+                        starAnimation.position(641, 160);
+                        pumpUpAnimation.position(783, 115);
+                        pumpDownAnimation.position(972, 114);
+                        airtankAnimation.position(612, 307);
+                        pinewheelAnimation.position(855,340);
+                        resistanceAnimation.position(990, 300);
+                        sceneNameText.init(575, 20, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
+                        sceneName.Text = "shop";
 
                         starCountText.init(343, 482, starCount, new Font("Agency FB", 20, starCount.Font.Style));
-                        itemNameText.init(785, 480, itemName, new Font("Agency FB", 20, itemName.Font.Style));
+                        itemNameText.init(785, 473, itemName, new Font("Agency FB", 20, itemName.Font.Style));
                         purchaseText.init(674, 540, purchase, new Font("Agency FB", 20, purchase.Font.Style));
                         currentValueText.init(195, 5, currentValue, new Font("Agency FB", 20, currentValue.Font.Style));
                         upgradeValueText.init(300, 5, upgradeValue, new Font("Agency FB", 20, upgradeValue.Font.Style));
@@ -665,98 +729,165 @@ namespace Air
                             fadeDir = 1;
 
                         starCountText.update(star.count.ToString());
-                        itemNameText.update("seletected item name");
+                        itemNameText.update(selectedItem);
                         purchaseText.update("upgrade your item :)");
-                        currentValueText.update("30%");
-                        upgradeValueText.update("100%");
+
+                        if (itemEffectValue[frameIndex, 0] == 100)
+                            firstValue[frameIndex] = 0;
+
+                        currentValueText.update(itemEffectValue[frameIndex, 0] + "%");
+                        upgradeValueText.update(itemEffectValue[frameIndex, 1] + firstValue[frameIndex] + "%");
+
+                        if (selectedItem == "star generator")
+                            starAnimation.updateFrame(msec);
+
+                        else if (selectedItem == "air up")
+                            pumpUpAnimation.updateFrame(msec);
+
+                        else if (selectedItem == "air down")
+                            pumpDownAnimation.updateFrame(msec);
+
+                        else if (selectedItem == "airtank")
+                            airtankAnimation.updateFrame(msec);
+
+                        else if (selectedItem == "pine wheel")
+                            pinewheelAnimation.updateFrame(msec);
+
+                        else if (selectedItem == "air resistance")
+                            resistanceAnimation.updateFrame(msec);
 
                         arrowIcon.updateFrame(msec);
-
-                        if (itemFrame[0].isChecked)
-                        {
-                            tempIndex = 0;
-                            for (int i = 0; i < itemFrame.Length; i++)
-                            {
-                                if (i != tempIndex)
-                                    itemFrame[i].isChecked = false;
-                            }
-                            starAnimation.updateFrame(msec);
-                        }
-
-                        if (itemFrame[1].isChecked)
-                        {
-                            tempIndex = 1;
-                            for (int i = 0; i < itemFrame.Length; i++)
-                            {
-                                if (i != tempIndex)
-                                    itemFrame[i].isChecked = false;
-                            }
-                            pumpAnimation.updateFrame(msec);
-                        }
                     }
                     break;
                 #endregion
 
                 case "Board":
+                    #region
                     if (gameManager.initialization)
                     {
+                        List<double> scoreList = new List<double>();
+                        int scoreIndex = 0;
 
-                        StreamWriter writer = new StreamWriter("Score.txt");
-
-                        foreach (Score score in boardScore)
+                        if (GameManager.scoreIndex > 0)
                         {
-                            string str = score.flightDistance + " " + score.flightTime + " " + score.velocity;
-                            writer.WriteLine(str);
+                            StreamWriter writer = new StreamWriter("Score.txt");
+                            foreach (Score score in boardScore)
+                            {
+                                string str = score.flightDistance + " " + score.flightTime + " " + score.velocity;
+                                writer.WriteLine(str);
+                            }
                             writer.Close();
+
+                            StreamReader reader = new StreamReader("Score.txt");
+                            while (!reader.EndOfStream)
+                            {
+                                string line = reader.ReadLine();
+                                string[] str = line.Split();
+                                if (scoreIndex < GameManager.scoreIndex)
+                                {
+                                    scores[scoreIndex] = new Score(Convert.ToDouble(str[0]), Convert.ToDouble(str[1]), Convert.ToDouble(str[2]), scoreIndex);
+                                    scoreList.Add(scores[scoreIndex].flightDistance);
+                                    scoreIndex++;
+                                }
+                            }
+
+                            scoreList.Sort();
+
+                            int[] savedScoreIndex = new int[scores.Length];
+
+                            for (int j = 0; j < scoreIndex; j++)
+                            {
+                                for (int i = 0; i < scoreIndex; i++)
+                                {
+                                    if (scores[j].flightDistance == scoreList[i])
+                                        savedScoreIndex[j] = scores[i].index;
+                                }
+                            }
+
+                            for (int i = 0; i < scoreIndex; i++)
+                            {
+                                mylabel[i, 0].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightDistance + " m";
+                                mylabel[i, 1].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightTime.ToString() + " seconds";
+                                mylabel[i, 2].Text = scores[savedScoreIndex[scoreIndex - i - 1]].velocity.ToString() + " cm/s";
+                            }
                         }
 
-                        //List<double> scoreList = new List<double>();
-                        //StreamReader reader = new StreamReader(fileName);
+                        #region
+                        sceneNameText.init(565, 20, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
+                        sceneName.Text = "board";
 
-                        //int scoreIndex = 0;
-                        //try
-                        //{
-                        //    while (!reader.EndOfStream)
-                        //    {
-                        //        string line = reader.ReadLine();
-                        //        string[] str = line.Split();
-                        //        score[scoreIndex] = new Score(Convert.ToDouble(str[0]), Convert.ToDouble(str[1]), Convert.ToDouble(str[2]), scoreIndex);
-                        //        scoreList.Add(score[scoreIndex].flightDistance);
-                        //        scoreIndex++;
-                        //    }
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    Console.WriteLine(e);
-                        //}
+                        rank.Font = new Font("Agency FB", 25, flightDistnace.Font.Style);
+                        rank.Location = new Point(150, 130);
+                        flightDistnace.Font = new Font("Agency FB", 25, flightDistnace.Font.Style);
+                        flightDistnace.Location = new Point(rank.Location.X + 240, rank.Location.Y);
+                        maxVelocity.Font = new Font("Agency FB", 25, flightDistnace.Font.Style);
+                        maxVelocity.Location = new Point(flightDistnace.Location.X + 270, rank.Location.Y);
+                        flightTime.Font = new Font("Agency FB", 25, flightDistnace.Font.Style);
+                        flightTime.Location = new Point(flightDistnace.Location.X + 540, rank.Location.Y);
 
-                        //scoreList.Sort();
+                        for (int i = 0; i < 5; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                mylabel[i, j].Font = new Font("Agency FB", 18, flightTime1.Font.Style);
+                                mylabel[i, j].Visible = true;
+                            }
+                        }
 
-                        //int[] savedScoreIndex = new int[score.Length];
+                        label1.Location = new Point(rank.Location.X + 15, rank.Location.Y + 100);
+                        label1.Font = new Font("Agency FB", 18, label1.Font.Style);
+                        flightDistance1.Location = new Point(label1.Location.X + 220, label1.Location.Y);
+                        maxVeloctiy1.Location = new Point(label1.Location.X + 493, label1.Location.Y);
+                        flightTime1.Location = new Point(label1.Location.X + 765, label1.Location.Y);
 
-                        //for (int j = 0; j < score.Length; j++)
-                        //{
-                        //    for (int i = 0; i < score.Length; i++)
-                        //    {
-                        //        if (score[j].flightDistance == scoreList[i])
-                        //            savedScoreIndex[j] = score[i].index;
-                        //    }
-                        //}
+                        label2.Location = new Point(rank.Location.X + 15, rank.Location.Y + 190);
+                        label2.Font = new Font("Agency FB", 18, label2.Font.Style);
+                        flightDistance2.Location = new Point(label2.Location.X + 220, label2.Location.Y);
+                        maxVeloctiy2.Location = new Point(label2.Location.X + 493, label2.Location.Y);
+                        flightTime2.Location = new Point(label2.Location.X + 765, label2.Location.Y);
+
+                        label3.Location = new Point(rank.Location.X + 15, rank.Location.Y + 280);
+                        label3.Font = new Font("Agency FB", 18, label3.Font.Style);
+                        flightDistance3.Location = new Point(label3.Location.X + 220, label3.Location.Y);
+                        maxVeloctiy3.Location = new Point(label3.Location.X + 493, label3.Location.Y);
+                        flightTime3.Location = new Point(label3.Location.X + 765, label3.Location.Y);
+
+                        label4.Location = new Point(rank.Location.X + 15, rank.Location.Y + 370);
+                        label4.Font = new Font("Agency FB", 18, label4.Font.Style);
+                        flightDistance4.Location = new Point(label4.Location.X + 220, label4.Location.Y);
+                        maxVeloctiy4.Location = new Point(label4.Location.X + 493, label4.Location.Y);
+                        flightTime4.Location = new Point(label4.Location.X + 765, label4.Location.Y);
+
+                        label5.Location = new Point(rank.Location.X + 15, rank.Location.Y + 460);
+                        label5.Font = new Font("Agency FB", 18, label3.Font.Style);
+
+                        flightDistance5.Location = new Point(label5.Location.X + 240, label5.Location.Y);
+                        flightTime5.Location = new Point(label5.Location.X + 515, label5.Location.Y);
+                        flightDistance5.Location = new Point(label5.Location.X + 220, label5.Location.Y);
+                        maxVeloctiy5.Location = new Point(label5.Location.X + 493, label5.Location.Y);
+                        flightTime5.Location = new Point(label5.Location.X + 765, label5.Location.Y);
 
 
-                        //for (int i = 0; i < score.Length; i++)
-                        //{
-                        //    Console.WriteLine(score[savedScoreIndex[i]].flightDistance + " " + score[savedScoreIndex[i]].flightTime + " " + score[savedScoreIndex[i]].velocity);
-                        //}
+                        playgameButton.visible(false);
+                        shopButton.visible(false);
+                        boardButton.visible(false);
+
+                        sceneName.Visible = true;
+                        rank.Visible = true;
+                        flightDistnace.Visible = true;
+                        flightTime.Visible = true;
+                        maxVelocity.Visible = true;
+                        label1.Visible = true;
+                        label2.Visible = true;
+                        label3.Visible = true;
+                        label4.Visible = true;
+                        label5.Visible = true;
+                        #endregion
 
                         gameManager.initialization = false;
                     }
-
-                    else
-                    {
-
-                    }
                     break;
+                    #endregion
             }
 
             gameManager.updateFlag = DateTime.Now;
@@ -815,7 +946,19 @@ namespace Air
                 checkedIcon.draw(e.Graphics);
 
                 starAnimation.draw(e.Graphics);
-                pumpAnimation.draw(e.Graphics);
+                pumpUpAnimation.draw(e.Graphics);
+                pumpDownAnimation.draw(e.Graphics);
+                pinewheelAnimation.draw(e.Graphics);
+                airtankAnimation.draw(e.Graphics);
+                resistanceAnimation.draw(e.Graphics);
+            }
+
+            else if (gameManager.sceneName == "Board")
+            {
+                paper.draw(e.Graphics);
+
+                goBackIcon.draw(e.Graphics);
+                kpu.draw(e.Graphics);
             }
         }
 
@@ -918,8 +1061,13 @@ namespace Air
                     }
                 }
             }
-        }
 
+            else if (gameManager.sceneName == "Board")
+            {
+                goBackIcon.handleMouseMoveEvent(e.Location);
+            }
+        }
+        
         private void canvas_Click(object sender, EventArgs e)
         {
             if (gameManager.sceneName == "Title")
@@ -932,30 +1080,142 @@ namespace Air
             {
                 if (arrowIcon.active is true)
                 {
-                    star.count -= 10;
-                    //PurchaseForm purchaseForm = new PurchaseForm();
-                    //purchaseForm.StartPosition = FormStartPosition.Manual;
-                    //purchaseForm.Location = new Point(this.Width / 2 - (purchaseForm.Size.Width / 10) - 40, ((this.Height / 2) - purchaseForm.Size.Height / 3) - 70);
-                    //purchaseForm.ShowDialog();    // this is modeless
+                    if (selectedItem == "star generator")
+                    {
+                        if (star.count - starAnimation.price > 0)
+                        {
+                            star.count -= starAnimation.price;
+                            if (itemEffectValue[0, 0] < 100)
+                            {
+                                starGenerateTime -= 0.15f;
+                                itemEffectValue[0, 0] += 10;
+                                itemEffectValue[0, 1] += 10;
+                            }
+                        }
+                    }
+
+                    if (selectedItem == "air up")
+                    {
+                        if (star.count - pumpUpAnimation.price > 0)
+                        {
+                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[1, 0] < 100)
+                            {
+                                airup.generateTime -= 0.2f;
+                                itemEffectValue[1, 0] += 10;
+                                itemEffectValue[1, 1] += 10;
+                            }
+                        }
+                    }
+
+                    if (selectedItem == "air down")
+                    {
+                        if (star.count - pumpUpAnimation.price > 0)
+                        {
+                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[2, 0] < 100)
+                            {
+                                airdown.generateTime += 0.2f;
+                                itemEffectValue[2, 0] += 10;
+                                itemEffectValue[2, 1] += 10;
+                            }
+                        }
+                    }
+
+                    if (selectedItem == "airtank")
+                    {
+                        if (star.count - pumpUpAnimation.price > 0)
+                        {
+                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[3, 0] < 100)
+                            {
+                                airtank.airValue -= 1;
+                                itemEffectValue[3, 0] += 10;
+                                itemEffectValue[3, 1] += 10;
+                            }
+                        }
+                    }
+
+                    if (selectedItem == "pine wheel")
+                    {
+                        if (star.count - pumpUpAnimation.price > 0)
+                        {
+                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[4, 0] < 100)
+                            {
+                                pineWheel.generateTime -= 0.5f;
+                                itemEffectValue[4, 0] += 10;
+                                itemEffectValue[4, 1] += 10;
+                            }
+                        }
+                    }
+
+                    if (selectedItem == "air resistance")
+                    {
+                        if (star.count - pumpUpAnimation.price > 0)
+                        {
+                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[5, 0] < 100)
+                            {
+                                // adfadsf
+                                itemEffectValue[5, 0] += 10;
+                                itemEffectValue[5, 1] += 10;
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+                    foreach (GameObject itemFrame in itemFrames)
+                    {
+                        if (itemFrame.isCheckable is true)
+                        {
+                            frameIndex = itemFrame.index;
+                            if (itemFrame.index == 0)
+                                selectedItem = "star generator";
+
+                            else if (itemFrame.index == 1)
+                                selectedItem = "air up";
+
+                            else if (itemFrame.index == 2)
+                                selectedItem = "air down";
+
+                            else if (itemFrame.index == 3)
+                                selectedItem = "airtank";
+
+                            else if (itemFrame.index == 4)
+                                selectedItem = "pine wheel";
+
+                            else if (itemFrame.index == 5)
+                                selectedItem = "air resistance";
+
+                            checkedIcon.position(itemFrame.bounds.X + itemFrame.bounds.Width - 20, itemFrame.bounds.Y);
+                        }
+                    }
                 }
 
                 if (goBackIcon.active is true)
                 {
                     gameManager.sceneName = "Title";
-                    firstTime = false;
                     gameManager.init();
                     player.init();
                     airtank.init();
                     developerMode = false;
+                    firstTime = false;
                 }
+            }
 
-                foreach (GameObject itemFrame in itemFrames)
+            else if (gameManager.sceneName == "Board")
+            {
+                if (goBackIcon.active is true)
                 {
-                    if (itemFrame.isCheckable is true)
-                    {
-                        checkedIcon.position(itemFrame.bounds.X + itemFrame.bounds.Width - 20, itemFrame.bounds.Y);
-                        itemFrames[itemFrame.index].isChecked = true;
-                    }
+                    gameManager.sceneName = "Title";
+                    gameManager.init();
+                    player.init();
+                    airtank.init();
+                    developerMode = false;
+                    firstTime = false;
                 }
             }
         }
@@ -1004,6 +1264,12 @@ namespace Air
                 gameManager.init();
                 player.init();
                 airtank.init();
+                firstTime = false;
+            }
+
+            if (e.KeyCode == Keys.C)
+            {
+                star.count = 2013180043;
             }
 
             if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")

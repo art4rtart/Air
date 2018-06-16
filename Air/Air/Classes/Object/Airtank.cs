@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Air
 {
-    class Airtank
+    public class Airtank
     {
         Bitmap image;
         Bitmap bar = Air.Properties.Resources.airtank_bar;
@@ -18,6 +18,7 @@ namespace Air
         public double maximum;
         public double minimum = 0;
         public double value;
+        public int airValue = 11;
 
         bool fly;
         
@@ -55,7 +56,7 @@ namespace Air
             {
                 if (value > minimum)
                 {
-                    value -= 1 * msec;
+                    value -= airValue * msec;
                 }
 
                 if (value < minimum)
