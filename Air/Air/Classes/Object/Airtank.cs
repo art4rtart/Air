@@ -18,6 +18,7 @@ namespace Air
         public double maximum;
         public double minimum = 0;
         public double value;
+        public double airgage = 1;
         public int airValue = 11;
 
         bool fly;
@@ -69,7 +70,7 @@ namespace Air
             {
                 if (value < maximum)
                 {
-                    value += 1 * msec;
+                    value += airgage * msec;
                 }
 
                 else if (value > maximum)

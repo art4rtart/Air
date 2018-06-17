@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.timerFunction = new System.Windows.Forms.Timer(this.components);
             this.distance = new System.Windows.Forms.Label();
             this.distanceValue = new System.Windows.Forms.Label();
@@ -71,7 +72,12 @@
             this.flightDistance5 = new System.Windows.Forms.Label();
             this.flightTime5 = new System.Windows.Forms.Label();
             this.maxVeloctiy5 = new System.Windows.Forms.Label();
+            this.UIlabel0 = new System.Windows.Forms.Label();
+            this.UIlabel1 = new System.Windows.Forms.Label();
+            this.UIlabel2 = new System.Windows.Forms.Label();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // timerFunction
@@ -574,6 +580,52 @@
             this.maxVeloctiy5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.maxVeloctiy5.Visible = false;
             // 
+            // UIlabel0
+            // 
+            this.UIlabel0.BackColor = System.Drawing.Color.Transparent;
+            this.UIlabel0.ForeColor = System.Drawing.Color.Firebrick;
+            this.UIlabel0.Location = new System.Drawing.Point(0, 0);
+            this.UIlabel0.Name = "UIlabel0";
+            this.UIlabel0.Size = new System.Drawing.Size(223, 72);
+            this.UIlabel0.TabIndex = 29;
+            this.UIlabel0.Text = "getting started...";
+            this.UIlabel0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UIlabel0.Visible = false;
+            // 
+            // UIlabel1
+            // 
+            this.UIlabel1.BackColor = System.Drawing.Color.Transparent;
+            this.UIlabel1.ForeColor = System.Drawing.Color.Black;
+            this.UIlabel1.Location = new System.Drawing.Point(0, 0);
+            this.UIlabel1.Name = "UIlabel1";
+            this.UIlabel1.Size = new System.Drawing.Size(390, 61);
+            this.UIlabel1.TabIndex = 29;
+            this.UIlabel1.Text = "1.    pick it up..";
+            this.UIlabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UIlabel1.Visible = false;
+            // 
+            // UIlabel2
+            // 
+            this.UIlabel2.BackColor = System.Drawing.Color.Transparent;
+            this.UIlabel2.ForeColor = System.Drawing.Color.Black;
+            this.UIlabel2.Location = new System.Drawing.Point(0, 0);
+            this.UIlabel2.Name = "UIlabel2";
+            this.UIlabel2.Size = new System.Drawing.Size(390, 61);
+            this.UIlabel2.TabIndex = 29;
+            this.UIlabel2.Text = "2.   and.. throw it :)";
+            this.UIlabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UIlabel2.Visible = false;
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(573, 182);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(509, 271);
+            this.axWindowsMediaPlayer1.TabIndex = 30;
+            this.axWindowsMediaPlayer1.Visible = false;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -582,6 +634,10 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1124, 681);
+            this.Controls.Add(this.axWindowsMediaPlayer1);
+            this.Controls.Add(this.UIlabel2);
+            this.Controls.Add(this.UIlabel1);
+            this.Controls.Add(this.UIlabel0);
             this.Controls.Add(this.maxVelocity);
             this.Controls.Add(this.sceneName);
             this.Controls.Add(this.rank);
@@ -636,6 +692,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -684,6 +741,10 @@
         private System.Windows.Forms.Label flightDistance5;
         private System.Windows.Forms.Label flightTime5;
         private System.Windows.Forms.Label maxVeloctiy5;
+        private System.Windows.Forms.Label UIlabel0;
+        private System.Windows.Forms.Label UIlabel1;
+        private System.Windows.Forms.Label UIlabel2;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
     }
 }
 

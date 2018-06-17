@@ -45,7 +45,7 @@ namespace Air
 
             if (player.isGrounded)
             {
-                score = Math.Round(player.flightDistance, 0);
+                score = Math.Round(player.flightDistance, 1);
                 time = Math.Round(playTime.TotalSeconds, 2);
                 maxVelocity = Math.Round((player.maxSpeed / 10), 0);
 

@@ -10,11 +10,13 @@ using System.Drawing.Imaging;
 using System.Media;
 using System.Drawing.Drawing2D;
 using System.IO;
+using WMPLib;
 
 namespace Air
 {
     public partial class GameForm : Form
     {
+        #region
         // GameObject
         #region
         GameManager gameManager = new GameManager();
@@ -26,6 +28,7 @@ namespace Air
         Background sky = new Background(Air.Properties.Resources.background_sky, new Point(0, 0));
         Background ss = new Background(Air.Properties.Resources.background_atmosphere, new Point(0, -720));
         Background space = new Background(Air.Properties.Resources.background_space, new Point(0, -1440));
+        Background space2 = new Background(Air.Properties.Resources.background_space, new Point(0, -2160));
         Background rock = new Background(Air.Properties.Resources.background_rock, new Point(150, 390));
         Background field = new Background(Air.Properties.Resources.background_field, new Point(150, 520));
         Background cloud = new Background(Air.Properties.Resources.background_shop, new Point(0, 0));
@@ -100,6 +103,7 @@ namespace Air
         public static double score;
         public static bool developerMode = false;      // change it to false when playing
         public static bool scoreBoardClosed = false;
+        public static bool goBackToTitle = false;
         #endregion
 
         public static Score[] scores = new Score[10];
@@ -107,7 +111,6 @@ namespace Air
 
         string selectedItem = "selected item name";
 
-        SoundPlayer bgm = new SoundPlayer(Air.Properties.Resources.sound_bgm);
         Bitmap[] logoImage = new Bitmap[4];
         Point gameNameOffset = new Point(3, 0);
         Point clickPoint = new Point();
@@ -120,6 +123,7 @@ namespace Air
 
         float starGenerateTime = 1.5f;
 
+        bool isBeginner = true;
         bool showGameName = false;
         bool gameMode = true;
         bool settingMode = false;
@@ -129,6 +133,8 @@ namespace Air
         bool goingDown = false;
         bool heightTrim = false;
         bool throwPlane = true;
+        bool volumeControl = true;
+        #endregion
 
         public GameForm()
         {
@@ -144,6 +150,7 @@ namespace Air
             name.position((this.Width / 2) - (name.size.Width / 2) - 3, 180);
             kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 5, 670);
             goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
+            axWindowsMediaPlayer1.settings.volume = 80;
         }
 
         // update
@@ -208,7 +215,6 @@ namespace Air
                                 gameManager.initialization = true;
                             }
                         }
-
                         break;
                     }
                 #endregion
@@ -219,7 +225,7 @@ namespace Air
                         if (gameManager.initialization)
                         {
                             if (firstTime)
-                                bgm.Play();
+                                axWindowsMediaPlayer1.Ctlcontrols.play();
 
                             // time setting
                             gameManager.waitForSeconds = 2.8f;
@@ -334,8 +340,6 @@ namespace Air
                             airdown.obj.Clear();
                             airup.obj.Clear();
 
-                            bgm.Stop();
-
                             // unvisible menus
                             playgameButton.visible(false);
                             shopButton.visible(false);
@@ -345,6 +349,16 @@ namespace Air
                             player.position(150, 200);
 
                             // text init
+                            if (isBeginner)
+                            {
+                                UIlabel0.Font = new Font("Agency FB", 25, UIlabel0.Font.Style);
+                                UIlabel0.Location = new Point(850, 120);
+                                UIlabel1.Font = new Font("Agency FB", 20, UIlabel1.Font.Style);
+                                UIlabel1.Location = new Point(880, 200);
+                                UIlabel2.Font = new Font("Agency FB", 20, UIlabel2.Font.Style);
+                                UIlabel2.Location = new Point(880, 260);
+                            }
+
                             starCountText.init(-21, 11, starCount, new Font("Agency FB", 15, starCount.Font.Style));                // set this value
                             distanceText.init((this.Width / 2) - (distanceValue.Size.Width / 2) - 7, 57, distanceValue, new Font("Agency FB", 20, distance.Font.Style));                // set this value
                             velocityText.init((this.Width / 2) - (velocity.Size.Width / 2), 628, velocity, new Font("Agency FB", 16, velocity.Font.Style));                   // set this value
@@ -372,6 +386,7 @@ namespace Air
                             backgrounds.Add(sky);
                             backgrounds.Add(ss);
                             backgrounds.Add(space);
+                            backgrounds.Add(space2);
                             backgrounds.Add(rock);
                             backgrounds.Add(field);
 
@@ -385,6 +400,7 @@ namespace Air
                             heightTrim = false;
 
                             scoreBoardClosed = false;
+                            goBackToTitle = false;
 
                             gameManager.initialization = false;
                         }
@@ -428,6 +444,7 @@ namespace Air
                                         sky.update((int)player.speed / 20, msec);
                                         ss.update((int)player.speed / 20, msec);
                                         space.update((int)player.speed / 20, msec);
+                                        space2.update((int)player.speed / 20, msec);
                                         rock.update((int)player.speed / 15, msec);
                                         field.update((int)player.speed / 8, msec);
 
@@ -443,7 +460,7 @@ namespace Air
                                         {
                                             if (sky.location.Y > 0)
                                                 foreach (Background background in backgrounds)
-                                                    background.location.Y -= 2;
+                                                    background.location.Y -= 4;
 
                                             else if (sky.location.Y <= 0)
                                             {
@@ -457,6 +474,25 @@ namespace Air
                                         if (goingDown)
                                         {
                                             airtank.update(msec);
+                                            
+                                            if(airtank.value == airtank.maximum && isBeginner)
+                                            {
+                                                UIlabel1.Location = new Point(880, 150);
+                                                UIlabel1.ForeColor = Color.Firebrick;
+                                                UIlabel1.Text = "press mouse left button";
+
+                                                UIlabel2.Location = new Point(1000, 200);
+                                                UIlabel2.ForeColor = Color.Firebrick;
+                                                UIlabel2.Text = "to fly higher and faster!";
+
+                                                UIlabel1.Visible = UIlabel2.Visible = true;
+                                            }
+
+                                            else if (airtank.value < airtank.maximum - 50 && isBeginner)
+                                            {
+                                                UIlabel1.Visible = UIlabel2.Visible = isBeginner= false;
+                                            }
+
                                             if (player.location.Y > 100)
                                                 heightTrim = true;
 
@@ -591,13 +627,16 @@ namespace Air
                                     {
                                         gameManager.gameOver(player, msec);
 
-                                        if(scoreBoardClosed)
+                                        if(scoreBoardClosed || goBackToTitle)
                                         {
-                                            gameManager.sceneName = "Title";
+                                            if(!goBackToTitle)
+                                                gameManager.sceneName = "InGame";
+                                            else
+                                                gameManager.sceneName = "Title";
                                             gameManager.init();
                                             player.init();
                                             airtank.init();
-                                            firstTime = false;
+                                            firstTime = isBeginner = UIlabel0.Visible = UIlabel1.Visible = UIlabel2.Visible = false;
                                         }
                                     }
                                 }
@@ -605,6 +644,11 @@ namespace Air
                                 else
                                 {
                                     player.pickUp(PointToClient(MousePosition));
+                                    sky.update(1, msec);
+                                    ss.update(1, msec);
+                                    space.update(1, msec);
+                                    if (player.location.Y >= 575 && !player.isPicked && isBeginner)
+                                        UIlabel0.Visible = UIlabel1.Visible = UIlabel2.Visible = true;
                                 }
 
                                 if (PointToClient(MousePosition).X > 1200 && PointToClient(MousePosition).X < 1255 && PointToClient(MousePosition).Y > 20 && PointToClient(MousePosition).Y < 70)
@@ -613,6 +657,7 @@ namespace Air
                                     gameMode = false;
                                     settingMode = true;
                                 }
+
                                 else
                                 {
                                     gameMode = true;
@@ -623,6 +668,14 @@ namespace Air
                                 starCountText.update(star.count.ToString());
                                 velocityText.update(Math.Round((player.speed / 10), 0).ToString() + " CM/S");
                                 airPercentageText.update(Math.Round((double)(airtank.value / airtank.maximum) * 100, 0).ToString() + " %");
+
+                                if (volumeControl)
+                                {
+                                    if (axWindowsMediaPlayer1.settings.volume > 20)
+                                        axWindowsMediaPlayer1.settings.volume -= 1;
+                                    else
+                                        volumeControl = false;
+                                }
                             }
                         }
                     }
@@ -667,8 +720,8 @@ namespace Air
                         airtankAnimation.position(612, 307);
                         pinewheelAnimation.position(855,340);
                         resistanceAnimation.position(990, 300);
-                        sceneNameText.init(575, 20, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
-                        sceneName.Text = "shop";
+                        sceneNameText.init(575, 30, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
+                        sceneName.Text = "SHOP";
 
                         starCountText.init(343, 482, starCount, new Font("Agency FB", 20, starCount.Font.Style));
                         itemNameText.init(785, 473, itemName, new Font("Agency FB", 20, itemName.Font.Style));
@@ -710,6 +763,13 @@ namespace Air
                             itemFrames.Add(itemFrame[i]);
                             xAddValue += 190;
                         }
+
+                        starAnimation.price = 100;
+                        pumpUpAnimation.price = 200;
+                        pumpDownAnimation.price = 200;
+                        airtankAnimation.price = 300;
+                        pinewheelAnimation.price = 400;
+                        resistanceAnimation.price = 500;
 
                         gameManager.initialization = false;
                     }
@@ -767,14 +827,15 @@ namespace Air
                     {
                         List<double> scoreList = new List<double>();
                         int scoreIndex = 0;
-
                         if (GameManager.scoreIndex > 0)
                         {
                             StreamWriter writer = new StreamWriter("Score.txt");
+                            int index = 0;
                             foreach (Score score in boardScore)
                             {
-                                string str = score.flightDistance + " " + score.flightTime + " " + score.velocity;
+                                string str = score.flightDistance + " " + score.flightTime + " " + score.velocity + " " + index;
                                 writer.WriteLine(str);
+                                index++;
                             }
                             writer.Close();
 
@@ -793,28 +854,41 @@ namespace Air
 
                             scoreList.Sort();
 
-                            int[] savedScoreIndex = new int[scores.Length];
+                            int[] savedScoreIndex = new int[scoreIndex];
 
-                            for (int j = 0; j < scoreIndex; j++)
+                            for(int i = 0; i < scoreIndex;i++)
+                            {
+                                for (int j = 0; j < scoreIndex; j++)
+                                    if (scores[i].flightDistance == scoreList[j])
+                                        savedScoreIndex[i] = j;
+                            }
+
+                            for(int i = 0; i < savedScoreIndex.Length; i++)
+                                Console.WriteLine(savedScoreIndex[i]);
+
+                            if (scoreIndex < 5)
                             {
                                 for (int i = 0; i < scoreIndex; i++)
                                 {
-                                    if (scores[j].flightDistance == scoreList[i])
-                                        savedScoreIndex[j] = scores[i].index;
+                                    mylabel[i, 0].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightDistance + " m";
+                                    mylabel[i, 1].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightTime.ToString() + " seconds";
+                                    mylabel[i, 2].Text = scores[savedScoreIndex[scoreIndex - i - 1]].velocity.ToString() + " cm/s";
                                 }
                             }
-
-                            for (int i = 0; i < scoreIndex; i++)
+                            else
                             {
-                                mylabel[i, 0].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightDistance + " m";
-                                mylabel[i, 1].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightTime.ToString() + " seconds";
-                                mylabel[i, 2].Text = scores[savedScoreIndex[scoreIndex - i - 1]].velocity.ToString() + " cm/s";
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    mylabel[i, 0].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightDistance + " m";
+                                    mylabel[i, 1].Text = scores[savedScoreIndex[scoreIndex - i - 1]].flightTime.ToString() + " seconds";
+                                    mylabel[i, 2].Text = scores[savedScoreIndex[scoreIndex - i - 1]].velocity.ToString() + " cm/s";
+                                }
                             }
                         }
 
                         #region
-                        sceneNameText.init(565, 20, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
-                        sceneName.Text = "board";
+                        sceneNameText.init(565, 30, sceneName, new Font("Agency FB", 30, sceneName.Font.Style));
+                        sceneName.Text = "BOARD";
 
                         rank.Font = new Font("Agency FB", 25, flightDistnace.Font.Style);
                         rank.Location = new Point(150, 130);
@@ -889,7 +963,7 @@ namespace Air
                     break;
                     #endregion
             }
-
+            axWindowsMediaPlayer1.settings.volume = SettingForm.sValue;
             gameManager.updateFlag = DateTime.Now;
             Invalidate();
         }
@@ -919,6 +993,7 @@ namespace Air
                 sky.draw(e.Graphics);
                 ss.draw(e.Graphics);
                 space.draw(e.Graphics);
+                space2.draw(e.Graphics);
                 rock.draw(e.Graphics);
                 field.draw(e.Graphics);
                 airtank.draw(e.Graphics);
@@ -992,7 +1067,10 @@ namespace Air
                 {
                     if (PointToClient(MousePosition).X > player.location.X && PointToClient(MousePosition).X < player.location.X + 100
                         && PointToClient(MousePosition).Y > player.location.Y && PointToClient(MousePosition).Y < player.location.Y + 50)
+                    {
                         player.isPicked = true;
+                        UIlabel0.Visible = UIlabel1.Visible = UIlabel2.Visible = false;
+                    }
                     else
                         player.isPicked = false;
 
@@ -1084,10 +1162,12 @@ namespace Air
                     {
                         if (star.count - starAnimation.price > 0)
                         {
-                            star.count -= starAnimation.price;
+                            if(itemEffectValue[0,0] != 100)
+                                star.count -= starAnimation.price;
                             if (itemEffectValue[0, 0] < 100)
                             {
                                 starGenerateTime -= 0.15f;
+                                starAnimation.price *= 2;
                                 itemEffectValue[0, 0] += 10;
                                 itemEffectValue[0, 1] += 10;
                             }
@@ -1098,9 +1178,12 @@ namespace Air
                     {
                         if (star.count - pumpUpAnimation.price > 0)
                         {
-                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[1, 0] != 100)
+                                star.count -= pumpUpAnimation.price;
                             if (itemEffectValue[1, 0] < 100)
                             {
+                                airtank.airgage += 0.5f;
+                                pumpUpAnimation.price *= 2;
                                 airup.generateTime -= 0.2f;
                                 itemEffectValue[1, 0] += 10;
                                 itemEffectValue[1, 1] += 10;
@@ -1110,12 +1193,14 @@ namespace Air
 
                     if (selectedItem == "air down")
                     {
-                        if (star.count - pumpUpAnimation.price > 0)
+                        if (star.count - pumpDownAnimation.price > 0)
                         {
-                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[3, 0] != 100)
+                                star.count -= pumpDownAnimation.price;
                             if (itemEffectValue[2, 0] < 100)
                             {
                                 airdown.generateTime += 0.2f;
+                                pumpDownAnimation.price *= 2;
                                 itemEffectValue[2, 0] += 10;
                                 itemEffectValue[2, 1] += 10;
                             }
@@ -1124,12 +1209,14 @@ namespace Air
 
                     if (selectedItem == "airtank")
                     {
-                        if (star.count - pumpUpAnimation.price > 0)
+                        if (star.count - airtankAnimation.price > 0)
                         {
-                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[3, 0] != 100)
+                                star.count -= airtankAnimation.price;
                             if (itemEffectValue[3, 0] < 100)
                             {
                                 airtank.airValue -= 1;
+                                airtankAnimation.price *= 2;
                                 itemEffectValue[3, 0] += 10;
                                 itemEffectValue[3, 1] += 10;
                             }
@@ -1138,12 +1225,14 @@ namespace Air
 
                     if (selectedItem == "pine wheel")
                     {
-                        if (star.count - pumpUpAnimation.price > 0)
+                        if (star.count - pinewheelAnimation.price > 0)
                         {
-                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[4, 0] != 100)
+                                star.count -= pinewheelAnimation.price;
                             if (itemEffectValue[4, 0] < 100)
                             {
-                                pineWheel.generateTime -= 0.5f;
+                                pineWheel.generateTime -= 0.45f;
+                                pinewheelAnimation.price *= 2;
                                 itemEffectValue[4, 0] += 10;
                                 itemEffectValue[4, 1] += 10;
                             }
@@ -1152,12 +1241,13 @@ namespace Air
 
                     if (selectedItem == "air resistance")
                     {
-                        if (star.count - pumpUpAnimation.price > 0)
+                        if (star.count - resistanceAnimation.price > 0)
                         {
-                            star.count -= pumpUpAnimation.price;
+                            if (itemEffectValue[5, 0] != 100)
+                                star.count -= resistanceAnimation.price;
                             if (itemEffectValue[5, 0] < 100)
                             {
-                                // adfadsf
+                                resistanceAnimation.price *= 2;
                                 itemEffectValue[5, 0] += 10;
                                 itemEffectValue[5, 1] += 10;
                             }
@@ -1246,36 +1336,16 @@ namespace Air
         #region
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F && gameManager.sceneName == "InGame")
+            if (e.KeyCode == Keys.Space && gameManager.sceneName == "Logo")
             {
-                player.minSpeed += 10;
-                player.speed += 10;
-            }
-
-            if (e.KeyCode == Keys.P && gameManager.sceneName == "InGame")
-                timerFunction.Start();
-
-            if (e.KeyCode == Keys.S && gameManager.sceneName == "InGame")
-                developerMode = false;
-
-            if (e.KeyCode == Keys.M)
-            {
+                this.BackgroundImage = null;
                 gameManager.sceneName = "Title";
-                gameManager.init();
-                player.init();
-                airtank.init();
-                firstTime = false;
+                gameManager.initialization = true;
             }
 
             if (e.KeyCode == Keys.C)
             {
-                star.count = 2013180043;
-            }
-
-            if (e.KeyCode == Keys.T && gameManager.sceneName == "InGame")
-            {
-                foreach (Background obj in backgrounds)
-                    obj.location.Y += 10;
+                star.count += 2013180043;
             }
         }
         #endregion

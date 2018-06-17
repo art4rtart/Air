@@ -164,7 +164,7 @@ namespace Air
                 rect.Y = y - new Random().Next(200, 1440);
 
             AnimObject item = new AnimObject(image, frameCount, framesPerSecond, rect, srcRect, tagName, generateTime);
-            item.position(x, item.bounds.Y);
+
             objects.Add(item);
         }
 

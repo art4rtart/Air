@@ -85,21 +85,21 @@ namespace Air
             rect.Y = this.location.Y;
             this.msec = msec;
 
+            TimeSpan gameTime = DateTime.Now - startTime;
+
+            if (startTimer)
+            {
+                startTime = DateTime.Now;
+                startTimer = false;
+            }
+
             if (gameStart)
             {
-                TimeSpan gameTime = DateTime.Now - startTime;
-
-                if (startTimer)
-                {
-                    startTime = DateTime.Now;
-                    startTimer = false;
-                }
-
                 if (this.location.X > playerX)
                 {
                     this.location.X -= (int)(airResistance / 2);
                     if(this.location.Y > 100)
-                        this.location.Y -= (int)gravity;
+                        this.location.Y -= (int)gravity + 1;
                     airResistance += 0.5;
                 }
 
@@ -109,7 +109,7 @@ namespace Air
                     temp = true;
                 }
 
-                if (isFlying && val > min)
+                if (isFlying && val > min + 10)
                 {
                     this.speed += boostSpeed;
                     this.location.Y -= (int)((gravity + (int)(gravity / 2)) * msec);
@@ -122,9 +122,8 @@ namespace Air
 
                     this.location.Y += (int)((gravity) * msec);
                 }
-
-                flightDistance += (speed * gameTime.TotalSeconds) / 10000;     // calculate this value please
             }
+            flightDistance += (speed * gameTime.TotalSeconds) / 10000;     // calculate this value please
         }
 
         public void pickUp(Point mouseLocation)

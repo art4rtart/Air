@@ -52,7 +52,7 @@
             this.soundBar.Name = "soundBar";
             this.soundBar.Size = new System.Drawing.Size(207, 45);
             this.soundBar.TabIndex = 1;
-            this.soundBar.Value = 7;
+            this.soundBar.Value = 2;
             this.soundBar.ValueChanged += new System.EventHandler(this.soundBar_ValueChanged);
             // 
             // volume

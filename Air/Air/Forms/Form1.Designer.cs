@@ -34,6 +34,7 @@
             this.youflight = new System.Windows.Forms.Label();
             this.comment = new System.Windows.Forms.Label();
             this.clickToReplay = new System.Windows.Forms.Label();
+            this.back = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timerFunction
@@ -85,11 +86,23 @@
             this.clickToReplay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.clickToReplay.Visible = false;
             // 
+            // back
+            // 
+            this.back.BackColor = System.Drawing.Color.Transparent;
+            this.back.Location = new System.Drawing.Point(0, 0);
+            this.back.Name = "back";
+            this.back.Size = new System.Drawing.Size(107, 45);
+            this.back.TabIndex = 9;
+            this.back.Text = "back to title :)";
+            this.back.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.back.Visible = false;
+            // 
             // scoreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(509, 298);
+            this.Controls.Add(this.back);
             this.Controls.Add(this.clickToReplay);
             this.Controls.Add(this.comment);
             this.Controls.Add(this.youflight);
@@ -101,6 +114,7 @@
             this.Load += new System.EventHandler(this.scoreForm_Load);
             this.Click += new System.EventHandler(this.scoreForm_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.scoreForm_Paint);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scoreForm_MouseMove);
             this.ResumeLayout(false);
 
         }
@@ -111,5 +125,6 @@
         private System.Windows.Forms.Label youflight;
         private System.Windows.Forms.Label comment;
         private System.Windows.Forms.Label clickToReplay;
+        private System.Windows.Forms.Label back;
     }
 }
