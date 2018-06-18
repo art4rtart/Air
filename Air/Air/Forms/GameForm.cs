@@ -84,6 +84,9 @@ namespace Air
 
         public static Settings settings = new Settings();
 
+        SoundPlayer menuClick = new SoundPlayer(Air.Properties.Resources.sound_menuClick);
+        SoundPlayer buy = new SoundPlayer(Air.Properties.Resources.sound_buy);
+
         Label[,] mylabel;
         #endregion
 
@@ -108,7 +111,7 @@ namespace Air
 
         public static Score[] scores = new Score[10];
         public static List<Score> boardScore = new List<Score>();
-
+        
         string selectedItem = "selected item name";
 
         Bitmap[] logoImage = new Bitmap[4];
@@ -150,7 +153,8 @@ namespace Air
             name.position((this.Width / 2) - (name.size.Width / 2) - 3, 180);
             kpu.position((this.Width / 2) - (kpu.size.Width / 2) - 5, 670);
             goBackIcon.colorImage = Air.Properties.Resources.icon_cback;
-            axWindowsMediaPlayer1.settings.volume = 80;
+            axWindowsMediaPlayer1.Ctlcontrols.stop();
+            axWindowsMediaPlayer2.Ctlcontrols.stop();
         }
 
         // update
@@ -228,7 +232,7 @@ namespace Air
                                 axWindowsMediaPlayer1.Ctlcontrols.play();
 
                             // time setting
-                            gameManager.waitForSeconds = 2.8f;
+                            gameManager.waitForSeconds = 3.2f;
                             gameManager.checkTime = true;
 
                             // UI location settings
@@ -294,7 +298,7 @@ namespace Air
                                 showGameName = true;
                             }
 
-                            if (currentTime.TotalSeconds > gameManager.waitForSeconds + 0.7)
+                            if (currentTime.TotalSeconds > gameManager.waitForSeconds + 0.4)
                             {
                                 if (!clickToStart.IsDisposed)
                                     clickToStart.Visible = true;
@@ -335,6 +339,8 @@ namespace Air
                         // initialization
                         if (gameManager.initialization)
                         {
+                            axWindowsMediaPlayer2.settings.volume = 0;
+
                             pineWheel.obj.Clear();
                             star.obj.Clear();
                             airdown.obj.Clear();
@@ -415,6 +421,10 @@ namespace Air
                             else
                             {
                                 player.update(msec);
+
+                                if (axWindowsMediaPlayer2.settings.volume < 70 && gameManager.playing)
+                                    axWindowsMediaPlayer2.settings.volume += 1;
+                                axWindowsMediaPlayer2.Ctlcontrols.play();
 
                                 if (gameManager.playing)
                                 {
@@ -592,7 +602,11 @@ namespace Air
 
                                         if (airdown.effect)
                                         {
-                                            airtank.value -= 200;
+                                            if (airtank.value > 200)
+                                                airtank.value -= 200;
+                                            else
+                                                airtank.value = 0;
+
                                             airdown.effect = false;
                                         }
                                     }
@@ -963,7 +977,12 @@ namespace Air
                     break;
                     #endregion
             }
+
+            if (player.isGrounded && gameManager.sceneName == "InGame" && axWindowsMediaPlayer2.settings.volume > 0)
+                    axWindowsMediaPlayer2.settings.volume -= 5;
+
             axWindowsMediaPlayer1.settings.volume = SettingForm.sValue;
+
             gameManager.updateFlag = DateTime.Now;
             Invalidate();
         }
@@ -1158,6 +1177,8 @@ namespace Air
             {
                 if (arrowIcon.active is true)
                 {
+                    if(star.count - starAnimation.price > 0)
+                        buy.Play();
                     if (selectedItem == "star generator")
                     {
                         if (star.count - starAnimation.price > 0)
@@ -1315,18 +1336,21 @@ namespace Air
         #region
         private void playButton_Click(object sender, EventArgs e)
         {
+            menuClick.Play();
             gameManager.sceneName = "InGame";
             gameManager.init();
         }
 
         private void shopButton_Click(object sender, EventArgs e)
         {
+            menuClick.Play();
             gameManager.sceneName = "Shop";
             gameManager.init();
         }
 
         private void boardButton_Click(object sender, EventArgs e)
         {
+            menuClick.Play();
             gameManager.sceneName = "Board";
             gameManager.init();
         }

@@ -45,7 +45,6 @@
             this.upgradeValue = new System.Windows.Forms.Label();
             this.purchase = new System.Windows.Forms.Label();
             this.itemName = new System.Windows.Forms.Label();
-            this.shopFrame = new System.Windows.Forms.PictureBox();
             this.to = new System.Windows.Forms.Label();
             this.flightDistnace = new System.Windows.Forms.Label();
             this.flightTime = new System.Windows.Forms.Label();
@@ -76,8 +75,11 @@
             this.UIlabel1 = new System.Windows.Forms.Label();
             this.UIlabel2 = new System.Windows.Forms.Label();
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
-            ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
+            this.shopFrame = new System.Windows.Forms.PictureBox();
+            this.axWindowsMediaPlayer2 = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer2)).BeginInit();
             this.SuspendLayout();
             // 
             // timerFunction
@@ -255,19 +257,6 @@
             this.itemName.Text = "label1";
             this.itemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.itemName.Visible = false;
-            // 
-            // shopFrame
-            // 
-            this.shopFrame.BackColor = System.Drawing.Color.Transparent;
-            this.shopFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.shopFrame.Location = new System.Drawing.Point(0, 0);
-            this.shopFrame.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.shopFrame.Name = "shopFrame";
-            this.shopFrame.Size = new System.Drawing.Size(296, 232);
-            this.shopFrame.TabIndex = 24;
-            this.shopFrame.TabStop = false;
-            this.shopFrame.Visible = false;
-            this.shopFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.shopCanvas_Paint);
             // 
             // to
             // 
@@ -619,12 +608,35 @@
             // axWindowsMediaPlayer1
             // 
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(573, 182);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(509, 271);
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(316, 45);
             this.axWindowsMediaPlayer1.TabIndex = 30;
             this.axWindowsMediaPlayer1.Visible = false;
+            // 
+            // shopFrame
+            // 
+            this.shopFrame.BackColor = System.Drawing.Color.Transparent;
+            this.shopFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.shopFrame.Location = new System.Drawing.Point(0, 0);
+            this.shopFrame.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.shopFrame.Name = "shopFrame";
+            this.shopFrame.Size = new System.Drawing.Size(296, 232);
+            this.shopFrame.TabIndex = 24;
+            this.shopFrame.TabStop = false;
+            this.shopFrame.Visible = false;
+            this.shopFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.shopCanvas_Paint);
+            // 
+            // axWindowsMediaPlayer2
+            // 
+            this.axWindowsMediaPlayer2.Enabled = true;
+            this.axWindowsMediaPlayer2.Location = new System.Drawing.Point(0, 44);
+            this.axWindowsMediaPlayer2.Name = "axWindowsMediaPlayer2";
+            this.axWindowsMediaPlayer2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer2.OcxState")));
+            this.axWindowsMediaPlayer2.Size = new System.Drawing.Size(316, 45);
+            this.axWindowsMediaPlayer2.TabIndex = 30;
+            this.axWindowsMediaPlayer2.Visible = false;
             // 
             // GameForm
             // 
@@ -634,6 +646,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1124, 681);
+            this.Controls.Add(this.axWindowsMediaPlayer2);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Controls.Add(this.UIlabel2);
             this.Controls.Add(this.UIlabel1);
@@ -691,8 +704,9 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseUp);
-            ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shopFrame)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -745,6 +759,7 @@
         private System.Windows.Forms.Label UIlabel1;
         private System.Windows.Forms.Label UIlabel2;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer2;
     }
 }
 

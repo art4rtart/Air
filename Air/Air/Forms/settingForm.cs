@@ -28,7 +28,7 @@ namespace Air
         Icon homePageIcon = new Icon(Air.Properties.Resources.icon_home, 1, 1.0f, new Rectangle(332, 188, 40, 40), new RectangleF(0, 0, 70, 70));
 
         private int soundValue;
-        public static int sValue = 20;
+        public static int sValue = 80;
         private int previousSoundValue;
 
         public SettingForm()
@@ -46,7 +46,7 @@ namespace Air
             offButton.isChecked = GameForm.settings.offButtonCheck;
             soundValue = GameForm.settings.soundValue;
             previousSoundValue = soundValue;
-            soundBar.Value = 2;
+            soundBar.Value = 8;
 
             settingText.init(this.Width / 2 - (setting.Size.Width / 2) - 5, 2, setting, new Font("Agency FB", 20, setting.Font.Style));
             volumeText.init(62, 110, volume, new Font("Agency FB", 11, volume.Font.Style));

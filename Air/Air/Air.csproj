@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Classes\Object\Airtank.cs" />
     <Compile Include="Classes\Object\AnimObject.cs" />
-    <Compile Include="Classes\GameManager.cs" />
-    <Compile Include="Classes\Score.cs" />
-    <Compile Include="Classes\Settings.cs" />
+    <Compile Include="Classes\Game\GameManager.cs" />
+    <Compile Include="Classes\Game\Score.cs" />
+    <Compile Include="Classes\Game\Settings.cs" />
     <Compile Include="Classes\UI\Icon.cs" />
     <Compile Include="Classes\Object\Background.cs" />
     <Compile Include="Classes\Enemy\Enemy.cs" />
@@ -321,6 +321,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound_menuClick.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound_buy.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
