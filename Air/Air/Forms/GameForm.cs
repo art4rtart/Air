@@ -1169,13 +1169,13 @@ namespace Air
         {
             if (gameManager.sceneName == "Title")
             {
-                if (pressToStart is false)
+                if (!pressToStart)
                     pressToStart = true;
             }
 
             else if (gameManager.sceneName == "Shop")
             {
-                if (arrowIcon.active is true)
+                if (arrowIcon.active)
                 {
                     if(star.count - starAnimation.price > 0)
                         buy.Play();
@@ -1280,7 +1280,7 @@ namespace Air
                 {
                     foreach (GameObject itemFrame in itemFrames)
                     {
-                        if (itemFrame.isCheckable is true)
+                        if (itemFrame.isCheckable)
                         {
                             frameIndex = itemFrame.index;
                             if (itemFrame.index == 0)
@@ -1306,7 +1306,7 @@ namespace Air
                     }
                 }
 
-                if (goBackIcon.active is true)
+                if (goBackIcon.active)
                 {
                     gameManager.sceneName = "Title";
                     gameManager.init();
@@ -1319,7 +1319,7 @@ namespace Air
 
             else if (gameManager.sceneName == "Board")
             {
-                if (goBackIcon.active is true)
+                if (goBackIcon.active)
                 {
                     gameManager.sceneName = "Title";
                     gameManager.init();
